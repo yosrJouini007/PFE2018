@@ -1,0 +1,77 @@
+<ActionBar class="action-bar" title="Modifier mon profil">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+   <!--  <ActionItem ios:visibility="collapsed" icon="res://ic_check_white_24dp" (tap)="updateProfile()" android.position="right"></ActionItem>
+    <ActionItem icon="res://navigation/ic_check_white" android:visibility="collapsed" (tap)="updateProfile()" ios.position="right">
+    </ActionItem> -->
+</ActionBar>
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Register'"></MyDrawer>
+    </StackLayout>
+    <GridLayout class="page page-content" tkMainContent>
+        <ScrollView>
+            <StackLayout margin="2" padding="10" verticalAlignment="top">
+                <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='0' marginBottom='10'>
+                    <Label fontWeight="bold" color="#2d2d2d" fontSize="22" text="Mes informations"></Label>
+                    <StackLayout marginTop="20" marginTop='10'  class="" visibility="{{  mode == 'email' ? 'visible' : 'collapse' }}">
+                        <Label text="Email" class=" "></Label>
+                        <TextField returnKeyType="next" #name class="input" [ngModel]='input.email.value' (ngModelChange)='input.email.value=$event'></TextField>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Courrier invalide"></Label>
+                    </StackLayout>
+                    <StackLayout marginTop="20" class="" visibility="{{  mode == 'phone' ? 'visible' : 'collapse' }}">
+                        <Label text="Téléphone" class=" "></Label>
+                        <TextField returnKeyType="next" editable="false" #phone class="input" [ngModel]='input.phone.value' (ngModelChange)='input.phone.value=$event'></TextField>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Numero de téléphone est invalide"></Label>
+                    </StackLayout>
+                    <StackLayout marginTop="20" class="">
+                        <Label text="Prénom" class=" "></Label>
+                        <TextField #firstName (returnPress)="nextInput('lastName')"  returnKeyType="next" class="input" [ngModel]='input.firstname.value' (ngModelChange)='input.firstname.value=$event'></TextField>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.firstname.error ? 'visible' : 'collapse' }}" text="Le nom est invalide"></Label>
+                    </StackLayout>
+                    <StackLayout marginTop="20" class="">
+                        <Label text="Nom" class=" "></Label>
+                        <TextField #lastName  (returnPress)="updateProfile()"  returnKeyType="next" class="input" [ngModel]='input.lastname.value' (ngModelChange)='input.lastname.value=$event'></TextField>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.lastname.error ? 'visible' : 'collapse' }}" text="Le prénom est invalide"></Label>
+                    </StackLayout>
+                    <StackLayout marginTop="20" class="">
+                        <Button class="btn btn-primary" backgroundColor="#f35e28" color="white" padding="15" borderRadius="5" text="Mettre à jour"
+                            (tap)="updateProfile()"></Button>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='10' marginBottom='40'>
+                    <Label  color="#2d2d2d" fontWeight="bold" fontSize="22" text=" Changer Mon mot de passe"></Label>
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='10' marginBottom='40'>
+                        <StackLayout marginTop="20" class="">
+                            <Label text="Mot de passe actuel" class=" "></Label>
+                            <TextField  (returnPress)="nextInput('newpassword')"  secure="true" returnKeyType="next"  class="input" [ngModel]='input.password.value' (ngModelChange)='input.password.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.password.error ? 'visible' : 'collapse' }}" text="Mot de passe invalide"></Label>
+                        </StackLayout>
+                        <StackLayout marginTop="20" class="">
+                            <Label text="Nouveau mot de passe" class=" "></Label>
+                            <TextField (returnPress)="nextInput('confirmnewpassword')" #newpassword secure="true" returnKeyType="next"  class="input" [ngModel]='input.newpassword.value' (ngModelChange)='input.newpassword.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.newpassword.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
+                        </StackLayout>
+                        <StackLayout marginTop="20" class="">
+                            <Label text="Confirmez le mot de passe" class=" "></Label>
+                            <TextField  (returnPress)="updatePassword()" secure="true" #confirmnewpassword returnKeyType="done"  class="input" [ngModel]='input.confirmpassword.value' (ngModelChange)='input.confirmpassword.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.confirmpassword.error ? 'visible' : 'collapse' }}" text="Les 2 mots de passe ne sont pas identiques"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout marginTop="0" class="">
+                        <Button class="btn btn-primary" backgroundColor="#f35e28" color="white" padding="15" borderRadius="5" text="Confirmer"
+                            (tap)="updatePassword()"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+</RadSideDrawer>

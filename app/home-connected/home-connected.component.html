@@ -1,0 +1,29 @@
+<ActionBar class="action-bar" title="Home">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Home"></Label>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Charts'"></MyDrawer>
+    </StackLayout>
+   
+    <GridLayout class="page page-content" tkMainContent>
+        <GridLayout columns="auto auto" verticalAlignment="center">
+            <Button col="0" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%" text="Click to see Charts"
+            (tap)="goToCharts()"  ></Button>
+            <Button col="1" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%" text="Click to see List"
+            (tap)="goToList()"  ></Button>
+        </GridLayout>
+    </GridLayout>
+</RadSideDrawer>

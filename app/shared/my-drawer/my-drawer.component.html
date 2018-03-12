@@ -1,0 +1,51 @@
+<!--
+The MyDrawer custom component view is where you define what will be displayed in the app drawer.
+Feel free to customize layouts and components to change how your app drawer looks.
+-->
+<GridLayout rows="auto, *" class="sidedrawer sidedrawer-left">
+    <StackLayout row="0" class="sidedrawer-header">
+       <!-- <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+        <Label class="sidedrawer-header-brand" text="User Name"></Label>
+        <Label class="footnote" text="username@mail.com"></Label>-->
+    </StackLayout>
+
+    <ScrollView row="1">
+        <StackLayout class="sidedrawer-content">
+            <MyDrawerItem  *ngIf=" !user.id" title="Home" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Home')">
+            </MyDrawerItem>
+            <MyDrawerItem  title="Login" route="/auth/login" icon="&#xf007;" [isSelected]="isPageSelected('Login')">
+            </MyDrawerItem>
+            <MyDrawerItem title="Dashboard" route="/home-connected"  icon="&#xf015;" [isSelected]="isPageSelected('Dashboard')">
+            </MyDrawerItem>
+         <!--   <MyDrawerItem title="Charts Bar" route="/charts"  icon="&#xf015;" [isSelected]="isPageSelected('Charts Bar')">
+            </MyDrawerItem>-->
+            <MyDrawerItem title="Charts Circle" route="/charts-pie"  icon="&#xf015;" [isSelected]="isPageSelected('Charts Circle')">
+            </MyDrawerItem>
+         <!--   <MyDrawerItem title="Charts Bubble" route="/charts-bubble"  icon="&#xf015;" [isSelected]="isPageSelected('Charts Bubble')">
+            </MyDrawerItem>-->
+            <MyDrawerItem title="List" route="/list"  icon="&#xf005;" [isSelected]="isPageSelected('List')">
+            </MyDrawerItem>
+            <MyDrawerItem title="Glucose" route="/add-glucose"  icon="&#xf005;" [isSelected]="isPageSelected('Glucose')">
+            </MyDrawerItem>
+            <GridLayout marginLeft="17" marginTop="10" columns="auto, *" (tap)="gotToEditAccount()" >
+                    <Label col="0" [text]="'&#xf007;'" class="fa" style="color : #000000"></Label>
+                    <Label col="1" marginLeft="17" marginBottom="9" [text]="'Mon profil'" class="p-r-10" style="color : #000000"></Label>
+                </GridLayout>
+         <!--  <MyDrawerItem title="Browse" route="/browse" *ngIf="user && user.id" icon="&#xf1ea;" [isSelected]="isPageSelected('Browse')">
+            </MyDrawerItem>
+            <MyDrawerItem title="Search" route="/search"   icon="&#xf002;" [isSelected]="isPageSelected('Search')">
+            </MyDrawerItem>
+            <MyDrawerItem title="Featured" route="/featured" *ngIf="user && user.id" icon="&#xf005;" [isSelected]="isPageSelected('Featured')">
+            </MyDrawerItem>-->
+
+            <StackLayout class="hr-light"></StackLayout>
+
+           <!-- <MyDrawerItem title="Settings" route="/settings" icon="&#xf013;" [isSelected]="isPageSelected('Settings')">
+            </MyDrawerItem>-->
+            <GridLayout marginLeft="17" marginTop="10" columns="auto, *" class="sidedrawer-list-item" (tap)="logOut()">
+                    <Label col="0" [text]="'&#xf060;'" class="fa"></Label>
+                    <Label col="1" marginLeft="15" [text]="'Logout'" class="p-r-10"></Label>
+                </GridLayout>
+        </StackLayout>
+    </ScrollView>
+</GridLayout>

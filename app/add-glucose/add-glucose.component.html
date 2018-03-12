@@ -1,0 +1,117 @@
+<ActionBar class="action-bar" title="Glucose">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" android.position="right" icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" ios.position="right" icon="res://navigation/ic_close_white">
+    </ActionItem>
+    <Label class="action-bar-title" text="Glucose"></Label>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Glucose'"></MyDrawer>
+
+
+    </StackLayout>
+
+    <GridLayout class="page page-content" tkMainContent>
+        <GridLayout #chartLayout verticalAlignment="top" rows="*, *" columns="*, *, *">
+            <Button text="Daily Chart" (tap)="showDayChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="30%"
+                col="0" borderRadius="10" borderWidth="2" isEnabled="{{ enableDay ? 'true' : 'false' }}"></Button>
+            <Button text="Weekly Chart" (tap)="showWeekChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="30%"
+                col="1" borderRadius="10" borderWidth="2" isEnabled="{{ enableWeek ? 'true' : 'false' }}"></Button>
+            <Button text="Monthly Chart" (tap)="showMonthChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="60"
+                width="30%" col="2" borderRadius="10" borderWidth="2" isEnabled="{{ enableMonth ? 'true' : 'false' }}"></Button>
+
+            <!-- Daily Chart layout-->
+            <RadCartesianChart height="500" row="1" colspan="3" marginBottom="20%" visibility="{{ showDailyChart ? 'visible' : 'collapse' }}">
+                <CategoricalAxis tkCartesianHorizontalAxis></CategoricalAxis>
+                <LinearAxis tkCartesianVerticalAxis></LinearAxis>
+                <SplineAreaSeries maxBarSize="40" tkCartesianSeries [items]="SourceDaily" categoryProperty="Date" valueProperty="Mesure"></SplineAreaSeries>
+            </RadCartesianChart>
+
+            <!-- Weekly Chart layout-->
+            <RadCartesianChart height="500" row="1" colspan="3" marginBottom="20%" visibility="{{ showWeeklyChart ? 'visible' : 'collapse' }}">
+                <CategoricalAxis tkCartesianHorizontalAxis></CategoricalAxis>
+                <LinearAxis tkCartesianVerticalAxis></LinearAxis>
+                <BarSeries maxBarSize="40" tkCartesianSeries [items]="SourceWeekly" categoryProperty="Date" valueProperty="Mesure"></BarSeries>
+            </RadCartesianChart>
+
+            <!-- Monthly Chart layout-->
+            <RadCartesianChart height="500" row="1" colspan="3" marginBottom="20%" visibility="{{ showMonthlyChart ? 'visible' : 'collapse' }}">
+                <CategoricalAxis tkCartesianHorizontalAxis></CategoricalAxis>
+                <LinearAxis tkCartesianVerticalAxis></LinearAxis>
+                <BarSeries maxBarSize="40" tkCartesianSeries [items]="SourceMonthly" categoryProperty="Date" valueProperty="Mesure"></BarSeries>
+            </RadCartesianChart>
+
+
+
+            <!-- <Button text="Add" (tap)="addGlucose()" class="btn btn-primary" row="1" height="100" width="35%"></Button>-->
+        </GridLayout>
+
+        <AbsoluteLayout #addLayout opacity="0" backgroundColor="gray" visibility="{{ showAdd ? 'visible' : 'collapse' }}" (tap)="closeAdd()">
+
+            <StackLayout height="350" width="400" backgroundColor="white" marginTop="30%" marginLeft="15%" borderRadius="10" borderWidth="2"
+                borderColor="#e6f0e1">
+                <GridLayout (tap)="pickDateTime()" verticalAlignment="center" horizontalAlignment="center">
+
+                    <Label horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12" fontWeight="bold"
+                        fontSize="18" style="text-align : left;  color: black;" row="1" col="0" marginTop="10" [text]="'&#xf073;  ' + dateTextHolder">
+                    </Label>
+                </GridLayout>
+                <StackLayout class="input-field">
+                    <Label fontSize="28" class="h3  m-55 text-left" padding="5" text="Glycémie (g/l)" color="#333333" textWrap="true">
+                    </Label>
+                    <TextField (returnPress)="returnPress($event)"  returnKeyType="done" #inputField class="input" padding="30"
+                        [ngModel]='input.glucose.value' (ngModelChange)='input.glucose.value=$event' keyboardType="phone" marginTop="20"
+                        marginRight="5%" marginLeft="5%" borderRadius="6" hint="1.16" fontSize="35" placeholderColor="#f2f2f2"
+                        maxLength="4">
+                    </TextField>
+                    <StackLayout class="hr-light"></StackLayout>
+                    <Label marginTop="3" class="text-danger" visibility="{{  input.glucose.error ? 'visible' : 'collapse' }}" text="Invalid">
+                    </Label>
+                </StackLayout>
+                <Button row="0" col="0" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%"
+                    text="Save" (tap)="saveAdd()">
+                </Button>
+            </StackLayout>
+        </AbsoluteLayout>
+
+
+
+        <!--
+            
+             <TextField (returnPress)="returnPress()" (tap)="addFocus()" returnKeyType="done" #inputField class="input" padding="30" [ngModel]='input.glucose.value'
+                    (ngModelChange)='input.glucose.value=$event' keyboardType="phone" marginTop="20" marginRight="5%" marginLeft="5%"
+                    borderRadius="6" hint="1.10" fontSize="35" placeholderColor="#f2f2f2">
+                </TextField>
+            
+            <TextField #inputField (focus)="addFocus()" (tap)="addFocus()" returnKeyType="done"  (returnPress)="returnPress($event)"  padding="18" [(ngModel)]="input.glucose" marginTop="10" marginRight="5%" marginLeft="5%" borderRadius="6"
+                    automationText="inputField" padding="25" class="input" hint="1.60" width="90%" keyboardType="phone">
+                </TextField>-->
+        <!-- <TextField #inputField (focus)="addFocus()" (tap)="addFocus()" returnKeyType="done" (returnPress)="returnPress($event)" 
+                [ngModel]='input.glucose.value' (ngModelChange)='input.glucose.value=$event' marginTop="20" marginRight="5%"
+                marginLeft="5%" borderRadius="6" automationText="inputField" padding="28" class="input" hint="1.60" width="90%"
+                keyboardType="phone">
+            </TextField>-->
+
+        <!-- <Label marginTop="3" class="text-danger" visibility="{{  input.glucose.error ? 'visible' : 'collapse' }}" text="Invalid">
+            </Label>-->
+
+
+
+
+        <StackLayout horizontalAlignment="right" verticalAlignment="bottom" visibility="{{ showAdd ? 'collapse':'visible'  }}">
+            <FAB (tap)="addGlucose()" icon="res://ic_add_white" rippleColor="#f1f1f1" class="fab-button"></FAB>
+        </StackLayout>
+    </GridLayout>
+</RadSideDrawer>

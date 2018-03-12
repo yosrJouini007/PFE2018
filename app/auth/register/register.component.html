@@ -1,0 +1,116 @@
+<ActionBar class="action-bar" [title]="!showWelcome ? 'Inscription' : 'Bienvenue'">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <ActionItem ios:visibility="collapsed" icon="res://ic_arrow_forward_white_24dp" *ngIf="!showTextStep" (tap)="nextRegister()"
+        android.position="right"></ActionItem>
+    <!-- iOS Menu -->
+    <ActionItem icon="res://navigation/ic_arrow_forward_white" android:visibility="collapsed" *ngIf="!showTextStep" (tap)="nextRegister()"
+        ios.position="right">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)="nextRegister()" *ngIf="showTextStep && !showWelcome "
+        ios.position="right" icon="res://navigation/ic_check_white">
+    </ActionItem>
+
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)="nextRegister()" *ngIf="showTextStep && !showWelcome" android.position="right"
+        icon="res://ic_check_white_24dp">
+    </ActionItem>
+</ActionBar>
+
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Register'"></MyDrawer>
+    </StackLayout>
+
+    <StackLayout class="page page-content" tkMainContent>
+        <ScrollView>
+            <GridLayout margin="2" verticalAlignment="top" padding="30">
+
+                    <StackLayout #emailLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showEmailStep ? 'visible' : 'collapse' }}">
+                            <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40'>
+                                <StackLayout class="input-field regLogin">
+                                    <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="true" text="Quelle est votre adresse mail?" class="headline center"></Label>
+                                    <TextField (returnPress)="nextRegister()" returnKeyType="done" #emailText class="input" padding="18" [ngModel]='input.email.value'
+                                        (ngModelChange)='input.email.value=$event'></TextField>
+                                    <StackLayout class="hr-light"></StackLayout>
+                                    <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Adresse mail invalide"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+
+
+                <StackLayout #firstNameLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showFirstNameStep ? 'visible' : 'collapse' }}">
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40'>
+                        <StackLayout class="input-field regLogin">
+                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="false" text="Quel est votre Nom ?" class="headline center"></Label>
+                            <TextField (returnPress)="nextRegister()" returnKeyType="done" #firstNameText class="input" padding="18" [ngModel]='input.firstname.value'
+                                (ngModelChange)='input.firstname.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.firstname.error ? 'visible' : 'collapse' }}" text="Nom invalide"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout #lastNameLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showLastNameStep ? 'visible' : 'collapse' }}">
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40'>
+                        <StackLayout class="input-field regLogin">
+                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="false" text="Quel est votre Prénom ?" class="headline center"></Label>
+                            <TextField (returnPress)="nextRegister()" returnKeyType="done" #lastNameText class="input" padding="18" [ngModel]='input.lastname.value'
+                                (ngModelChange)='input.lastname.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.lastname.error ? 'visible' : 'collapse' }}" text="Prénom invalide"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout #passwordLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showPasswordStep ? 'visible' : 'collapse' }}">
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginBottom='40'>
+                        <StackLayout class="input-field regLogin">
+                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="true" text="Veuillez maintenant choisir votre mot de passe"
+                                class="headline center"></Label>
+                            <TextField (returnPress)="nextRegister()" secure="true" returnKeyType="done" #passwordText class="input" padding="18" [ngModel]='input.password.value'
+                                (ngModelChange)='input.password.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.password.error ? 'visible' : 'collapse' }}" text="Mot de passe invalide"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout #confirmPasswordLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showConfirmPasswordStep ? 'visible' : 'collapse' }}">
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginBottom='40'>
+                        <StackLayout class="input-field regLogin">
+                            <Label marginTop="30" textAlign="center" fontSize="20" padding="18" textWrap="true" text="Veuillez confirmer votre mot de passe"
+                                class="headline center"></Label>
+                            <TextField (returnPress)="nextRegister()" secure="true" returnKeyType="done" #passwordConfirmText class="input" padding="25"
+                                [ngModel]='input.confirmpassword.value' (ngModelChange)='input.confirmpassword.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" textWrap="true" class="text-danger" visibility="{{  input.confirmpassword.error ? 'visible' : 'collapse' }}"
+                                text="Les 2 mots de passe ne sont pas identiques"></Label>
+                            <Label marginTop="7" class="" (tap)="backtoPassword()" visibility="{{  input.confirmpassword.error ? 'visible' : 'collapse' }}"
+                                text="Vérifiez votre mot de passe"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout #textLayout class="parent-container" marginTop="0" verticalAlignement="top" visibility="{{showTextStep ? 'visible' : 'collapse' }}">
+                    <ScrollView>
+                        <StackLayout margin="2" verticalAlignment="top">
+                            <Label textAlign="left" textWrap="true" [text]="textRegister.condition">
+                            </Label>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+
+                <StackLayout #welcomeLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showWelcome ? 'visible' : 'collapse' }}">
+                    <StackLayout margin="2" verticalAlignment="top">
+                        <Label marginTop="20" textAlign="center" textWrap="true" text="Bienvenu, Nous somme heureux de vous compter parmi nous">
+                        </Label>
+                        <Button marginTop="30" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" text="commencer"
+                            (tap)="begin()"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </GridLayout>
+        </ScrollView>
+    </StackLayout>
+</RadSideDrawer>

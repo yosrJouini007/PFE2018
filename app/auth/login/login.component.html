@@ -1,0 +1,48 @@
+<ActionBar class="action-bar" title="S'identifier">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <!-- Android Menu -->
+    <ActionItem ios:visibility="collapsed" icon="res://ic_arrow_forward_white_24dp" (tap)="nextLogin()" android.position="right"></ActionItem>
+    <!-- iOS Menu -->
+    <ActionItem icon="res://navigation/ic_arrow_forward_white" android:visibility="collapsed" (tap)="nextLogin()" ios.position="right">
+    </ActionItem>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'S\'identifier'"></MyDrawer>
+    </StackLayout>
+
+    <StackLayout class="page page-content" tkMainContent>
+
+        <ScrollView>
+            <GridLayout margin="2" verticalAlignment="top" padding="30">
+                <StackLayout #emailLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showEmailStep ? 'visible' : 'collapse' }}">
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40'>
+                        <StackLayout class="input-field regLogin">
+                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="true" text="Quelle est votre adresse mail?" class="headline center"></Label>
+                            <TextField (returnPress)="nextLogin()" returnKeyType="done" #emailText class="input" padding="18" [ngModel]='input.email.value'
+                                (ngModelChange)='input.email.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Adresse mail invalide"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout #passwordLayout opacity="0" class="parent-container" verticalAlignement="top">
+                    <StackLayout>
+                        <Label marginTop="20" fontSize="26" textAlign="center" textWrap="true" text="Entrez votre mot de passe" class="headline center"></Label>
+                    </StackLayout>
+                    <TextField #passwordText marginTop="20" (returnPress)="nextLogin()" returnKeyType="done" hint="Mot de passe" secure="true"
+                        class="input" [ngModel]='input.password.value' (ngModelChange)='input.password.value=$event'></TextField>
+                    <Label textWrap="true" visibility="{{  input.password.error ? 'visible' : 'collapse' }}" style="text-align:left ;" marginTop="10"
+                        color="red" [text]="'Mot de passe invalide'" class="headline-sub center"></Label>
+                    <!--   <Label text="Utiliser un autre numéro" (tap)="changeMyPhoneNumber()" style="margin-top:40; width:100% ;text-align:left ;"></Label> -->
+                </StackLayout>
+            </GridLayout>
+        </ScrollView>
+    </StackLayout>
+
+</RadSideDrawer>

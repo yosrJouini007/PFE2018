@@ -1,0 +1,50 @@
+<ActionBar class="action-bar" title="Charts">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Charts"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Charts Circle'"></MyDrawer>
+
+
+    </StackLayout>
+
+    <GridLayout class="page page-content" tkMainContent>
+            <GridLayout orientation="vertical" rows="*, *" tkExampleTitle tkToggleNavButton>
+                    <RadPieChart height="300" allowAnimation="true" row="0">
+                        <PieSeries tkPieSeries selectionMode="DataPoint" expandRadius="0.4" outerRadiusFactor="0.7" [items]="Source" valueProperty="Amount"
+                            legendLabel="Numbers"></PieSeries>
+                
+                        <RadLegendView tkPieLegend position="Right" title="Numbers" offsetOrigin="TopRight" width="110" enableSelection="true"></RadLegendView>
+                    </RadPieChart>
+                
+                    <RadPieChart height="300" allowAnimation="true" row="1">
+                        <DonutSeries tkPieSeries selectionMode="DataPoint" outerRadiusFactor="0.9" expandRadius="0.4" outerRadiusFactor="0.7" innerRadiusFactor="0.4"
+                            [items]="Source" valueProperty="Amount" legendLabel="Numbers"></DonutSeries>
+                
+                        <RadLegendView tkPieLegend position="Right" title="Numbers" offsetOrigin="TopRight" width="110" enableSelection="true"></RadLegendView>
+                    </RadPieChart>
+                </GridLayout>
+    </GridLayout>
+
+
+</RadSideDrawer>
