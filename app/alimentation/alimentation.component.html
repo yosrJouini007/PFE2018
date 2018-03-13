@@ -1,0 +1,110 @@
+<ActionBar class="action-bar" title="Glucose">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" android.position="right" icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" ios.position="right" icon="res://navigation/ic_close_white">
+    </ActionItem>
+    <Label class="action-bar-title" text="Glucose"></Label>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Glucose'"></MyDrawer>
+
+
+    </StackLayout>
+
+    <GridLayout class="page page-content" tkMainContent>
+        <StackLayout verticalAlignment="top" backgroundColor="gray">
+            <RadAutoCompleteTextView #autocmp [items]="dataItems" suggestMode="Suggest" displayMode="Tokens" (tokenSelected)="onTokenSelected($event)" >
+                <SuggestionView tkAutoCompleteSuggestionView suggestionViewHeight="200">
+                    <ng-template tkSuggestionItemTemplate let-item="item">
+                        <StackLayout orientation="vertical" padding="10">
+                            <Label [text]="item.text"></Label>
+                        </StackLayout>
+                    </ng-template>
+                </SuggestionView>
+            </RadAutoCompleteTextView>
+        </StackLayout>
+       <GridLayout verticalAlignment="top" marginTop="80" rows="*, *" columns="*, *, *,*">
+            <Button text="Petit Déjeuner" (tap)="showBreakLayout()" verticalAlignment="top" backgroundColor="#e7e7e7" color="black" class="btn btn-primary"
+                row="0" height="60" width="25%" col="0" borderRadius="2" borderWidth="4" isEnabled="{{ enableBreak ? 'true' : 'false' }}"
+                backgroundColor="#e7e7e7" color="black"></Button>
+            <Button text="Déjeuner" (tap)="showLunchLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
+                col="1" borderRadius="2" borderWidth="4" isEnabled="{{ enableLunch ? 'true' : 'false' }}" backgroundColor="#e7e7e7"
+                color="black"></Button>
+            <Button text="Diner" (tap)="showDinnerLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
+                col="2" borderRadius="4" borderWidth="2" isEnabled="{{ enableDinner ? 'true' : 'false' }}" backgroundColor="#e7e7e7"
+                color="black"></Button>
+            <Button text="Grignotage" (tap)="showSnackLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
+                col="3" borderRadius="4" borderWidth="2" isEnabled="{{ enableSnack ? 'true' : 'false' }}" backgroundColor="#e7e7e7"
+                color="black"></Button>
+                <StackLayout row="1" colspan="4"  visibility="{{ showBreak ? 'visible' : 'collapse' }}" (tap)="hideKeyboard()">
+                        <Label [text]="currentdate" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true"
+                        padding="12" fontWeight="bold">
+        
+                    </Label>
+                        <Label [text]="breakFast" horizontalAlignment="left" verticalAlignment="center" class="selectDateTime fa" textWrap="true"
+                            padding="12" fontWeight="bold">
+            
+                        </Label>
+                    </StackLayout>
+                    <StackLayout row="1" colspan="4" visibility="{{ showLunch ? 'visible' : 'collapse' }}">
+                        <Label [text]="lunch" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12"
+                            fontWeight="bold">
+            
+                        </Label>
+                    </StackLayout>
+                    <StackLayout row="1" colspan="4"  visibility="{{ showDinner ? 'visible' : 'collapse' }}">
+                        <Label [text]="dinner" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12"
+                            fontWeight="bold">
+            
+                        </Label>
+                    </StackLayout>
+                    <StackLayout row="1"  colspan="4" visibility="{{ showSnack ? 'visible' : 'collapse' }}">
+                        <Label [text]="snack" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12"
+                            fontWeight="bold">
+            
+                        </Label>
+                    </StackLayout>
+        </GridLayout>
+  
+        <AbsoluteLayout #addLayout opacity="0" backgroundColor="gray" visibility="{{ showAdd ? 'visible' : 'collapse' }}" (tap)="closeAdd()">
+
+                <StackLayout height="350" width="400" backgroundColor="white" marginTop="30%" marginLeft="15%" borderRadius="10" borderWidth="2"
+                    borderColor="#e6f0e1">
+                
+                    <StackLayout class="input-field">
+                        <Label fontSize="28" class="h3  m-55 text-left" padding="5" [text]="foodToken" color="#333333" textWrap="true">
+                        </Label>
+                        <StackLayout class="hr-light"></StackLayout>
+                    </StackLayout>
+                    <Button row="0" col="0" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%"
+                        text="Save" (tap)="saveFood()">
+                    </Button>
+                </StackLayout>
+            </AbsoluteLayout>
+      <!--  <StackLayout>
+        <TabView selectedIndex="0"  (selectedIndexChange)="onIndexChanged($event)" sdkExampleTitle sdkToggleNavButton>
+                <StackLayout *tabItem="{title: 'Petit Déjeuner'}">
+                    <Label text="Petit Déjeuner" class="m-15 h2 text-left" color="blue"></Label>
+                    <ScrollView>
+                        <Label [text]="content" textWrap="true" class="m-15"></Label>
+                    </ScrollView>
+                </StackLayout>
+                <StackLayout *tabItem="{title: 'Déjeuner'}">
+                    <Label text="Déjeuner" textWrap="true" class="h2 m-x-auto" color="blue"></Label>
+                </StackLayout>
+            </TabView>
+        </StackLayout>-->
+    </GridLayout>
+</RadSideDrawer>

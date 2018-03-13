@@ -6,6 +6,7 @@ import { LoopBackAuth } from "./shared/sdk";
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
     { path: "home", loadChildren: "./home/home.module#HomeModule" },
+    { path: "alimentation", loadChildren: "./alimentation/alimentation.module#AlimentationModule" },
     { path: "charts", loadChildren: "./charts/charts.module#ChartsModule" },
     { path: "charts-pie", loadChildren: "./charts-pie/charts-pie.module#ChartsPieModule" },
     { path: "charts-bubble", loadChildren: "./charts-bubble/charts-bubble.module#ChartsBubbleModule" },

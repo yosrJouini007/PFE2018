@@ -74,7 +74,7 @@
                     <TextField (returnPress)="returnPress($event)"  returnKeyType="done" #inputField class="input" padding="30"
                         [ngModel]='input.glucose.value' (ngModelChange)='input.glucose.value=$event' keyboardType="phone" marginTop="20"
                         marginRight="5%" marginLeft="5%" borderRadius="6" hint="1.16" fontSize="35" placeholderColor="#f2f2f2"
-                        maxLength="4">
+                        maxLength="4" ngDefaultControl>
                     </TextField>
                     <StackLayout class="hr-light"></StackLayout>
                     <Label marginTop="3" class="text-danger" visibility="{{  input.glucose.error ? 'visible' : 'collapse' }}" text="Invalid">

@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewContainerRef, ElementRef, NgZone } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
+import { RadAutoCompleteTextViewComponent } from "nativescript-ui-autocomplete/angular";
+import { TokenModel } from "nativescript-ui-autocomplete";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "tns-core-modules/ui/page/page";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
@@ -8,16 +10,13 @@ import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layo
 import { Subject } from "rxjs";
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import { screen } from "platform";
-import { Data } from './data';
 import { ObservableArray, ChangedData, ChangeType } from "tns-core-modules/data/observable-array/observable-array";
 const ModalPicker = require("nativescript-modal-datetimepicker").ModalDatetimepicker;
 const picker = new ModalPicker();
 import { isAndroid, isIOS } from "tns-core-modules/platform";
 declare var android;
 var application = require("application");
-import { registerElement } from "nativescript-angular/element-registry";
 import { ValidateService } from "./validate.service";
-registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
 import * as moment from "moment";
 import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/absolute-layout";
 import { Observable } from "tns-core-modules/data/observable";
@@ -25,31 +24,48 @@ import { FormsModule } from '@angular/forms'
 
 
 
+
 @Component({
-    selector: "add-glucose",
+    selector: "alimentation",
     moduleId: module.id,
-    templateUrl: "./add-glucose.component.html",
-    styleUrls: ["./add-glucose.component.css"]
+    templateUrl: "./alimentation.component.html",
+    styleUrls: ["./alimentation.component.css"]
 })
-export class AddGlucoseComponent implements OnInit {
+export class AlimentationComponent implements OnInit {
+    private _items: ObservableArray<TokenModel>;
+    private food = ["Lait", "Jus d'orange", "Pain", "Kaki", "Céreales", "Beurre", "Confiture", "Chocolat", "Pizza", "Spaghetti",
+        "Couscous", "Sandwitch", "Soufflet", "Croustina", "Chocotom", "Lait de Poule", "Banane",
+        "Fraise", "Escalope", "Poulet", "Viande", "Salade", "Yaourt", "Fromage",
+        "Crépe", "Cake", "Gateau", "Croissant", "Boeuf"];
 
     month: string;
     public currentdate: Date;
-    enableDay: boolean = false;
-    enableWeek: boolean = true;
-    enableMonth: boolean = true;
+    enableLunch: boolean =true;
+    enableBreak: boolean = false;
+    enableSnack: boolean = true;
+    enableDinner:boolean=true;
     input: any;
     date: string;
-    glucose: string;
-    mesure: number;
+    searchInput = new Subject<string>();
+    private searchInput$;
+    public myItems;
+    connexionState: any;
+    address: string = "";
+    showSuggession: boolean = false;
     public height: number;
     public width: number;
     public dateTextHolder: string = "";
+    public foodToken: string = "";
+    public breakFast: string = "";
+    public lunch: string = "";
+    public dinner: string = "";
+    public snack: string = "";
     public dateTextHolderDefaultText: string = "Choose the date";
     showAdd: boolean = false;
-    showWeeklyChart: boolean = false;
-    showMonthlyChart: boolean = false;
-    showDailyChart: boolean = true;
+    showBreak: boolean = true;
+    showSnack: boolean = false;
+    showLunch: boolean = false;
+    showDinner: boolean = false;
     PICK_DATE = "Choose Date";
     public selectedDateStr: string = "";
     public selectedTimeStr: string = "";
@@ -57,89 +73,74 @@ export class AddGlucoseComponent implements OnInit {
     private dateStr;
     private hourStr;
     public fulldateStr: string = "";
-    private data = [];
-    chart: Data[] = [];
-    chartWeek: Data[] = [];
-    chartMonth: Data[] = [];
+   
     //textInput = new Subject<string>();
 
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("addLayout") addLayoutRef: ElementRef;
-    @ViewChild("chartLayout") chartLayoutRef: ElementRef;
-    @ViewChild("inputField") inputFieldElement: ElementRef;
+    @ViewChild("autocmp") autocmp: RadAutoCompleteTextViewComponent;
+
+    get dataItems(): ObservableArray<TokenModel> {
+        return this._items;
+    }
 
     private _sideDrawerTransition: DrawerTransitionBase;
     private get addLayout(): AbsoluteLayout {
         return this.addLayoutRef.nativeElement;
     }
-    private get chartLayout(): StackLayout {
-        return this.chartLayoutRef.nativeElement;
-    }
-    private get inputFieldEl(): TextField {
-        return this.inputFieldElement.nativeElement;
-    }
+   
     private get screenHeight(): number {
         return screen.mainScreen.heightDIPs;
     }
     private get screenWidth(): number {
         return screen.mainScreen.widthDIPs;
     }
-    private _SourceDaily: ObservableArray<Data>;
-    private _SourceWeekly: ObservableArray<Data>;
-    private _SourceMonthly: ObservableArray<Data>;
+    
 
     constructor(
+    
         private _page: Page,
         private router: RouterExtensions,
-        private validateService: ValidateService, ) {
+        private validateService: ValidateService, 
+      ) {
 
-        this.input = {
-
-            glucose: {
-                value:"",
-                error: false
-            },
-        };
-        this.chart = [
-            {
-                Date: "12:30",
-                Mesure: 2,
-            }];
-        this.chartWeek = [
-            //{
-            // Date: "7/03/2018",
-            // Mesure: 6,
-            //}
-        ];
-        this.chartMonth = [
-        ];
         this.currentdate=new Date();
+
+            
+        //this.myItems = [];
+        this.initDataItems();
     }
 
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
-        this._SourceDaily = new ObservableArray(this.chart);
-        this._SourceWeekly = new ObservableArray(this.chartWeek);
-        this._SourceMonthly = new ObservableArray(this.chartMonth);
-        //this.saveAdd();
-       //let textField = <TextField>this.inputFieldElement.nativeElement.object;
+      /*  this.searchInput$ = this.searchInput
+        .debounceTime(100)
+        .distinctUntilChanged()
+        .subscribe(
+          (data: any) => {
+            let textField = <TextField>data.object;
+            if (this.connexionState == "NONE") {
+              this.store.dispatch(new appAction.NoInternetAction(new Date()));
+            } else {
+              this.zone.run(() => {
+                this.search(textField.text);
+              });
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );*/
+       
 
 
     }
 
 
-    get SourceDaily(): ObservableArray<Data> {
-        return this._SourceDaily;
-    }
-    get SourceWeekly(): ObservableArray<Data> {
-        return this._SourceWeekly;
-    }
-    get SourceMonthly(): ObservableArray<Data> {
-        return this._SourceMonthly;
-    }
+    
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
     }
@@ -148,46 +149,96 @@ export class AddGlucoseComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
+    private initDataItems() {
+        this._items = new ObservableArray<TokenModel>();
 
-
-
-    addGlucose() {
-        this.dateTextHolder = this.dateTextHolderDefaultText;
-        this.addLayout
-            .animate({
-                translate: { x: 0, y: 0 },
-                duration: 200,
-                opacity: 1
-            })
-        this.showAdd = true;
-        // this.showDailyChart = false;
-    }
-    showDayChart() {
-        this.showDailyChart = true;
-        this.showWeeklyChart = false;
-        this.showMonthlyChart = false;
-        this.enableMonth = true;
-        this.enableDay = false;
-        this.enableWeek = true;
+        for (var i = 0; i < this.food.length; i++) {
+            this._items.push(new TokenModel(this.food[i], undefined));
+        }
     }
 
-    showWeekChart() {
-        this.showWeeklyChart = true;
-        this.showDailyChart = false;
-        this.showMonthlyChart = false;
-        this.enableMonth = true;
-        this.enableDay = true;
-        this.enableWeek = false;
+    public onTokenSelected(args) {
+      //  this.logEvent("Selected Token: " + args.token.text);
+      this.foodToken=args.token.text;
+      this.addLayout
+      .animate({
+          translate: { x: 0, y: 0 },
+          duration: 200,
+          opacity: 1
+      })
+  this.showAdd = true;
+
     }
-    showMonthChart() {
-        this.showWeeklyChart = false;
-        this.showDailyChart = false;
-        this.showMonthlyChart = true;
-        this.enableMonth = false;
-        this.enableDay = true;
-        this.enableWeek = true;
+    saveFood()
+    {
+        if (this.showBreak==true)
+        {
+            this.breakFast=this.foodToken;
+        }
+        else
+        if (this.showLunch==true)
+        {
+            this.lunch=this.foodToken;
+        }
+        else
+        if (this.showSnack==true)
+        {
+            this.snack=this.foodToken;
+        }
+        else
+        if (this.showDinner==true)
+        {
+            this.dinner=this.foodToken;
+        }
+        this.closeAdd();
+
     }
 
+    
+      showBreakLayout() {
+        this.showBreak= true;
+        this.showLunch = false;
+        this.showDinner = false;
+        this.showSnack = false;
+        this.enableSnack = true;
+        this.enableLunch = true;
+        this.enableBreak = false;
+        this.enableDinner = true;
+        
+    }
+
+    showLunchLayout() {
+        this.showBreak=false;
+        this.showLunch = true;
+        this.showDinner = false;
+        this.showSnack = false;
+        this.enableSnack = true;
+        this.enableLunch = false;
+        this.enableBreak = true;
+        this.enableDinner = true;
+    }
+    showDinnerLayout() {
+        this.showBreak=false;
+        this.showLunch = false;
+        this.showDinner = true;
+        this.showSnack = false;
+        this.enableSnack = true;
+        this.enableLunch = true;
+        this.enableBreak = true;
+        this.enableDinner = false;
+    }
+    showSnackLayout() {
+        this.showBreak= false;
+        this.showLunch = false;
+        this.showDinner = false;
+        this.showSnack = true;
+        this.enableSnack = false;
+        this.enableLunch = true;
+        this.enableBreak = true;
+        this.enableDinner = true;
+    }
+
+  
     selectDate(fn) {
         picker
             .pickDate({
@@ -212,10 +263,7 @@ export class AddGlucoseComponent implements OnInit {
                 console.log("Error: " + error);
             });
     }
-    addFocus() {
-        this.inputFieldEl.focus();
-
-    }
+  
     pickDateTime() {
         this.selectDate(this.selectTime.bind(this));
     }
@@ -235,7 +283,7 @@ export class AddGlucoseComponent implements OnInit {
                     this.fulldateStr = moment(this.selectedDateStr + " " + this.selectedTimeStr, "mm/dd/yyyy hh:mm").format('LLLL');
                     this.dateTextHolder = this.fulldateStr;
                     // this.inputFieldEl.focus();
-                    this.addFocus();
+                   
 
                 } else {
                 }
@@ -256,59 +304,12 @@ export class AddGlucoseComponent implements OnInit {
             })
         // this.input.glucose.value = "";
     }
-    returnPress(args) {
 
-        // if (this.validateInput()) {
-        let textField = <TextField>args.object;
-
-        console.log("onReturn");
-        // this.input.glucose.value = Number(textField.text);
-        this.mesure = Number(textField.text);
-        this.saveAdd();
-
-    }
    
  
 
-    saveAdd() {
+  
 
-
-        //  if (this.validateInput()) {
-       // this.mesure=Number(this.input.glucose.value);
-        this.date = this.selectedDateStr;
-        this.chart.push(new Data(this.selectedTimeStr, this.mesure));
-        this._SourceDaily.push(new Data(this.selectedTimeStr, this.mesure));
-        let week = this.chart.reduce((a, b) => a + b.Mesure, 0) / this.chart.length;
-        this.chartWeek.push(new Data(this.date, week));
-        this._SourceWeekly.push(new Data(this.date, week));
-        let month = this.chartWeek.reduce((a, b) => a + b.Mesure, 0) / this.chartWeek.length;
-        this.chartMonth.push(new Data(this.month, month));
-        this._SourceMonthly.push(new Data(this.month, month));
-        /* this.data.map(item => {
-              return {
-                  Date: item.Date,
-                  Mesure: item.Mesure
-              }
-          }).forEach(item => this.source.push(item));*/
-        this.closeAdd();
-
-
-
-
-    }
-
-   /* private validateInput() {
-         let Valide = true;
-         if (
-             this.validateService.isNumber(this.input.glucose.value)
-          ) {
-             this.input.glucose.error = false;
-         } else {
-             this.input.glucose.error = true;
-             Valide = false;
-         }
-         return Valide;
-     }*/
 
     hideKeyboard() {
         if (isAndroid) {

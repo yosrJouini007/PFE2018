@@ -27,6 +27,8 @@ Feel free to customize layouts and components to change how your app drawer look
             </MyDrawerItem>
             <MyDrawerItem title="Glucose" route="/add-glucose"  icon="&#xf005;" [isSelected]="isPageSelected('Glucose')">
             </MyDrawerItem>
+            <MyDrawerItem title="Alimentation" route="/alimentation"  icon="&#xf005;" [isSelected]="isPageSelected('Alimentation')">
+            </MyDrawerItem>
             <GridLayout marginLeft="17" marginTop="10" columns="auto, *" (tap)="gotToEditAccount()" >
                     <Label col="0" [text]="'&#xf007;'" class="fa" style="color : #000000"></Label>
                     <Label col="1" marginLeft="17" marginBottom="9" [text]="'Mon profil'" class="p-r-10" style="color : #000000"></Label>
