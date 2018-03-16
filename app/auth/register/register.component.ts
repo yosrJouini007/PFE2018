@@ -38,7 +38,7 @@ import { screen } from "platform";
 //Services
 import { AuthService } from "../shared/auth.service";
 import { ValidateService } from "../shared/validate.service";
-
+import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
 
 @Component({
   selector: "register-auth",
@@ -50,6 +50,8 @@ export class RegisterComponent implements OnInit {
   @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
   @ViewChild("firstNameText") firstNameTextRef: ElementRef;
   @ViewChild("emailText") emailTextRef: ElementRef;
+  @ViewChild("sizeText") sizeTextRef: ElementRef;
+  @ViewChild("weightText") weightTextRef: ElementRef;
   @ViewChild("lastNameText") lastNameTextRef: ElementRef;
   @ViewChild("passwordText") passwordTextRef: ElementRef;
   @ViewChild("passwordConfirmText") passwordConfirmTextRef: ElementRef;
@@ -60,6 +62,8 @@ export class RegisterComponent implements OnInit {
   @ViewChild("textLayout") textLayoutRef: ElementRef;
   @ViewChild("welcomeLayout") welcomeLayoutRef: ElementRef;
   @ViewChild("emailLayout") emailLayoutRef: ElementRef;
+  @ViewChild("profileLayout") profileLayoutRef: ElementRef;
+  @ViewChild("typeLayout") typeLayoutRef: ElementRef;
 
   private get passwordLayout(): StackLayout {
     return this.passwordLayoutRef.nativeElement;
@@ -69,6 +73,12 @@ export class RegisterComponent implements OnInit {
   }
   private get emailText(): TextField {
     return this.emailTextRef.nativeElement;
+  }
+  private get sizeText(): TextField {
+    return this.sizeTextRef.nativeElement;
+  }
+  private get weightText(): TextField {
+    return this.weightTextRef.nativeElement;
   }
   private get lastNameText(): TextField {
     return this.lastNameTextRef.nativeElement;
@@ -97,6 +107,12 @@ export class RegisterComponent implements OnInit {
   private get emailLayout(): StackLayout {
     return this.emailLayoutRef.nativeElement;
   }
+  private get profileLayout(): StackLayout {
+    return this.profileLayoutRef.nativeElement;
+  }
+  private get typeLayout(): StackLayout {
+    return this.typeLayoutRef.nativeElement;
+  }
   private get screenWidth(): number {
     return screen.mainScreen.widthDIPs;
   }
@@ -105,6 +121,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private _sideDrawerTransition: DrawerTransitionBase;
+
 
   EXIST_PHONE_NUMBER = "Adresse mail existe";
   USE_AN_OTHER_EMAIL = "Utiliser une autre adresse mail";
@@ -122,11 +139,19 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
   config: any;
   showEmailStep: boolean = true;
   showFirstNameStep: boolean = false;
+  showProfileStep: boolean = false;
+  showTypeStep: boolean = false;
   showLastNameStep: boolean = false;
   showPasswordStep: boolean = false;
   showConfirmPasswordStep: boolean = false;
   showTextStep: boolean = false;
   showWelcome: boolean = false;
+  enableOne: boolean = true;
+  enableTwo: boolean = true;
+  enableL: boolean = true;
+  enableG: boolean = true;
+  public type = [];
+
   constructor(
     private validateService: ValidateService,
     private routerExtensions: RouterExtensions,
@@ -156,15 +181,28 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
         value: "",
         error: false
       },
+      size: {
+        value: "",
+        error: false
+      },
+      weight: {
+        value: "",
+        error: false
+      },
+      type: {
+        value: "",
+      },
 
     };
+    
   }
 
 
 
   ngOnInit(): void {
     this._sideDrawerTransition = new SlideInOnTopTransition();
-    this.nextRegister();
+    this.fadeInEmaillayout();
+    //this.nextRegister();
 
   }
 
@@ -318,6 +356,52 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
         opacity: 0
       })
       .then(() => {
+        this.sizeText.focus();
+
+      });
+  }
+
+
+
+  fadeInTypelayout() {
+    return this.typeLayout
+      .animate({
+        translate: { x: 0, y: 0 },
+        duration: 150,
+        opacity: 1
+      })
+  }
+
+  fadeOutTypelayout() {
+    return this.typeLayout
+      .animate({
+        translate: { x: 0, y: -200 },
+        duration: 150,
+        opacity: 0
+      })
+      .then(() => {
+
+      });
+  }
+
+
+  fadeInProfilelayout() {
+    return this.profileLayout
+      .animate({
+        translate: { x: 0, y: 0 },
+        duration: 150,
+        opacity: 1
+      })
+  }
+
+  fadeOutProfilelayout() {
+    return this.profileLayout
+      .animate({
+        translate: { x: 0, y: -200 },
+        duration: 150,
+        opacity: 0
+      })
+      .then(() => {
 
       });
   }
@@ -330,8 +414,43 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
         opacity: 1
       })
   }
+  focus() {
+    this.weightText.focus();
+  }
+  pickOne() {
+    this.enableOne = false;
+    this.enableTwo = true;
+    this.enableL = true;
+    this.enableG = true
+    this.input.type.value = "type 1"
 
+  }
+  pickTwo() {
+    this.enableTwo = false;
+    this.enableOne = true;
+    this.enableL = true;
+    this.enableG = true
+    this.input.type.value = "type 2"
+
+  }
+  pickG() {
+    this.enableG = false;
+    this.enableTwo = true;
+    this.enableL = true;
+    this.enableOne = true
+    this.input.type.value = "gestationnel"
+
+  }
+  pickL() {
+    this.enableTwo = true;
+    this.enableOne = true;
+    this.enableG = true
+    this.enableL = false;
+    this.input.type.value = "lada"
+
+  }
   nextRegister() {
+
     if (!this.showFirstNameStep) {
       if (this.validateEmail()) {
         this.showEmailStep = false;
@@ -381,13 +500,33 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
         })
       }
     }
-    else if (!this.showWelcome) {
-      this.fadeOutTextlayout().then(() => {
-      });
-      this.fadeInWelcomelayout().then(() => {
-        this.showWelcome = true;
-      })
+    else if (!this.showProfileStep) {
+      if (this.validateConfirmPassword()) {
+        //this.register();
+        this.fadeOutTextlayout().then(() => {
+        });
+        this.fadeInProfilelayout().then(() => {
+          this.showProfileStep = true;
+        })
+      }
     }
+    else if (!this.showTypeStep) {
+      if (this.validateConfirmPassword()) {
+        //this.register();
+        this.fadeOutProfilelayout().then(() => {
+        });
+        this.fadeInTypelayout().then(() => {
+          this.showTypeStep = true;
+        })
+      }
+    }
+    /* else if (!this.showWelcome) {
+       this.fadeOutTextlayout().then(() => {
+       });
+       this.fadeInWelcomelayout().then(() => {
+         this.showWelcome = true;
+       })
+     }*/
   }
 
   /*displayShowTextStep() {
@@ -436,24 +575,25 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
             userId: String(user.id),
             // email: this.input.email.value,
           };
-         // guestProfile.email = this.input.email.value;
+          // guestProfile.email = this.input.email.value;
           console.log("user", user);
           console.log(JSON.stringify(user));
-         /* this.authService
+          this.authService
             .createGuestProfile(guestProfile)
             .subscribe(account => {
               setString("guest_profile", JSON.stringify(account));
-              console.log(JSON.stringify(account));*/
+              console.log(JSON.stringify(account));
               this.authService.login(creds).subscribe(success => {
                 // this.displayShowTextStep()
                 this.store.dispatch(new appAction.FireAction("login"));
-             // });
+                TNSFancyAlert.showSuccess("Success", "your register was successful");
+              });
             });
           this.store.dispatch(new appAction.HideLoadingAction());
         },
         error => {
           error = error.error
-           console.log(JSON.stringify(error));
+          console.log(JSON.stringify(error));
           this.store.dispatch(new appAction.HideLoadingAction());
 
           // if ("email" in error.details.codes) {
@@ -464,6 +604,7 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
       );
     }
   }
+
 
   /* initViewFormPasswordExsit() {
      this.fadeOutFirstlayout()
@@ -482,7 +623,7 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
    }*/
 
 
-   validateEmail(): boolean {
+  validateEmail() {
     let Valide = true;
     if (this.validateService.isEmail(this.input.email.value)) {
       this.input.email.error = false;

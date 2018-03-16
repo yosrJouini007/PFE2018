@@ -19,10 +19,12 @@
 
         <ScrollView>
             <GridLayout margin="2" verticalAlignment="top" padding="30">
-                <StackLayout #emailLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showEmailStep ? 'visible' : 'collapse' }}">
+
+                <StackLayout #emailLayout class="parent-container" marginTop="10" verticalAlignement="center" visibility="{{showEmailStep ? 'visible' : 'collapse' }}">
                     <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40'>
                         <StackLayout class="input-field regLogin">
-                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="true" text="Quelle est votre adresse mail?" class="headline center"></Label>
+                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="true" text="Quelle est votre adresse mail?"
+                                class="headline center"></Label>
                             <TextField (returnPress)="nextLogin()" returnKeyType="done" #emailText class="input" padding="18" [ngModel]='input.email.value'
                                 (ngModelChange)='input.email.value=$event'></TextField>
                             <StackLayout class="hr-light"></StackLayout>
@@ -31,15 +33,16 @@
                     </StackLayout>
                 </StackLayout>
 
-                <StackLayout #passwordLayout opacity="0" class="parent-container" verticalAlignement="top">
-                    <StackLayout>
-                        <Label marginTop="20" fontSize="26" textAlign="center" textWrap="true" text="Entrez votre mot de passe" class="headline center"></Label>
+                <StackLayout #passwordLayout class="parent-container" marginTop="10" verticalAlignement="center" visibility="{{showPasswordStep ? 'visible' : 'collapse' }}">
+                    <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40'>
+                        <StackLayout class="input-field regLogin">
+                            <Label marginTop="30" fontSize="20" padding="15" textAlign="center" textWrap="false" text="Votre mot de passe ?" class="headline center"></Label>
+                            <TextField (returnPress)="nextLogin()" secure="true" returnKeyType="done" #passwordText class="input" padding="18" [ngModel]='input.password.value'
+                                (ngModelChange)='input.password.value=$event'></TextField>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Label marginTop="3" class="text-danger" visibility="{{  input.password.error ? 'visible' : 'collapse' }}" text="Mot de passe invalide"></Label>
+                        </StackLayout>
                     </StackLayout>
-                    <TextField #passwordText marginTop="20" (returnPress)="nextLogin()" returnKeyType="done" hint="Mot de passe" secure="true"
-                        class="input" [ngModel]='input.password.value' (ngModelChange)='input.password.value=$event'></TextField>
-                    <Label textWrap="true" visibility="{{  input.password.error ? 'visible' : 'collapse' }}" style="text-align:left ;" marginTop="10"
-                        color="red" [text]="'Mot de passe invalide'" class="headline-sub center"></Label>
-                    <!--   <Label text="Utiliser un autre numéro" (tap)="changeMyPhoneNumber()" style="margin-top:40; width:100% ;text-align:left ;"></Label> -->
                 </StackLayout>
             </GridLayout>
         </ScrollView>

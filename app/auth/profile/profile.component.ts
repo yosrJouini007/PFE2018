@@ -17,7 +17,7 @@ import { Observable } from "tns-core-modules/data/observable";
 
 //Services
 import { ValidateService } from "../shared/validate.service";
-//import { AuthService } from "../shared/auth.service";
+import { AuthService } from "../shared/auth.service";
 
 //Platform
 import {
@@ -36,7 +36,7 @@ import { RouterExtensions } from "nativescript-angular/router";
   selector: "profile-auth",
   moduleId: module.id,
   templateUrl: "./profile.component.html",
-  styleUrls: ["./profile.component.css"]
+ // styleUrls: ["./profile.component.css"]
 })
 export class ProfileComponent implements OnInit {
 
@@ -53,11 +53,19 @@ export class ProfileComponent implements OnInit {
   @ViewChild("confirmnewpassword") confirmnewpasswordRef: ElementRef;
   @ViewChild("firstName") firstNameRef: ElementRef;
   @ViewChild("lastName") lastNameRef: ElementRef;
+  @ViewChild("size") sizeRef: ElementRef;
+  @ViewChild("weight") weightRef: ElementRef;
   private get firstNameEl(): TextField {
     return this.firstNameRef.nativeElement;
   }
   private get lastNameEl(): TextField {
     return this.lastNameRef.nativeElement;
+  }
+  private get sizeEl(): TextField {
+    return this.sizeRef.nativeElement;
+  }
+  private get weightEl(): TextField {
+    return this.weightRef.nativeElement;
   }
   private get newpasswordEl(): TextField {
     return this.newpasswordRef.nativeElement;
@@ -68,12 +76,12 @@ export class ProfileComponent implements OnInit {
   constructor(
     private validateService: ValidateService,
     private routerExtensions: RouterExtensions,
-    //private authService: AuthService,
+    private authService: AuthService,
     private store: Store<fromRoot.State>,
     private zone: NgZone
   ) {
 
-    this._phone = getString("phoneNumber", null);
+   // this._phone = getString("phoneNumber", null);
     this.input = {
       email: {
         value: "",
@@ -99,10 +107,18 @@ export class ProfileComponent implements OnInit {
         value: "",
         error: false
       },
-      phone: {
+      size: {
+        value: "",
+        error: false
+      },
+      weight: {
+        value: "",
+        error: false
+      },
+     /* phone: {
         value: this._phone ? this._phone : "+33",
         error: false
-      }
+      }*/
     };
   }
 
@@ -126,7 +142,7 @@ export class ProfileComponent implements OnInit {
     return this._sideDrawerTransition;
   }
 
-  /*updatePassword() {
+  updatePassword() {
     if (!this.passwordFormValide())
       return false;
     this.store.dispatch(new appAction.ShowLoadingAction());
@@ -155,7 +171,7 @@ export class ProfileComponent implements OnInit {
       this.input.confirmpassword.value = "";
       this.input.confirmpassword.error = false;
     })
-  }*/
+  }
 
   onDrawerButtonTap(): void {
     this.drawerComponent.sideDrawer.showDrawer();
@@ -188,7 +204,7 @@ export class ProfileComponent implements OnInit {
       } else {
         guestProfile.phone = this.input.phone.value;
       }
-     /* this.authService
+      this.authService
         .updateGuestProfile(guestProfile, this.currentUser.id)
         .subscribe(account => {
           this.store.dispatch(new appAction.HideLoadingAction());
@@ -200,7 +216,7 @@ export class ProfileComponent implements OnInit {
         }, error => {
           this.store.dispatch(new appAction.HideLoadingAction());
           console.log(JSON.stringify(error))
-        });*/
+        });
 
     }
   }
@@ -284,6 +300,12 @@ export class ProfileComponent implements OnInit {
         break;
       case 'lastName':
         this.lastNameEl.focus();
+        break;
+        case 'size':
+        this.sizeEl.focus();
+        break;
+        case 'weight':
+        this.weightEl.focus();
         break;
     }
   }

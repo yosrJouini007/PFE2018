@@ -8,25 +8,20 @@
 </ActionBar>
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Register'"></MyDrawer>
+        <MyDrawer [selectedPage]="'Profil'"></MyDrawer>
     </StackLayout>
     <GridLayout class="page page-content" tkMainContent>
         <ScrollView>
             <StackLayout margin="2" padding="10" verticalAlignment="top">
                 <StackLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='0' marginBottom='10'>
                     <Label fontWeight="bold" color="#2d2d2d" fontSize="22" text="Mes informations"></Label>
-                    <StackLayout marginTop="20" marginTop='10'  class="" visibility="{{  mode == 'email' ? 'visible' : 'collapse' }}">
+                    <StackLayout marginTop="20" marginTop='10'  class="">
                         <Label text="Email" class=" "></Label>
                         <TextField returnKeyType="next" #name class="input" [ngModel]='input.email.value' (ngModelChange)='input.email.value=$event'></TextField>
                         <StackLayout class="hr-light"></StackLayout>
                         <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Courrier invalide"></Label>
                     </StackLayout>
-                    <StackLayout marginTop="20" class="" visibility="{{  mode == 'phone' ? 'visible' : 'collapse' }}">
-                        <Label text="Téléphone" class=" "></Label>
-                        <TextField returnKeyType="next" editable="false" #phone class="input" [ngModel]='input.phone.value' (ngModelChange)='input.phone.value=$event'></TextField>
-                        <StackLayout class="hr-light"></StackLayout>
-                        <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Numero de téléphone est invalide"></Label>
-                    </StackLayout>
+                
                     <StackLayout marginTop="20" class="">
                         <Label text="Prénom" class=" "></Label>
                         <TextField #firstName (returnPress)="nextInput('lastName')"  returnKeyType="next" class="input" [ngModel]='input.firstname.value' (ngModelChange)='input.firstname.value=$event'></TextField>
@@ -35,12 +30,24 @@
                     </StackLayout>
                     <StackLayout marginTop="20" class="">
                         <Label text="Nom" class=" "></Label>
-                        <TextField #lastName  (returnPress)="updateProfile()"  returnKeyType="next" class="input" [ngModel]='input.lastname.value' (ngModelChange)='input.lastname.value=$event'></TextField>
+                        <TextField #lastName  (returnPress)="nextInput('size')"  returnKeyType="next" class="input" [ngModel]='input.lastname.value' (ngModelChange)='input.lastname.value=$event'></TextField>
                         <StackLayout class="hr-light"></StackLayout>
                         <Label marginTop="3" class="text-danger" visibility="{{  input.lastname.error ? 'visible' : 'collapse' }}" text="Le prénom est invalide"></Label>
                     </StackLayout>
                     <StackLayout marginTop="20" class="">
-                        <Button class="btn btn-primary" backgroundColor="#f35e28" color="white" padding="15" borderRadius="5" text="Mettre à jour"
+                        <Label text="Taille" class=" "></Label>
+                        <TextField #size (returnPress)="nextInput('weight')"  returnKeyType="next" class="input" [ngModel]='input.size.value' (ngModelChange)='input.size.value=$event'></TextField>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.size.error ? 'visible' : 'collapse' }}" text="Taille invalide"></Label>
+                    </StackLayout>
+                    <StackLayout marginTop="20" class="">
+                        <Label text="Poids" class=" "></Label>
+                        <TextField #weight (returnPress)="updateProfile()"  returnKeyType="next" class="input" [ngModel]='input.weight.value' (ngModelChange)='input.weight.value=$event'></TextField>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.weight.error ? 'visible' : 'collapse' }}" text="Le nom est invalide"></Label>
+                    </StackLayout>
+                    <StackLayout marginTop="20" class="">
+                        <Button class="btn btn-primary"  color="white" padding="15" borderRadius="5" text="Mettre à jour"
                             (tap)="updateProfile()"></Button>
                     </StackLayout>
                 </StackLayout>
@@ -67,7 +74,7 @@
                         </StackLayout>
                     </StackLayout>
                     <StackLayout marginTop="0" class="">
-                        <Button class="btn btn-primary" backgroundColor="#f35e28" color="white" padding="15" borderRadius="5" text="Confirmer"
+                        <Button class="btn btn-primary"  color="white" padding="15" borderRadius="5" text="Confirmer"
                             (tap)="updatePassword()"></Button>
                     </StackLayout>
                 </StackLayout>
