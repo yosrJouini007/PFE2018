@@ -1,16 +1,16 @@
-<ActionBar class="action-bar" title="Glucose">
+<ActionBar class="action-bar" title="Alimentation">
     <!-- 
     Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()" *ngIf="!showAdd"></NavigationButton>
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
-    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" android.position="right" icon="res://ic_close_white_24dp">
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" android.position="right" icon="res://ic_close_white_24dp">
     </ActionItem>
-    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" ios.position="right" icon="res://navigation/ic_close_white">
+    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Alimentation"></Label>
 </ActionBar>
@@ -24,8 +24,82 @@
     </StackLayout>
 
     <GridLayout class="page page-content" tkMainContent>
-        <StackLayout verticalAlignment="top" backgroundColor="gray">
-            <RadAutoCompleteTextView #autocmp [items]="dataItems" suggestMode="Suggest" displayMode="Tokens" (tokenSelected)="onTokenSelected($event)" >
+
+        <GridLayout verticalAlignment="top" marginTop="25" rows="*, *" columns="*, *, *,*" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
+            <Button text="Petit Déjeuner" (tap)="showBreakLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60"
+                width="25%" col="0" borderWidth="4" isEnabled="{{ enableBreak ? 'true' : 'false' }}"></Button>
+            <Button text="Déjeuner" (tap)="showLunchLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
+                col="1" borderWidth="4" isEnabled="{{ enableLunch ? 'true' : 'false' }}"></Button>
+            <Button text="Diner" (tap)="showDinnerLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
+                col="2" borderWidth="2" isEnabled="{{ enableDinner ? 'true' : 'false' }}"></Button>
+            <Button text="Grignotage" (tap)="showSnackLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
+                col="3" borderWidth="2" isEnabled="{{ enableSnack ? 'true' : 'false' }}"></Button>
+            <StackLayout row="1" colspan="4" visibility="{{ showBreak ? 'visible' : 'collapse' }}" (tap)="hideKeyboard()">
+                <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
+                </Label>
+                <ScrollView height="300">
+                    <ListView [items]="breakFast" (itemTap)="onItemTap($event)" class="list-group">
+                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                            <GridLayout class="list-group-item" columns="auto auto">
+                                <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
+                                </image>
+                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                            </GridLayout>
+                        </ng-template>
+                    </ListView>
+                </ScrollView>
+            </StackLayout>
+            <StackLayout row="1" colspan="4" visibility="{{ showLunch ? 'visible' : 'collapse' }}">
+                <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
+                </Label>
+                <ScrollView height="300">
+                    <ListView [items]="lunch" (itemTap)="onItemTap($event)" class="list-group">
+                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                            <GridLayout class="list-group-item" columns="auto auto">
+                                <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
+                                </image>
+                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                            </GridLayout>
+                        </ng-template>
+                    </ListView>
+                </ScrollView>
+            </StackLayout>
+            <StackLayout row="1" colspan="4" visibility="{{ showDinner ? 'visible' : 'collapse' }}">
+                <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
+                </Label>
+                <ScrollView height="300">
+                    <ListView [items]="dinner" (itemTap)="onItemTap($event)" class="list-group">
+                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                            <GridLayout class="list-group-item" columns="auto auto">
+                                <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
+                                </image>
+                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                            </GridLayout>
+                        </ng-template>
+                    </ListView>
+                </ScrollView>
+            </StackLayout>
+            <StackLayout row="1" colspan="4" visibility="{{ showSnack ? 'visible' : 'collapse' }}">
+                <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
+                </Label>
+                <ScrollView height="300">
+                    <ListView [items]="snack" (itemTap)="onItemTap($event)" class="list-group">
+                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                            <GridLayout class="list-group-item" columns="auto auto">
+                                <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
+                                </image>
+                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                            </GridLayout>
+                        </ng-template>
+                    </ListView>
+                </ScrollView>
+            </StackLayout>
+        </GridLayout>
+
+
+        <StackLayout verticalAlignment="top" backgroundColor="#4abd73" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
+            <RadAutoCompleteTextView #autocmp [items]="dataItems" suggestMode="Suggest" displayMode="Tokens" (tokenSelected)="onTokenSelected($event)"
+                hint="Rechercher des aliments" height="35" width="500" backgroundColor="white">
                 <SuggestionView tkAutoCompleteSuggestionView suggestionViewHeight="200">
                     <ng-template tkSuggestionItemTemplate let-item="item">
                         <StackLayout orientation="vertical" padding="10">
@@ -35,76 +109,34 @@
                 </SuggestionView>
             </RadAutoCompleteTextView>
         </StackLayout>
-       <GridLayout verticalAlignment="top" marginTop="80" rows="*, *" columns="*, *, *,*">
-            <Button text="Petit Déjeuner" (tap)="showBreakLayout()" verticalAlignment="top" backgroundColor="#e7e7e7" color="black" class="btn btn-primary"
-                row="0" height="60" width="25%" col="0" borderRadius="2" borderWidth="4" isEnabled="{{ enableBreak ? 'true' : 'false' }}"
-                backgroundColor="#e7e7e7" color="black"></Button>
-            <Button text="Déjeuner" (tap)="showLunchLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
-                col="1" borderRadius="2" borderWidth="4" isEnabled="{{ enableLunch ? 'true' : 'false' }}" backgroundColor="#e7e7e7"
-                color="black"></Button>
-            <Button text="Diner" (tap)="showDinnerLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
-                col="2" borderRadius="4" borderWidth="2" isEnabled="{{ enableDinner ? 'true' : 'false' }}" backgroundColor="#e7e7e7"
-                color="black"></Button>
-            <Button text="Grignotage" (tap)="showSnackLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
-                col="3" borderRadius="4" borderWidth="2" isEnabled="{{ enableSnack ? 'true' : 'false' }}" backgroundColor="#e7e7e7"
-                color="black"></Button>
-                <StackLayout row="1" colspan="4"  visibility="{{ showBreak ? 'visible' : 'collapse' }}" (tap)="hideKeyboard()">
-                        <Label [text]="currentdate" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true"
-                        padding="12" fontWeight="bold">
-        
-                    </Label>
-                        <Label [text]="breakFast" horizontalAlignment="left" verticalAlignment="center" class="selectDateTime fa" textWrap="true"
-                            padding="12" fontWeight="bold">
-            
-                        </Label>
-                    </StackLayout>
-                    <StackLayout row="1" colspan="4" visibility="{{ showLunch ? 'visible' : 'collapse' }}">
-                        <Label [text]="lunch" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12"
-                            fontWeight="bold">
-            
-                        </Label>
-                    </StackLayout>
-                    <StackLayout row="1" colspan="4"  visibility="{{ showDinner ? 'visible' : 'collapse' }}">
-                        <Label [text]="dinner" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12"
-                            fontWeight="bold">
-            
-                        </Label>
-                    </StackLayout>
-                    <StackLayout row="1"  colspan="4" visibility="{{ showSnack ? 'visible' : 'collapse' }}">
-                        <Label [text]="snack" horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12"
-                            fontWeight="bold">
-            
-                        </Label>
-                    </StackLayout>
-        </GridLayout>
-  
-        <AbsoluteLayout #addLayout opacity="0" backgroundColor="gray" visibility="{{ showAdd ? 'visible' : 'collapse' }}" (tap)="closeAdd()">
 
-                <StackLayout height="350" width="400" backgroundColor="white" marginTop="30%" marginLeft="15%" borderRadius="10" borderWidth="2"
-                    borderColor="#e6f0e1">
-                
-                    <StackLayout class="input-field">
-                        <Label fontSize="28" class="h3  m-55 text-left" padding="5" [text]="foodToken" color="#333333" textWrap="true">
-                        </Label>
-                        <StackLayout class="hr-light"></StackLayout>
-                    </StackLayout>
-                    <Button row="0" col="0" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%"
-                        text="Save" (tap)="saveFood()">
-                    </Button>
-                </StackLayout>
-            </AbsoluteLayout>
-      <!--  <StackLayout>
-        <TabView selectedIndex="0"  (selectedIndexChange)="onIndexChanged($event)" sdkExampleTitle sdkToggleNavButton>
-                <StackLayout *tabItem="{title: 'Petit Déjeuner'}">
-                    <Label text="Petit Déjeuner" class="m-15 h2 text-left" color="blue"></Label>
-                    <ScrollView>
-                        <Label [text]="content" textWrap="true" class="m-15"></Label>
-                    </ScrollView>
-                </StackLayout>
-                <StackLayout *tabItem="{title: 'Déjeuner'}">
-                    <Label text="Déjeuner" textWrap="true" class="h2 m-x-auto" color="blue"></Label>
-                </StackLayout>
-            </TabView>
-        </StackLayout>-->
+
+        <AbsoluteLayout #addLayout visibility="{{ showAdd ? 'visible' : 'collapse' }}">
+            <StackLayout>
+                <GridLayout columns="*,*,*,*" rows="*,*,*" horizontalAlignment="center">
+                    <image row="0" colspan="4" src="~/assets/images/cake.jpg" height="300" width="600" stretch="aspectFill"></image>
+                    <Label row="0" col="0" fontSize="28" class="h3  m-55 text-left" padding="5" horizontalAlignment="left" verticalAlignment="bottom"
+                        color="white" [text]="foodToken" textWrap="false">
+                    </Label>
+                    <label text="Energie" row="1" col="0" horizontalAlignment="center"></label>
+                    <label text=" 0 Kcal" row="2" col="0" horizontalAlignment="center"></label>
+                    <label text="Glucides" row="1" col="1" horizontalAlignment="center"></label>
+                    <label text="0 g" col="1" row="2" horizontalAlignment="center"></label>
+                    <label text="Proteines (g)" row="1" col="2" horizontalAlignment="center"></label>
+                    <label text="0 g" col="2" row="2" horizontalAlignment="center"></label>
+                    <label text="Lipides (g)" row="1" col="3" horizontalAlignment="center"></label>
+                    <label text="0 g" col="3" row="2" horizontalAlignment="center"></label>
+                </GridLayout>
+                <StackLayout class="hr-light" marginTop="20"></StackLayout>
+                <GridLayout columns="*,*" horizontalAlignment="center">
+                    <TextField hint="1" padding="20" width="100" col="0" keyboardType="phone">
+                    </TextField>
+                    <label text="Portion (100g)" col="1" verticalAlignment="center" horizontalAlignment="center"></label>
+                </GridLayout>
+                <Button class="btn btn-primary" padding="20" borderRadius="5" text="Ajouter" (tap)="saveFood()">
+                </Button>
+            </StackLayout>
+        </AbsoluteLayout>
+
     </GridLayout>
 </RadSideDrawer>

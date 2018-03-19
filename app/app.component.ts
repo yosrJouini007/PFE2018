@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
 
     //First load after the Install
     if (this.isFirstTime) {
-      this.router.navigate(["/home"], {
+      this.router.navigate(["/alimentation"], {
         clearHistory: true,
         transition: {
           name: "fade",
@@ -115,7 +115,7 @@ export class AppComponent implements OnInit {
       });
     } else {
       // Load Gym page from the the second load
-      this.router.navigate(["/home"], {
+      this.router.navigate(["/alimentation"], {
         transition: {
           clearHistory: true,
           name: "fade",
