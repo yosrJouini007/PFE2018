@@ -49,13 +49,9 @@ import { SocketDriver } from './sockets/socket.driver';
 import { SocketConnection } from './sockets/socket.connections';
 import { RealTime } from './services/core/real.time';
 import { UserApi } from './services/custom/User';
-import { GymsApi } from './services/custom/Gyms';
 import { ContainerApi } from './services/custom/Container';
-import { PhoneVerificationApi } from './services/custom/PhoneVerification';
 import { GuestsApi } from './services/custom/Guests';
-import { SessionsApi } from './services/custom/Sessions';
-import { TmpApi } from './services/custom/Tmp';
-import { CardApi } from './services/custom/Card';
+
 /**
 * @module SDKNativeModule
 * @description
@@ -81,13 +77,8 @@ export class SDKNativeModule {
         SDKModels,
         RealTime,
         UserApi,
-        GymsApi,
         ContainerApi,
-        PhoneVerificationApi,
         GuestsApi,
-        SessionsApi,
-        TmpApi,
-        CardApi,
         { provide: InternalStorage, useClass: StorageNative },
         { provide: SDKStorage, useClass: StorageNative },
         { provide: SocketDriver, useClass: SocketNative }

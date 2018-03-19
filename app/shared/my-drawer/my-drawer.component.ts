@@ -70,7 +70,13 @@ import {
     isPageSelected(pageTitle: string): boolean {
       return pageTitle === this.selectedPage;
     }
-  
+    gotToEditAccount() {
+      this.routerExtensions.navigate(["/auth/profil"], {
+        queryParams: {
+          mode: "edit"
+        }
+      });
+    }
   
   }
   

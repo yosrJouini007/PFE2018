@@ -12,13 +12,13 @@
     </ActionItem>
     <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
-    <Label class="action-bar-title" text="Glucose"></Label>
+    <Label class="action-bar-title" text="Alimentation"></Label>
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Glucose'"></MyDrawer>
+        <MyDrawer [selectedPage]="'Alimentation'"></MyDrawer>
 
 
     </StackLayout>

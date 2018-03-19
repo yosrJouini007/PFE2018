@@ -8,7 +8,7 @@ import { Page } from "tns-core-modules/ui/page/page";
     selector: "Home",
     moduleId: module.id,
     templateUrl: "./home.component.html",
-  //  styleUrls: ["./home.component.css"]
+    styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
     /* ***********************************************************
@@ -22,10 +22,9 @@ export class HomeComponent implements OnInit {
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
     *************************************************************/
-   constructor(private _page: Page, private router: RouterExtensions)
-   {
+    constructor(private _page: Page, private router: RouterExtensions) {
 
-   }
+    }
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
@@ -45,12 +44,12 @@ export class HomeComponent implements OnInit {
 
     public goToRegister() {
         this.router.navigate(["/auth/register"], {
-          clearHistory: true,
+            clearHistory: true,
         });
-      }
-      public goToLogin() {
+    }
+    public goToLogin() {
         this.router.navigate(["/auth/login"], {
-          clearHistory: true,
+            clearHistory: true,
         });
-}
+    }
 }

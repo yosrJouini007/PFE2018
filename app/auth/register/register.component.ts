@@ -59,7 +59,6 @@ export class RegisterComponent implements OnInit {
   @ViewChild("lastNameLayout") lastNameLayoutRef: ElementRef;
   @ViewChild("passwordLayout") passwordLayoutRef: ElementRef;
   @ViewChild("confirmPasswordLayout") confirmPasswordLayoutRef: ElementRef;
-  @ViewChild("textLayout") textLayoutRef: ElementRef;
   @ViewChild("welcomeLayout") welcomeLayoutRef: ElementRef;
   @ViewChild("emailLayout") emailLayoutRef: ElementRef;
   @ViewChild("profileLayout") profileLayoutRef: ElementRef;
@@ -98,9 +97,7 @@ export class RegisterComponent implements OnInit {
   private get lastNameLayout(): StackLayout {
     return this.lastNameLayoutRef.nativeElement;
   }
-  private get textLayout(): StackLayout {
-    return this.textLayoutRef.nativeElement;
-  }
+
   private get welcomeLayout(): AbsoluteLayout {
     return this.welcomeLayoutRef.nativeElement;
   }
@@ -125,16 +122,6 @@ export class RegisterComponent implements OnInit {
 
   EXIST_PHONE_NUMBER = "Adresse mail existe";
   USE_AN_OTHER_EMAIL = "Utiliser une autre adresse mail";
-  textRegister = {
-    condition: `Summo interpretaris mei te, pri an autem ornatus menandri. Per natum dicta petentium ne, tota euripidis concludaturque vim eu. Cu dicunt adipisci sed, duo agam ornatus ancillae in. Sea ad utinam delicatissimi, nobis offendit mea ea, an doming maluisset eloquentiam mei.
-
-Mea eripuit aliquando sententiae ne, est harum ignota qualisque cu. Has ea intellegam inciderint, ei eius paulo rationibus vel. Minim euripidis disputationi id vix. Ei vim dicit aeterno dissentias, eum te viderer tractatos, magna aliquid torquatos ut nam.
-
-Eam modo tacimates ea. Eros aeterno iuvaret has no, vituperata reprimique id eos. Cu cum labore vocibus. Falli detraxit eu sea, an erat solet ullamcorper per. Ius ut summo iusto, duo no postea ponderum lobortis, ut nemore honestatis cum. Ea cum natum iusto expetenda, an case ornatus pri, an est postea admodum. Ex etiam ceteros cotidieque eam, appetere iracundia ex mei, vocent labores denique eam cu.
-
-Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legendos periculis, eos solum commodo veritus ut, cu atqui error fuisset est. Nam vivendo eleifend no, duo homero honestatis ex. Te per admodum alienum, te has facer utamur. Ei vel quod nibh congue, his eu delicata constituto definitiones. Qui numquam ponderum necessitatibus te. Nostro dissentias efficiantur ut pro.
-    `,
-  };
   input: any;
   config: any;
   showEmailStep: boolean = true;
@@ -194,7 +181,7 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
       },
 
     };
-    
+
   }
 
 
@@ -335,31 +322,12 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
         opacity: 0
       })
       .then(() => {
-
-      });
-  }
-
-  fadeInTextlayout() {
-    return this.textLayout
-      .animate({
-        translate: { x: 0, y: 0 },
-        duration: 150,
-        opacity: 1
-      })
-  }
-
-  fadeOutTextlayout() {
-    return this.textLayout
-      .animate({
-        translate: { x: 0, y: -200 },
-        duration: 150,
-        opacity: 0
-      })
-      .then(() => {
         this.sizeText.focus();
 
       });
   }
+
+
 
 
 
@@ -415,7 +383,9 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
       })
   }
   focus() {
-    this.weightText.focus();
+    if (this.validateSize()) {
+      this.weightText.focus();
+    }
   }
   pickOne() {
     this.enableOne = false;
@@ -490,20 +460,20 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
         })
       }
     }
-    else if (!this.showTextStep) {
-      if (this.validateConfirmPassword()) {
-        this.register();
-        this.fadeOutConfirmPasswordlayout().then(() => {
-        });
-        this.fadeInTextlayout().then(() => {
-          this.showTextStep = true;
-        })
-      }
-    }
+    /*  else if (!this.showTextStep) {
+        if (this.validateConfirmPassword()) {
+          this.register();
+          this.fadeOutConfirmPasswordlayout().then(() => {
+          });
+          this.fadeInTextlayout().then(() => {
+            this.showTextStep = true;
+          })
+        }
+      }*/
     else if (!this.showProfileStep) {
       if (this.validateConfirmPassword()) {
         //this.register();
-        this.fadeOutTextlayout().then(() => {
+        this.fadeOutConfirmPasswordlayout().then(() => {
         });
         this.fadeInProfilelayout().then(() => {
           this.showProfileStep = true;
@@ -511,32 +481,26 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
       }
     }
     else if (!this.showTypeStep) {
-      if (this.validateConfirmPassword()) {
-        //this.register();
+      if (this.validateWeight()) {
+
         this.fadeOutProfilelayout().then(() => {
         });
         this.fadeInTypelayout().then(() => {
           this.showTypeStep = true;
         })
+        //this.register();
       }
     }
-    /* else if (!this.showWelcome) {
-       this.fadeOutTextlayout().then(() => {
-       });
-       this.fadeInWelcomelayout().then(() => {
-         this.showWelcome = true;
-       })
-     }*/
+    else if (!this.showWelcome) {
+      this.register();
+      this.fadeOutTypelayout().then(() => {
+      });
+      this.fadeInWelcomelayout().then(() => {
+        this.showWelcome = true;
+      })
+    }
   }
 
-  /*displayShowTextStep() {
-    this.fadeOutConfirmPasswordlayout().then(() => {
-      this.fadeInTextlayout().then(() => {
-        this.showTextStep = true;
-      })
-    });
-
-  }*/
   navigateToWelcome() {
     this.routerExtensions.navigate(["/welcome"], {
       /* queryParams: {
@@ -545,13 +509,13 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
     });
   }
 
-  displayShowWelcome() {
-    this.fadeOutTextlayout().then(() => {
-    });
-    this.fadeInWelcomelayout().then(() => {
-      this.showWelcome = true;
-    })
-  }
+  /*  displayShowWelcome() {
+      this.fadeOutTypelayout().then(() => {
+      });
+      this.fadeInWelcomelayout().then(() => {
+        this.showWelcome = true;
+      })
+    }*/
 
   register() {
 
@@ -572,6 +536,8 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
           guestProfile = {
             name: this.input.firstname.value,
             lastname: this.input.lastname.value,
+            weight: this.input.weight.value,
+            size: this.input.size.value,
             userId: String(user.id),
             // email: this.input.email.value,
           };
@@ -586,7 +552,7 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
               this.authService.login(creds).subscribe(success => {
                 // this.displayShowTextStep()
                 this.store.dispatch(new appAction.FireAction("login"));
-                TNSFancyAlert.showSuccess("Success", "your register was successful");
+                TNSFancyAlert.showSuccess("Success", "Inscription effectué");
               });
             });
           this.store.dispatch(new appAction.HideLoadingAction());
@@ -633,6 +599,29 @@ Eripuit ornatus placerat an eum, nec no putent facilisi reprimique. In vim legen
     }
     return Valide;
   }
+  validateSize() {
+    let Valide = true;
+    if (this.validateService.isNumber(this.input.size.value)) {
+
+      this.input.size.error = false;
+    } else {
+      this.input.size.error = true;
+      Valide = false;
+    }
+    return Valide;
+  }
+  validateWeight() {
+    let Valide = true;
+    if (this.validateService.isNumber(this.input.weight.value)) {
+
+      this.input.weight.error = false;
+    } else {
+      this.input.weight.error = true;
+      Valide = false;
+    }
+    return Valide;
+  }
+
 
   private validateFirst() {
     let Valide = true;

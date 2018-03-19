@@ -2,15 +2,15 @@
     <!-- 
     Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showAdd" (tap)="onDrawerButtonTap()"></NavigationButton>
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
-    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" android.position="right" icon="res://ic_close_white_24dp">
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" android.position="right" icon="res://ic_close_white_24dp">
     </ActionItem>
-    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd==true" ios.position="right" icon="res://navigation/ic_close_white">
+    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Glucose"></Label>
 </ActionBar>
@@ -80,7 +80,7 @@
                     <Label marginTop="3" class="text-danger" visibility="{{  input.glucose.error ? 'visible' : 'collapse' }}" text="Invalid">
                     </Label>
                 </StackLayout>
-                <Button row="0" col="0" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%"
+                <Button row="0" col="0" class="btn btn-primary"  color="white" padding="20" borderRadius="5" width="45%"
                     text="Save" (tap)="saveAdd()">
                 </Button>
             </StackLayout>
@@ -111,7 +111,7 @@
 
 
         <StackLayout horizontalAlignment="right" verticalAlignment="bottom" visibility="{{ showAdd ? 'collapse':'visible'  }}">
-            <FAB (tap)="addGlucose()" icon="res://ic_add_white" rippleColor="#f1f1f1" class="fab-button"></FAB>
+            <FAB (tap)="addGlucose()" icon="res://ic_add_white_24dp" class="fab-button"></FAB>
         </StackLayout>
     </GridLayout>
 </RadSideDrawer>

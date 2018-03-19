@@ -32,7 +32,7 @@ import { ValidateService } from "../shared/validate.service";
   selector: "login-auth",
   moduleId: module.id,
   templateUrl: "./login.component.html",
-  //styleUrls: ["./login.component.css"]
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
   @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -60,12 +60,12 @@ export class LoginComponent implements OnInit {
     return this.passwordLayoutRef.nativeElement;
   }
 
-  public onBackButtonTap(args) {
+ /* public onBackButtonTap(args) {
     if (this.showPasswordStep) {
       this.fadeInEmaillayout();
       args.cancel = true;
     }
-  }
+  }*/
   input: any;
   spinner: boolean = false;
   password: string;
@@ -80,12 +80,12 @@ export class LoginComponent implements OnInit {
     private store: Store<fromRoot.State>
   ) {
 
-    if (application.android) {
+   /* if (application.android) {
       application.android.on(
         application.AndroidApplication.activityBackPressedEvent,
         this.onBackButtonTap.bind(this)
       );
-    }
+    }*/
 
 
     this.input = {
@@ -113,49 +113,7 @@ export class LoginComponent implements OnInit {
     this.drawerComponent.sideDrawer.showDrawer();
   }
 
-  fadeInEmaillayout() {
-    return this.emailLayout
-      .animate({
-        translate: { x: 0, y: 0 },
-        duration: 150,
-        opacity: 1
-      }).then(() => {
-        this.emailText.focus();
-      })
-  }
 
-  fadeOutEmaillayout() {
-    return this.emailLayout
-      .animate({
-        translate: { x: 0, y: -200 },
-        duration: 150,
-        opacity: 0
-      })
-      .then(() => {
-
-      });
-  }
-
-  fadeInPasswordlayout() {
-    return this.passwordLayout
-      .animate({
-        translate: { x: 0, y: -100 },
-        duration: 150,
-        opacity: 1
-      })
-  }
-
-  fadeOutPasswordlayout() {
-    return this.passwordLayout
-      .animate({
-        translate: { x: 0, y: -200 },
-        duration: 150,
-        opacity: 0
-      })
-      .then(() => {
-
-      });
-  }
 
   validateEmail(): boolean {
     let Valide = true;
@@ -167,36 +125,86 @@ export class LoginComponent implements OnInit {
     }
     return Valide;
   }
-
-  nextLogin() {
-    console.log(this.validateEmail());
-    if (!this.showPasswordStep) {
-      if (this.validateEmail()) {
-        this.showEmailStep = false;
-        this.fadeOutEmaillayout().then(() => {
-        });
-        this.fadeInPasswordlayout().then(() => {
-
-          this.showPasswordStep = true;
-          this.passwordText.focus();
-          {
-
-            //this.login()
-          }
-        })
-      } else {
-        dialogs.alert(this.INVALID_EMAIL).then(() => {
-        })
-      }
-    } else {
-      if (this.formValidate()) {
-        this.login()
-      } else {
-        console.log('Error: Form invalid');
-      }
+  focus() {
+    if (this.validateEmail()) {
+      this.passwordText.focus();
     }
-
   }
+
+  /* 
+  
+   fadeInEmaillayout() {
+     return this.emailLayout
+       .animate({
+         translate: { x: 0, y: 0 },
+         duration: 150,
+         opacity: 1
+       }).then(() => {
+         this.emailText.focus();
+       })
+   }
+ 
+   fadeOutEmaillayout() {
+     return this.emailLayout
+       .animate({
+         translate: { x: 0, y: -200 },
+         duration: 150,
+         opacity: 0
+       })
+       .then(() => {
+ 
+       });
+   }
+ 
+   fadeInPasswordlayout() {
+     return this.passwordLayout
+       .animate({
+         translate: { x: 0, y: -100 },
+         duration: 150,
+         opacity: 1
+       })
+   }
+ 
+   fadeOutPasswordlayout() {
+     return this.passwordLayout
+       .animate({
+         translate: { x: 0, y: -200 },
+         duration: 150,
+         opacity: 0
+       })
+       .then(() => {
+ 
+       });
+   }
+  nextLogin() {
+     console.log(this.validateEmail());
+     if (!this.showPasswordStep) {
+       if (this.validateEmail()) {
+         this.showEmailStep = false;
+         this.fadeOutEmaillayout().then(() => {
+         });
+         this.fadeInPasswordlayout().then(() => {
+ 
+           this.showPasswordStep = true;
+           this.passwordText.focus();
+           {
+ 
+             //this.login()
+           }
+         })
+       } else {
+         dialogs.alert(this.INVALID_EMAIL).then(() => {
+         })
+       }
+     } else {
+       if (this.formValidate()) {
+         this.login()
+       } else {
+         console.log('Error: Form invalid');
+       }
+     }
+ 
+   }*/
 
 
 

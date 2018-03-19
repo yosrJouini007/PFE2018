@@ -8,7 +8,7 @@ import { Page } from "tns-core-modules/ui/page/page";
     selector: "Home",
     moduleId: module.id,
     templateUrl: "./home-connected.component.html",
-  //  styleUrls: ["./home.component.css"]
+    styleUrls: ["./home-connected.component.css"]
 })
 export class HomeConnectedComponent implements OnInit {
     /* ***********************************************************
@@ -42,13 +42,13 @@ export class HomeConnectedComponent implements OnInit {
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }
-    public goToCharts() {
-        this.router.navigate(["/charts"], {
+    public goToSugar() {
+        this.router.navigate(["/add-glucose"], {
           clearHistory: true,
         });
       }
-      public goToList() {
-        this.router.navigate(["/list"], {
+      public goToFood() {
+        this.router.navigate(["/alimentation"], {
           clearHistory: true,
         });
       }

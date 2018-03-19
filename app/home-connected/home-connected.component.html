@@ -19,11 +19,15 @@
     </StackLayout>
    
     <GridLayout class="page page-content" tkMainContent>
-        <GridLayout columns="auto auto" verticalAlignment="center">
-            <Button col="0" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%" text="Click to see Charts"
-            (tap)="goToCharts()"  ></Button>
-            <Button col="1" class="btn btn-primary" backgroundColor="blue" color="white" padding="20" borderRadius="5" width="45%" text="Click to see List"
-            (tap)="goToList()"  ></Button>
+        <GridLayout columns="*,*" rows="*,*" verticalAlignment="center">
+            <Button col="0" row="0" class="btn btn-primary" color="white" padding="20" borderRadius="5" width="45%" text="Glycemie Track"
+            (tap)="goToSugar()"  ></Button>
+            <Button col="1" row="0" class="btn btn-primary"  color="white" padding="20" borderRadius="5" width="45%" text="Food Track"
+            (tap)="goToFood()"  ></Button>
+            <Button col="0" row="1" class="btn btn-primary" color="white" padding="20" borderRadius="5" width="45%" text="Exercice Track"
+            (tap)="goToExercice()"  ></Button>
+            <Button col="1" row="1" class="btn btn-primary"  color="white" padding="20" borderRadius="5" width="45%" text=" Calories Track"
+            (tap)="goToCalories()"  ></Button>
         </GridLayout>
     </GridLayout>
 </RadSideDrawer>
