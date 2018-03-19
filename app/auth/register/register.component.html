@@ -8,11 +8,11 @@
     <ActionItem icon="res://navigation/ic_arrow_forward_white" android:visibility="collapsed" *ngIf="!showTypeStep" (tap)="nextRegister()"
         ios.position="right">
     </ActionItem>
-    <ActionItem padding="5" android:visibility="collapsed" (tap)="nextRegister()" *ngIf="showTypeStep && !showWelcome" ios.position="right"
+    <ActionItem padding="5" android:visibility="collapsed" (tap)="register()" *ngIf="showTypeStep && !showWelcome" ios.position="right"
         icon="res://navigation/ic_check_white">
     </ActionItem>
 
-    <ActionItem padding="5" ios:visibility="collapsed" (tap)="nextRegister()" *ngIf="showTypeStep && !showWelcome" android.position="right"
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)="register()" *ngIf="showTypeStep && !showWelcome" android.position="right"
         icon="res://ic_check_white_24dp">
     </ActionItem>
 

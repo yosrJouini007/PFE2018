@@ -115,10 +115,7 @@ export class ProfileComponent implements OnInit {
         value: "",
         error: false
       },
-     /* phone: {
-        value: this._phone ? this._phone : "+33",
-        error: false
-      }*/
+  
     };
   }
 
@@ -181,29 +178,25 @@ export class ProfileComponent implements OnInit {
     console.log(this.formValidate());
     if (this.formValidate()) {
       let creds;
-      if (this.mode == "email") {
+      
         creds = {
           email: this.input.email.value,
           password: this.input.password.value
         };
-      } else {
-        creds = {
-          username: this.input.phone.value,
-          password: this.input.password.value
-        };
-      }
+     
+        
+      
 
       this.store.dispatch(new appAction.ShowLoadingAction());
       let guestProfile: any;
       guestProfile = {
         name: this.input.firstname.value,
-        lastname: this.input.lastname.value
+        lastname: this.input.lastname.value,
+        weight: this.input.weight.value,
+        size: this.input.size.value,
       };
-      if (this.mode == "email") {
+     
         guestProfile.email = this.input.email.value;
-      } else {
-        guestProfile.phone = this.input.phone.value;
-      }
       this.authService
         .updateGuestProfile(guestProfile, this.currentUser.id)
         .subscribe(account => {
@@ -257,14 +250,12 @@ export class ProfileComponent implements OnInit {
   }
   private formValidate() {
     let formIsValide = true;
-    if ((this.mode = "phone")) {
-    } else {
       if (this.validateService.isEmail(this.input.email.value)) {
         this.input.email.error = false;
       } else {
         this.input.email.error = true;
       }
-    }
+    
     if (
       !this.validateService.isEmpty(this.input.firstname.value) &&
       this.validateService.minLength(this.input.firstname.value, 2) &&
@@ -283,6 +274,20 @@ export class ProfileComponent implements OnInit {
       this.input.lastname.error = false;
     } else {
       this.input.lastname.error = true;
+      formIsValide = false;
+    }
+    if (!this.validateService.isEmpty(this.input.size.value))
+    {
+      this.input.size.error = false;
+    } else {
+      this.input.size.error = true;
+      formIsValide = false;
+    }
+    if (!this.validateService.isEmpty(this.input.weight.value))
+    {
+      this.input.weight.error = false;
+    } else {
+      this.input.weight.error = true;
       formIsValide = false;
     }
     return formIsValide;

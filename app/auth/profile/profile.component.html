@@ -38,13 +38,13 @@
                         <Label text="Taille" class=" "></Label>
                         <TextField #size (returnPress)="nextInput('weight')"  returnKeyType="next" class="input" [ngModel]='input.size.value' (ngModelChange)='input.size.value=$event'></TextField>
                         <StackLayout class="hr-light"></StackLayout>
-                        <Label marginTop="3" class="text-danger" visibility="{{  input.size.error ? 'visible' : 'collapse' }}" text="Taille invalide"></Label>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.size.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
                     </StackLayout>
                     <StackLayout marginTop="20" class="">
                         <Label text="Poids" class=" "></Label>
                         <TextField #weight (returnPress)="updateProfile()"  returnKeyType="next" class="input" [ngModel]='input.weight.value' (ngModelChange)='input.weight.value=$event'></TextField>
                         <StackLayout class="hr-light"></StackLayout>
-                        <Label marginTop="3" class="text-danger" visibility="{{  input.weight.error ? 'visible' : 'collapse' }}" text="Le nom est invalide"></Label>
+                        <Label marginTop="3" class="text-danger" visibility="{{  input.weight.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
                     </StackLayout>
                     <StackLayout marginTop="20" class="">
                         <Button class="btn btn-primary"  color="white" padding="15" borderRadius="5" text="Mettre à jour"

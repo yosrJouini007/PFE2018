@@ -492,7 +492,7 @@ export class RegisterComponent implements OnInit {
       }
     }
     else if (!this.showWelcome) {
-      this.register();
+    //  this.register();
       this.fadeOutTypelayout().then(() => {
       });
       this.fadeInWelcomelayout().then(() => {
@@ -502,10 +502,10 @@ export class RegisterComponent implements OnInit {
   }
 
   navigateToWelcome() {
-    this.routerExtensions.navigate(["/welcome"], {
-      /* queryParams: {
+    this.routerExtensions.navigate(["/home-connected"], {
+       queryParams: {
          newaccount: true
-       }*/
+       }
     });
   }
 
@@ -538,6 +538,7 @@ export class RegisterComponent implements OnInit {
             lastname: this.input.lastname.value,
             weight: this.input.weight.value,
             size: this.input.size.value,
+            type:this.input.type.value,
             userId: String(user.id),
             // email: this.input.email.value,
           };
@@ -553,6 +554,7 @@ export class RegisterComponent implements OnInit {
                 // this.displayShowTextStep()
                 this.store.dispatch(new appAction.FireAction("login"));
                 TNSFancyAlert.showSuccess("Success", "Inscription effectué");
+                this.navigateToWelcome();
               });
             });
           this.store.dispatch(new appAction.HideLoadingAction());
