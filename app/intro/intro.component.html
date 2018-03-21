@@ -33,39 +33,49 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     -->
     <GridLayout class="page page-content" tkMainContent class="background-image">
         <StackLayout>
-            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
-                width="30%" text="Passer" (tap)="goToHome()"></Button>
-            <slides [pageIndicators]="true" [loop]="true">
+
+            <slides [pageIndicators]="true" [loop]="true" [pageHeight]="slidesHeight">
 
                 <slide class="slide-1">
 
 
 
-                    <StackLayout verticalAlignment="center" height="100%">
-                        <Label class="slide_description" textWrap="true" [text]="slideDetails[0].title" verticalAlignment="center"></Label>
-                        <label marginBottom="140" class="slide_description" textWrap="true" [text]="slideDetails[0].description" bottom="0"></label>
-                    </StackLayout>
+                    <GridLayout rows="auto" height="100%">
+                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/health.jpg">
+                        </Image>
+                        <StackLayout row="0" verticalAlignment="center">
+                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[0].title" horizontalAlignment="center"></Label>
+                            <label marginBottom="140" fontSize="18" color="white" textWrap="true" [text]="slideDetails[0].description" bottom="0"></label>
+                            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
+                                width="30%" text="Passer" (tap)="goToHome()"></Button>
+                        </StackLayout>
+                    </GridLayout>
                 </slide>
 
                 <slide class="slide-2">
-                    <FlexboxLayout flexWrap="wrap" marginTop="20" marginLeft="15" justifyContent="center">
-                        <Label class="slide_description" textWrap="true" [text]="slideDetails[1].title"></Label>
-                    </FlexboxLayout>
-
-                    <StackLayout verticalAlignment="bottom" height="100%">
-                        <label marginBottom="140" class="slide_description" textWrap="true" [text]="slideDetails[1].description" bottom="0"></label>
-                    </StackLayout>
+                    <GridLayout rows="auto" height="100%">
+                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/workout.jpg">
+                        </Image>
+                        <StackLayout row="0" verticalAlignment="center" >
+                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[1].title" horizontalAlignment="center"></Label>
+                            <label marginBottom="140"fontSize="18" color="white"  textWrap="true" [text]="slideDetails[1].description" bottom="0"></label>
+                            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
+                                width="30%" text="Passer" (tap)="goToHome()"></Button>
+                        </StackLayout>
+                    </GridLayout>
                 </slide>
                 <slide class="slide-3">
-                    <FlexboxLayout flexWrap="wrap" marginTop="20" marginLeft="15" justifyContent="center">
-                        <Label class="slide_description" textWrap="true" [text]="slideDetails[2].title"></Label>
-                    </FlexboxLayout>
-                    <StackLayout verticalAlignment="bottom" height="100%">
-                        <label marginBottom="140" class="slide_description" textWrap="true" [text]="slideDetails[2].description" bottom="0"></label>
-                    </StackLayout>
+                    <GridLayout rows="auto" height="100%">
+                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/fitbit.PNG">
+                        </Image>
+                        <StackLayout row="0" verticalAlignment="center">
+                            <Label fontSize="25" color="white"  textWrap="true" [text]="slideDetails[2].title" horizontalAlignment="center"></Label>
+                            <label marginBottom="140"fontSize="18" color="white"  textWrap="true" [text]="slideDetails[2].description" bottom="0"></label>
+                            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
+                                width="30%" text="Passer" (tap)="goToHome()"></Button>
+                        </StackLayout>
+                    </GridLayout>
                 </slide>
-
-
             </slides>
         </StackLayout>
     </GridLayout>

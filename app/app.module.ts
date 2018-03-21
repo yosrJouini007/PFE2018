@@ -12,6 +12,8 @@ import { Actions } from "@ngrx/effects";
 import { SDKNativeModule } from "./shared/sdk/index";
 import {NativeScriptHttpModule} from 'nativescript-angular/http';
 import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
+import * as elementRegistryModule from 'nativescript-angular/element-registry';
+elementRegistryModule.registerElement("CardView", () => require("nativescript-cardview").CardView);
 
 @NgModule({
     bootstrap: [

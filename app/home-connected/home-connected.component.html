@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" title="Home">
+<ActionBar class="action-bar" title="Journal">
     <!-- 
     Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
@@ -6,28 +6,55 @@
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-        ios.position="left">
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
-    <Label class="action-bar-title" text="Home"></Label>
+    <Label class="action-bar-title" text="Journal"></Label>
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-    
+
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Charts'"></MyDrawer>
+        <MyDrawer [selectedPage]="'Journal'"></MyDrawer>
     </StackLayout>
-   
+
     <GridLayout class="page page-content" tkMainContent>
-        <GridLayout columns="*,*" rows="*,*" verticalAlignment="center">
-            <Button col="0" row="0" class="btn btn-primary" color="white" padding="20" borderRadius="5" width="45%" text="Glycemie Track"
-            (tap)="goToSugar()"  ></Button>
-            <Button col="1" row="0" class="btn btn-primary"  color="white" padding="20" borderRadius="5" width="45%" text="Food Track"
-            (tap)="goToFood()"  ></Button>
-            <Button col="0" row="1" class="btn btn-primary" color="white" padding="20" borderRadius="5" width="45%" text="Exercice Track"
-            (tap)="goToExercice()"  ></Button>
-            <Button col="1" row="1" class="btn btn-primary"  color="white" padding="20" borderRadius="5" width="45%" text=" Calories Track"
-            (tap)="goToCalories()"  ></Button>
-        </GridLayout>
+        <StackLayout>
+
+            <GridLayout columns="*,*" rows="*,*,*" verticalAlignment="top">
+                <Label row="0" colspan="2" text="Aujourd'hui" fontSize="25" padding="20" color="#4abd73" horizontalAlignment="center"></Label>
+                <CardView (tap)="goToSugar()" class="cardStyle" col="0" row="1" elevation="20" radius="1" width="47%" marginRight="10" marginBottom="10"
+                    height="30%">
+                    <GridLayout rows="auto,auto">
+                        <Image row="0"stretch="Fill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/glucose.jpg">
+                        </Image>
+                        <Label row="1"  verticalAlignment="bottom" text="Suivi Glycémie" fontSize="20" padding="15"></Label>
+                    </GridLayout>
+                </CardView>
+                <CardView height="30%" (tap)="goToFood()" class="cardStyle" col="1" row="1" elevation="20" radius="1" backgroundColor="white" width="47%"
+                    marginRight="10" marginBottom="10">
+                    <GridLayout rows="auto,auto">
+                        <Image  row="0" stretch="Fill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/food2.png">
+                        </Image>
+                        <Label   verticalAlignment="bottom"row="1"text="Calories Consommées" fontSize="20" padding="15"></Label>
+                    </GridLayout>
+                </CardView>
+                <CardView height="30%"class="cardStyle" col="0" row="2" elevation="20" radius="1" backgroundColor="white" width="47%" marginRight="10"
+                    marginBottom="10">
+                    <GridLayout rows="auto,auto">
+                        <Image  row="0"  stretch="Fill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/marche2.PNG">
+                        </Image>
+                        <Label  row="1" text=" Nombre de Pas" fontSize="20" padding="15"></Label>
+                    </GridLayout>
+                </CardView>
+                <CardView height="30%" class="cardStyle" col="1" row="2" elevation="20" radius="1" backgroundColor="white" width="47%" marginRight="10"
+                    marginBottom="10">
+                    <GridLayout rows="auto,auto">
+                        <Image  row="0"stretch="Fill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/burn2.jpg">
+                        </Image>
+                        <Label row="1" text="Calories Brulées" fontSize="20" padding="15"></Label>
+                    </GridLayout>
+                </CardView>
+            </GridLayout>
+        </StackLayout>
     </GridLayout>
 </RadSideDrawer>
