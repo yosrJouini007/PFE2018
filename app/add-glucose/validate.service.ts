@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ValidateService {
-    private numberRegx = /^(([0-9]*[.])?[0-9])$/;
+    private numberRegx=/^[0-9]+(\.[0-9]{1,2})$/;
     constructor() { }
 
     isNumber(num): boolean {

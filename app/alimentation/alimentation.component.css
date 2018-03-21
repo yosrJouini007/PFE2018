@@ -1,1 +1,1 @@
-.btn.btn-primary{background-color:#4abd73}.action-bar{background-color:#4abd73}.btn.btn-primary.inactive{background-color:#f9faf9}
+.btn.btn-primary{background-color:#4abd73}.action-bar{background-color:#4abd73}.btn.btn-primary:disabled{background-color:#f9fcfa;border-color:#4abd73}

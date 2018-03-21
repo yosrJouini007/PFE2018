@@ -19,9 +19,13 @@ import { registerElement } from "nativescript-angular/element-registry";
 import { ValidateService } from "./validate.service";
 registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
 import * as moment from "moment";
+moment.locale("fr");
 import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/absolute-layout";
 import { Observable } from "tns-core-modules/data/observable";
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { Store } from "@ngrx/store";
+import * as fromRoot from "./../shared/reducers";
+import * as appAction from "./../shared/actions/app.actions";
 
 
 
@@ -34,7 +38,7 @@ import { FormsModule } from '@angular/forms'
 export class AddGlucoseComponent implements OnInit {
 
     month: string;
-    public currentdate: Date;
+   
     enableDay: boolean = false;
     enableWeek: boolean = true;
     enableMonth: boolean = true;
@@ -46,6 +50,8 @@ export class AddGlucoseComponent implements OnInit {
     public width: number;
     public dateTextHolder: string = "";
     public dateTextHolderDefaultText: string = "Choose the date";
+    public currentDate: Date;
+    public currentDateHolder: string = "";
     showAdd: boolean = false;
     showWeeklyChart: boolean = false;
     showMonthlyChart: boolean = false;
@@ -61,7 +67,10 @@ export class AddGlucoseComponent implements OnInit {
     chart: Data[] = [];
     chartWeek: Data[] = [];
     chartMonth: Data[] = [];
+    PLEASE_SELECT_DATE = "Vous devez sélectionner la date";
+    PLEASE_SELECT_HOUR = "Vous devez sélectionner l'heure";
     //textInput = new Subject<string>();
+    public sliderValue1 = 116;
 
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -92,12 +101,13 @@ export class AddGlucoseComponent implements OnInit {
     constructor(
         private _page: Page,
         private router: RouterExtensions,
-        private validateService: ValidateService, ) {
+        private validateService: ValidateService,
+        private store: Store<fromRoot.State>, ) {
 
         this.input = {
 
             glucose: {
-                value:"",
+                value: "",
                 error: false
             },
         };
@@ -114,7 +124,9 @@ export class AddGlucoseComponent implements OnInit {
         ];
         this.chartMonth = [
         ];
-        this.currentdate=new Date();
+        this.currentDate =new Date();
+        this.currentDateHolder=moment(this.currentDate,"mm/dd/yyyy hh:mm").format('LLLL')
+        
     }
 
 
@@ -125,7 +137,7 @@ export class AddGlucoseComponent implements OnInit {
         this._SourceWeekly = new ObservableArray(this.chartWeek);
         this._SourceMonthly = new ObservableArray(this.chartMonth);
         //this.saveAdd();
-       //let textField = <TextField>this.inputFieldElement.nativeElement.object;
+        //let textField = <TextField>this.inputFieldElement.nativeElement.object;
 
 
     }
@@ -152,7 +164,7 @@ export class AddGlucoseComponent implements OnInit {
 
 
     addGlucose() {
-        this.dateTextHolder = this.dateTextHolderDefaultText;
+        this.dateTextHolder = this.currentDateHolder;
         this.addLayout
             .animate({
                 translate: { x: 0, y: 0 },
@@ -191,9 +203,9 @@ export class AddGlucoseComponent implements OnInit {
     selectDate(fn) {
         picker
             .pickDate({
-                title: this.PICK_DATE,
+                title:this.currentDateHolder,
                 theme: "dark",
-                minDate: new Date(),
+               // minDate: new Date(),
                 startingDate: new Date()
             })
             .then((result: any) => {
@@ -224,7 +236,7 @@ export class AddGlucoseComponent implements OnInit {
     selectTime() {
         picker
             .pickTime({
-                title: this.PICK_HOUR,
+                title:this.currentDateHolder,
                 theme: "dark"
             })
             .then((result: any) => {
@@ -267,48 +279,57 @@ export class AddGlucoseComponent implements OnInit {
         this.saveAdd();
 
     }
-   
- 
+
+
 
     saveAdd() {
 
+        if (!this.selectedDateStr) {
+            this.store.dispatch(
+                new appAction.ShowToastAction(this.PLEASE_SELECT_DATE)
+            );
+        } else if (!this.selectedTimeStr) {
+            this.store.dispatch(
+                new appAction.ShowToastAction(this.PLEASE_SELECT_HOUR)
+            );
+        } else {
 
-        //  if (this.validateInput()) {
-       // this.mesure=Number(this.input.glucose.value);
-        this.date = this.selectedDateStr;
-        this.chart.push(new Data(this.selectedTimeStr, this.mesure));
-        this._SourceDaily.push(new Data(this.selectedTimeStr, this.mesure));
-        let week = this.chart.reduce((a, b) => a + b.Mesure, 0) / this.chart.length;
-        this.chartWeek.push(new Data(this.date, week));
-        this._SourceWeekly.push(new Data(this.date, week));
-        let month = this.chartWeek.reduce((a, b) => a + b.Mesure, 0) / this.chartWeek.length;
-        this.chartMonth.push(new Data(this.month, month));
-        this._SourceMonthly.push(new Data(this.month, month));
-        /* this.data.map(item => {
-              return {
-                  Date: item.Date,
-                  Mesure: item.Mesure
-              }
-          }).forEach(item => this.source.push(item));*/
-        this.closeAdd();
+            //this.mesure=parseFloat(this.input.glucose.value);
+            this.date = this.selectedDateStr;
+            this.chart.push(new Data(this.selectedTimeStr, this.mesure));
+            this._SourceDaily.push(new Data(this.selectedTimeStr, this.mesure));
+            let week = this.chart.reduce((a, b) => a + b.Mesure, 0) / this.chart.length;
+            this.chartWeek.push(new Data(this.date, week));
+            this._SourceWeekly.push(new Data(this.date, week));
+            let month = this.chartWeek.reduce((a, b) => a + b.Mesure, 0) / this.chartWeek.length;
+            this.chartMonth.push(new Data(this.month, month));
+            this._SourceMonthly.push(new Data(this.month, month));
+            /* this.data.map(item => {
+                  return {
+                      Date: item.Date,
+                      Mesure: item.Mesure
+                  }
+              }).forEach(item => this.source.push(item));*/
+            this.closeAdd();
+        }
 
 
 
 
     }
 
-   /* private validateInput() {
-         let Valide = true;
-         if (
-             this.validateService.isNumber(this.input.glucose.value)
-          ) {
-             this.input.glucose.error = false;
-         } else {
-             this.input.glucose.error = true;
-             Valide = false;
-         }
-         return Valide;
-     }*/
+    /*  private validateInput() {
+           let Valide = true;
+           if (
+               this.validateService.isNumber(this.input.glucose.value)
+            ) {
+               this.input.glucose.error = false;
+           } else {
+               this.input.glucose.error = true;
+               Valide = false;
+           }
+           return Valide;
+       }*/
 
     hideKeyboard() {
         if (isAndroid) {

@@ -27,12 +27,13 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this._sideDrawerTransition = new SlideInOnTopTransition();
+       // this._sideDrawerTransition = new SlideInOnTopTransition();
+        this._page.actionBarHidden = true;
     }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
+ /*   get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
-    }
+    }*/
 
     /* ***********************************************************
     * According to guidelines, if you have a drawer on your page, you should always

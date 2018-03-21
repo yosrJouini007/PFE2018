@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" title="Glucose">
+<ActionBar class="action-bar" title="Diabéte">
     <!-- 
     Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
@@ -12,42 +12,42 @@
     </ActionItem>
     <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
-    <Label class="action-bar-title" text="Glucose"></Label>
+    <Label class="action-bar-title" text="Diabéte"></Label>
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Glucose'"></MyDrawer>
+        <MyDrawer [selectedPage]="'Diabéte'"></MyDrawer>
 
 
     </StackLayout>
 
     <GridLayout class="page page-content" tkMainContent>
         <GridLayout #chartLayout verticalAlignment="top" rows="*, *" columns="*, *, *">
-            <Button text="Daily Chart" (tap)="showDayChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="30%"
-                col="0" borderRadius="10" borderWidth="2" isEnabled="{{ enableDay ? 'true' : 'false' }}"></Button>
-            <Button text="Weekly Chart" (tap)="showWeekChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="30%"
-                col="1" borderRadius="10" borderWidth="2" isEnabled="{{ enableWeek ? 'true' : 'false' }}"></Button>
-            <Button text="Monthly Chart" (tap)="showMonthChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="60"
-                width="30%" col="2" borderRadius="10" borderWidth="2" isEnabled="{{ enableMonth ? 'true' : 'false' }}"></Button>
+            <Button text="Analyse journalière" (tap)="showDayChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="40" width="40%"
+                col="0" borderWidth="2" borderRadius="6" isEnabled="{{ enableDay ? 'true' : 'false' }}"></Button>
+            <Button text="Analyse hebdomadaire"  borderRadius="6"(tap)="showWeekChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="40" width="40%"
+                col="1"  borderWidth="2" isEnabled="{{ enableWeek ? 'true' : 'false' }}"></Button>
+            <Button text="Analyse mensuelle" (tap)="showMonthChart()" verticalAlignment="top" class="btn btn-primary" row="0" height="40"
+                width="40%" col="2" borderRadius="6"borderWidth="2" isEnabled="{{ enableMonth ? 'true' : 'false' }}"></Button>
 
             <!-- Daily Chart layout-->
-            <RadCartesianChart height="500" row="1" colspan="3" marginBottom="20%" visibility="{{ showDailyChart ? 'visible' : 'collapse' }}">
+            <RadCartesianChart height="500" row="1" colspan="3"  marginBottom="20%" visibility="{{ showDailyChart ? 'visible' : 'collapse' }}">
                 <CategoricalAxis tkCartesianHorizontalAxis></CategoricalAxis>
                 <LinearAxis tkCartesianVerticalAxis></LinearAxis>
                 <SplineAreaSeries maxBarSize="40" tkCartesianSeries [items]="SourceDaily" categoryProperty="Date" valueProperty="Mesure"></SplineAreaSeries>
             </RadCartesianChart>
 
             <!-- Weekly Chart layout-->
-            <RadCartesianChart height="500" row="1" colspan="3" marginBottom="20%" visibility="{{ showWeeklyChart ? 'visible' : 'collapse' }}">
+            <RadCartesianChart height="500" row="1" colspan="3"  marginBottom="20%"  visibility="{{ showWeeklyChart ? 'visible' : 'collapse' }}">
                 <CategoricalAxis tkCartesianHorizontalAxis></CategoricalAxis>
                 <LinearAxis tkCartesianVerticalAxis></LinearAxis>
                 <BarSeries maxBarSize="40" tkCartesianSeries [items]="SourceWeekly" categoryProperty="Date" valueProperty="Mesure"></BarSeries>
             </RadCartesianChart>
 
             <!-- Monthly Chart layout-->
-            <RadCartesianChart height="500" row="1" colspan="3" marginBottom="20%" visibility="{{ showMonthlyChart ? 'visible' : 'collapse' }}">
+            <RadCartesianChart height="500" row="1" colspan="3"  marginBottom="20%"  visibility="{{ showMonthlyChart ? 'visible' : 'collapse' }}">
                 <CategoricalAxis tkCartesianHorizontalAxis></CategoricalAxis>
                 <LinearAxis tkCartesianVerticalAxis></LinearAxis>
                 <BarSeries maxBarSize="40" tkCartesianSeries [items]="SourceMonthly" categoryProperty="Date" valueProperty="Mesure"></BarSeries>
@@ -71,17 +71,18 @@
                 <StackLayout class="input-field">
                     <Label fontSize="28" class="h3  m-55 text-left" padding="5" text="Glycémie (g/l)" color="#333333" textWrap="true">
                     </Label>
-                    <TextField (returnPress)="returnPress($event)"  returnKeyType="done" #inputField class="input" padding="30"
+                    <StackLayout class="hr-light"></StackLayout>
+                    <TextField (returnPress)="returnPress($event)"  returnKeyType="done" #inputField class="input" padding="25"
                         [ngModel]='input.glucose.value' (ngModelChange)='input.glucose.value=$event' keyboardType="phone" marginTop="20"
-                        marginRight="5%" marginLeft="5%" borderRadius="6" hint="1.16" fontSize="35" placeholderColor="#f2f2f2"
+                        marginRight="5%" marginLeft="5%" borderRadius="6" hint="1.16" fontSize="30" placeholderColor="#f2f2f2"
                         maxLength="4" ngDefaultControl>
                     </TextField>
                     <StackLayout class="hr-light"></StackLayout>
                     <Label marginTop="3" class="text-danger" visibility="{{  input.glucose.error ? 'visible' : 'collapse' }}" text="Invalid">
                     </Label>
                 </StackLayout>
-                <Button row="0" col="0" class="btn btn-primary"  color="white" padding="20" borderRadius="5" width="45%"
-                    text="Save" (tap)="saveAdd()">
+                <Button  marginTop="15" backgroundColor="#4abd73"  color="white" padding="20" borderRadius="8" width="40%"
+                    text="Enregistrer" (tap)="saveAdd()">
                 </Button>
             </StackLayout>
         </AbsoluteLayout>
@@ -89,12 +90,12 @@
 
 
         <!--
-            
-             <TextField (returnPress)="returnPress()" (tap)="addFocus()" returnKeyType="done" #inputField class="input" padding="30" [ngModel]='input.glucose.value'
-                    (ngModelChange)='input.glucose.value=$event' keyboardType="phone" marginTop="20" marginRight="5%" marginLeft="5%"
-                    borderRadius="6" hint="1.10" fontSize="35" placeholderColor="#f2f2f2">
-                </TextField>
-            
+              <GridLayout class="m-15" rows="auto" columns="50 * 50">
+                            <Label class="h3" text="18" textWrap="true" row="10" col="0"></Label>
+                            <Slider minValue="18" maxValue="700" class="my-Slider" [(ngModel)]="sliderValue" row="0"
+                             col="1"></Slider>
+                            <Label class="h3" text="700" textWrap="true" row="0" col="2"></Label>
+                        </GridLayout>
             <TextField #inputField (focus)="addFocus()" (tap)="addFocus()" returnKeyType="done"  (returnPress)="returnPress($event)"  padding="18" [(ngModel)]="input.glucose" marginTop="10" marginRight="5%" marginLeft="5%" borderRadius="6"
                     automationText="inputField" padding="25" class="input" hint="1.60" width="90%" keyboardType="phone">
                 </TextField>-->
