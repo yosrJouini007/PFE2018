@@ -25,7 +25,7 @@
 
     <GridLayout class="page page-content" tkMainContent>
 
-        <GridLayout verticalAlignment="top" marginTop="27" rows="*, auto" columns="*, *, *,*" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
+        <GridLayout verticalAlignment="top" marginTop="30" rows="*, auto" columns="*, *, *,*" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
             <Button text="Petit Déjeuner" (tap)="showBreakLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60"
                 width="25%" col="0" borderWidth="2" isEnabled="{{ enableBreak ? 'true' : 'false' }}"></Button>
             <Button text="Déjeuner" (tap)="showLunchLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
@@ -96,8 +96,8 @@
 
 
         <StackLayout verticalAlignment="top" backgroundColor="#4abd73" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
-            <RadAutoCompleteTextView #autocmp [items]="dataItems" suggestMode="Suggest" displayMode="Tokens" (tokenSelected)="onTokenSelected($event)"
-                hint="Rechercher des aliments" height="35" width="500" backgroundColor="white">
+            <RadAutoCompleteTextView #autocmp [items]="dataItems" suggestMode="Suggest" displayMode="Plain" (didAutoComplete)="onDidAutoComplete($event)"
+                hint="Rechercher des aliments" height="40" width="500" backgroundColor="white">
                 <SuggestionView tkAutoCompleteSuggestionView suggestionViewHeight="200">
                     <ng-template tkSuggestionItemTemplate let-item="item">
                         <StackLayout orientation="vertical" padding="10">

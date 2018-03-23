@@ -46,7 +46,6 @@ export class AlimentationComponent implements OnInit {
         "Couscous", "Sandwitch", "Soufflet", "Croustina", "Chocotom", "Lait de Poule", "Banane",
         "Fraise", "Escalope", "Poulet", "Viande", "Salade", "Yaourt", "Fromage",
         "Crépe", "Cake", "Gateau", "Croissant", "Boeuf"];
-private food2=[];
     month: string;
     public currentdate: Date;
     enableLunch: boolean = true;
@@ -125,15 +124,15 @@ private food2=[];
         this.lunch = [];
         this.dinner = [];
         this.snack = [];
-        this.store.select(fromRoot.getFoods).subscribe((foods: any) => {
-            if (foods.length > 0){
-                this.initDataItems(foods);
-            }
+      //  this.store.select(fromRoot.getFoods).subscribe((foods: any) => {
+        //    if (foods.length > 0){
+         //       this.initDataItems(foods);
+           // }
              // this.renderDataTable(guests);
-          })
+         // })
 
         //this.myItems = [];
-      //  this.initDataItems();
+       this.initDataItems();
       //  localStorage.setItem("alimentation", JSON.stringify(alimentation));
        // var retrievedData = localStorage.getItem("alimentation");
       //this.food2 = JSON.parse(retrievedData);
@@ -178,17 +177,18 @@ private food2=[];
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-    private initDataItems(food) {
+    private initDataItems() {
         this._items = new ObservableArray<TokenModel>();
 
-        for (var i = 0; i < food.length; i++) {
-            this._items.push(new TokenModel(food[i], undefined));
+        for (var i = 0; i < this.food.length; i++) {
+            this._items.push(new TokenModel(this.food[i], undefined));
         }
     }
-
-    public onTokenSelected(args) {
+//public onDidAutoComplete(args)
+    public onDidAutoComplete(args) {
         //  this.logEvent("Selected Token: " + args.token.text);
-        this.foodToken = args.token.text;
+        this.foodToken = args.text;
+        // this.foodToken = args.text;
         this.addLayout
             .animate({
                 translate: { x: 0, y: 0 },
