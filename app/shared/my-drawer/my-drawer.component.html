@@ -7,25 +7,27 @@
 
     <ScrollView row="1">
         <StackLayout class="sidedrawer-content">
-            <MyDrawerItem *ngIf=" !user.id" title="Home" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Home')">
+            <MyDrawerItem *ngIf=" !user.id" title="Accueil" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Accueil')">
             </MyDrawerItem>
             <MyDrawerItem title="Login" route="/auth/login" icon="&#xf007;" [isSelected]="isPageSelected('Login')">
             </MyDrawerItem>
-            <MyDrawerItem title="Journal" route="/home-connected" icon="&#xf015;" [isSelected]="isPageSelected('Journal')">
+            <MyDrawerItem title="Journal" route="/home-connected" icon="&#xf2b9;" [isSelected]="isPageSelected('Journal')">
             </MyDrawerItem>
 
             <!--  <MyDrawerItem title="Charts Circle" route="/charts-pie"  icon="&#xf015;" [isSelected]="isPageSelected('Charts Circle')">
             </MyDrawerItem>-->
 
-            <MyDrawerItem title="Diabéte" route="/add-glucose" icon="&#xf005;" [isSelected]="isPageSelected('Diabéte')">
+            <MyDrawerItem title="Diabéte" route="/add-glucose" icon="&#xf21e;" [isSelected]="isPageSelected('Diabéte')">
             </MyDrawerItem>
             <MyDrawerItem title="Intro" route="/intro" icon="&#xf005;" [isSelected]="isPageSelected('intro')">
             </MyDrawerItem>
-            <MyDrawerItem title="Alimentation" route="/alimentation" icon="&#xf005;" [isSelected]="isPageSelected('Alimentation')">
+            <MyDrawerItem title="Alimentation" route="/alimentation" icon="&#xf0f5;" [isSelected]="isPageSelected('Alimentation')">
+            </MyDrawerItem>
+            <MyDrawerItem title="Activité" route="/steps" icon="&#xf206;" [isSelected]="isPageSelected('Activité')">
             </MyDrawerItem>
         <!--    <MyDrawerItem title=" Editer Profil" route="/auth/profil" icon="&#xf005;" [isSelected]="isPageSelected('Profil')">
             </MyDrawerItem>-->
-            <MyDrawerItem title="Mon Profil" route="/profil" icon="&#xf005;" [isSelected]="isPageSelected('Mon Profil')">
+            <MyDrawerItem title="Mon Profil" route="/profil" icon="&#xf007;" [isSelected]="isPageSelected('Mon Profil')">
             </MyDrawerItem>
 
 

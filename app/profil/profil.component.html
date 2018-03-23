@@ -1,43 +1,32 @@
 <ActionBar class="action-bar" title="Mon Profil">
-    <!-- 
-    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
-    -->
+   
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <!-- 
-    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
-    -->
+  
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
     <Label class="action-bar-title" text="Mon Profil"></Label>
 </ActionBar>
 
-<!--
-RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
-Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
-http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
-The RadSideDrawer component is designed to be used as a root element and
-it shouldn't have any other siblings other than the <ActionBar> component.
--->
+
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-    <!--
-    Use the tkDrawerContent directive to display the content of the app drawer on this page.
-    -->
+   
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Mon Profil'"></MyDrawer>
 
 
     </StackLayout>
 
-    <!--
-    Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
+  
     <GridLayout class="page page-content" tkMainContent>
-
-        <StackLayout verticalAlignment="top" backgroundColor="#4abd73">
+      
+<StackLayout>
+        <StackLayout verticalAlignment="top" backgroundColor="#4abd73"height="150"> 
 
             <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
             <Label class="sidedrawer-header-brand" text="Moi" horizontalAlignment="center"></Label>
-
+        </StackLayout>
+           
+       
             <StackLayout height="300">
                 <slides #detailsSlider [pageIndicators]="true" [loop]="true" [class]="'xslides'" [pageHeight]="300">
 
@@ -72,13 +61,15 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
                 </slides>
             </StackLayout>
-
-            <GridLayout columns="*,*" rows="*,*" backgroundColor="white">
+        
+            
+            <ScrollView>
+            <GridLayout columns="*,*" rows="*,*" backgroundColor="white" height="600">
                 <CardView class="cardStyle" col="0" row="0" elevation="20" radius="1" backgroundColor="white" width="47%" 
                     marginRight="10">
 
                     <StackLayout col="0">
-                        <Label text="Liste d'amis" fontSize="20" color="black" horizontalAlignment="center"></Label>
+                        <Label text="Liste d'amis" fontSize="20"  horizontalAlignment="center"></Label>
                         <Button class="btn btn-primary" text="Inviter des amis"  verticalAlignment="center"></Button>
                     </StackLayout>
 
@@ -89,7 +80,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
 
                     <StackLayout col="1">
-                        <Label text="Rappels du jour" fontSize="20" color="black" horizontalAlignment="center"></Label>
+                        <Label text="Rappels du jour" fontSize="20" horizontalAlignment="center"></Label>
                         <Button class="btn btn-primary" text="Ajouter un rappel" verticalAlignment="center"></Button>
                     </StackLayout>
 
@@ -99,18 +90,19 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     <StackLayout>
                         <Label text="Plus de fonctionnalités" horizontalAlignment="center" fontSize="20"></Label>
                         
-                        <Label text="Editer profil" horizontalAlignment="left" fontSize="15" padding="15" (tap)="gotToEditAccount()"></Label>
+                        <Label icon="&#xf013;" text="Editer profil" horizontalAlignment="left" fontSize="15" padding="15" (tap)="gotToEditAccount()"></Label>
                         <StackLayout class="hr-light"></StackLayout>
-                        <Label text="Applications et appareils" horizontalAlignment="left" fontSize="15" padding="15"></Label>
+                        <Label icon="&#xf293;" text="Applications et appareils" horizontalAlignment="left" fontSize="15" padding="15"></Label>
                         <StackLayout class="hr-light"></StackLayout>
-                        <Label text="Notifications" horizontalAlignment="left" fontSize="15"padding="15"></Label>
+                        <Label icon="&#xf0f3;" text="Notifications" horizontalAlignment="left" fontSize="15"padding="15"></Label>
                     </StackLayout>
                 </CardView>
             </GridLayout>
+       
 
 
 
-        </StackLayout>
+       
 
 
 
@@ -119,6 +111,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
         <!-- <Label padding="12" id="xpasser" class="passer xpasser" text="Passer" (tap)="planYourFirstSession()"></Label>-->
 
-
+    </ScrollView>
+</StackLayout>
     </GridLayout>
 </RadSideDrawer>

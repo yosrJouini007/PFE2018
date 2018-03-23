@@ -9,6 +9,7 @@ const routes: Routes = [
     { path: "intro", loadChildren: "./intro/intro.module#IntroModule" },
     { path: "profil", loadChildren: "./profil/profil.module#ProfilModule" },
     { path: "alimentation", loadChildren: "./alimentation/alimentation.module#AlimentationModule" },
+    { path: "steps", loadChildren: "./steps/steps.module#StepsModule" },
     //{ path: "exercice", loadChildren: "./exercice/exercice.module#ExerciceModule" },
     { path: "charts", loadChildren: "./charts/charts.module#ChartsModule" },
     { path: "charts-pie", loadChildren: "./charts-pie/charts-pie.module#ChartsPieModule" },

@@ -1,10 +1,8 @@
 <ActionBar class="action-bar" title="Modifier mon profil">
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    <NavigationButton ios:visibility="collapsed"icon="res://ic_arrow_back_white_24dp"(tap)="backToProfil()"></NavigationButton>
+    <ActionItem icon="res://navigation/ic_arrow_back_white" android:visibility="collapsed" (tap)="backToProfil()" ios.position="left">
     </ActionItem>
-   <!--  <ActionItem ios:visibility="collapsed" icon="res://ic_check_white_24dp" (tap)="updateProfile()" android.position="right"></ActionItem>
-    <ActionItem icon="res://navigation/ic_check_white" android:visibility="collapsed" (tap)="updateProfile()" ios.position="right">
-    </ActionItem> -->
+  
 </ActionBar>
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
     <StackLayout tkDrawerContent>
@@ -19,7 +17,7 @@
                         <Label text="Email" class=" "></Label>
                         <TextField returnKeyType="next" #name class="input" [ngModel]='input.email.value' (ngModelChange)='input.email.value=$event'></TextField>
                         <StackLayout class="hr-light"></StackLayout>
-                        <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Courrier invalide"></Label>
+                        <Label marginTop="3" class="text-danger"visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Courrier invalide"></Label>
                     </StackLayout>
                 
                     <StackLayout marginTop="20" class="">

@@ -1,36 +1,22 @@
 <ActionBar class="action-bar" title="Intro">
-    <!-- 
-    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
-    -->
+
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <!-- 
-    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
-    -->
+
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
     <Label class="action-bar-title" text="Intro"></Label>
 </ActionBar>
 
-<!--
-RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
-Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
-http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
-The RadSideDrawer component is designed to be used as a root element and
-it shouldn't have any other siblings other than the <ActionBar> component.
--->
+
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-    <!--
-    Use the tkDrawerContent directive to display the content of the app drawer on this page.
-    -->
+
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Intro'"></MyDrawer>
 
 
     </StackLayout>
 
-    <!--
-    Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
+
     <GridLayout class="page page-content" tkMainContent class="background-image">
         <StackLayout>
 
@@ -41,38 +27,40 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
 
                     <GridLayout rows="auto" height="100%">
-                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/health.jpg">
+                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/intro3.jpg">
                         </Image>
                         <StackLayout row="0" verticalAlignment="center">
-                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[0].title" horizontalAlignment="center"></Label>
+                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[0].title" horizontalAlignment="center" marginBottom="25"></Label>
                             <label marginBottom="140" fontSize="18" color="white" textWrap="true" [text]="slideDetails[0].description" bottom="0"></label>
-                            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
-                                width="30%" text="Passer" (tap)="goToHome()"></Button>
+                            <Button row="1" verticalAlignment="bottom" horizontalAlignment="right" class="btn btn-primary" color="white" padding="20"
+                                borderRadius="5" width="30%" text="Passer" (tap)="goToHome()"></Button>
                         </StackLayout>
+
+
                     </GridLayout>
                 </slide>
 
                 <slide class="slide-2">
                     <GridLayout rows="auto" height="100%">
-                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/workout.jpg">
+                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/intro1.PNG">
                         </Image>
-                        <StackLayout row="0" verticalAlignment="center" >
-                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[1].title" horizontalAlignment="center"></Label>
-                            <label marginBottom="140"fontSize="18" color="white"  textWrap="true" [text]="slideDetails[1].description" bottom="0"></label>
-                            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
-                                width="30%" text="Passer" (tap)="goToHome()"></Button>
+                        <StackLayout row="0" verticalAlignment="center">
+                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[1].title" horizontalAlignment="center" marginBottom="25"></Label>
+                            <label marginBottom="140" fontSize="18" color="white" textWrap="true" [text]="slideDetails[1].description" bottom="0"></label>
+                            <Button verticalAlignment="bottom" horizontalAlignment="right" class="btn btn-primary" backgroundColor="#ff99d1" color="white"
+                                padding="20" borderRadius="5" width="30%" text="Passer" (tap)="goToHome()"></Button>
                         </StackLayout>
                     </GridLayout>
                 </slide>
                 <slide class="slide-3">
                     <GridLayout rows="auto" height="100%">
-                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/fitbit.PNG">
+                        <Image height="100%" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/intro4.jpg">
                         </Image>
                         <StackLayout row="0" verticalAlignment="center">
-                            <Label fontSize="25" color="white"  textWrap="true" [text]="slideDetails[2].title" horizontalAlignment="center"></Label>
-                            <label marginBottom="140"fontSize="18" color="white"  textWrap="true" [text]="slideDetails[2].description" bottom="0"></label>
-                            <Button verticalAlignment="bottom" horizontalAlignment="left" class="btn btn-primary" color="white" padding="20" borderRadius="5"
-                                width="30%" text="Passer" (tap)="goToHome()"></Button>
+                            <Label fontSize="25" color="white" textWrap="true" [text]="slideDetails[2].title" horizontalAlignment="center" marginBottom="25"></Label>
+                            <label marginBottom="140" fontSize="18" color="white" textWrap="true" [text]="slideDetails[2].description" bottom="0"></label>
+                            <Button verticalAlignment="bottom" horizontalAlignment="right" class="btn btn-primary" backgroundColor="#c4d6ee" color="white"
+                                padding="20" borderRadius="5" width="30%" text="Passer" (tap)="goToHome()"></Button>
                         </StackLayout>
                     </GridLayout>
                 </slide>

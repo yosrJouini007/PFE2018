@@ -52,6 +52,10 @@ export class HomeConnectedComponent implements OnInit {
           clearHistory: true,
         });
       }
+      public goToSteps() {
+        this.router.navigate(["/steps"], {
+        });
+      }
 
  
 }

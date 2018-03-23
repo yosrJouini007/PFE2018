@@ -292,6 +292,11 @@ export class ProfileComponent implements OnInit {
     }
     return formIsValide;
   }
+  public backToProfil() {
+    this.routerExtensions.navigate(["/profil"], {
+       // clearHistory: true,
+    });
+}
   nextInput(input) {
     switch (input) {
       case 'newpassword':

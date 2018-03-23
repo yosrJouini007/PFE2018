@@ -7,13 +7,18 @@ import {
   } from "@ngrx/store";
   import { storeFreeze } from "ngrx-store-freeze";
   import * as fromApp from "./app.reducer";
+  import * as fromFood from "./food.reducer";
   
   export interface State {
     app: fromApp.State;
+    food:fromFood.State;
+    
   }
   
   export const reducers: ActionReducerMap<State> = {
-    app: fromApp.reducer
+    app: fromApp.reducer,
+    food:fromFood.reducer
+    
   };
   
   export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
@@ -23,6 +28,8 @@ import {
   }
   
   export const getAppState = createFeatureSelector<fromApp.State>("app");
+  export const getFoodsState = createFeatureSelector<fromFood.State>("foods");
+
  
   
   export const getUser = createSelector(getAppState, fromApp.getCurrentUser);
@@ -35,5 +42,12 @@ import {
     fromApp.getStartedState
   );
   export const getLastAction = createSelector(getAppState, fromApp.getLastAction);
+  export const getFoods = createSelector(getFoodsState, fromFood.getFoods);
+
+  export const getSelectedFood = createSelector(
+    getFoodsState,
+    fromFood.getSelectedFood
+  );
+
 
   

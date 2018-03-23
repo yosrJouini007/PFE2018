@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ElementRef, NgZone } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewContainerRef, ElementRef, NgZone, OpaqueToken } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RadAutoCompleteTextViewComponent } from "nativescript-ui-autocomplete/angular";
@@ -22,6 +22,11 @@ import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/abso
 import { Observable } from "tns-core-modules/data/observable";
 import { FormsModule } from '@angular/forms';
 import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
+import alimentation from "./data";
+import { Store } from "@ngrx/store";
+import * as fromRoot from "./../shared/reducers";
+import * as foodAction from "./../shared/actions/food.actions";
+
 
 
 
@@ -41,7 +46,7 @@ export class AlimentationComponent implements OnInit {
         "Couscous", "Sandwitch", "Soufflet", "Croustina", "Chocotom", "Lait de Poule", "Banane",
         "Fraise", "Escalope", "Poulet", "Viande", "Salade", "Yaourt", "Fromage",
         "Crépe", "Cake", "Gateau", "Croissant", "Boeuf"];
-
+private food2=[];
     month: string;
     public currentdate: Date;
     enableLunch: boolean = true;
@@ -111,6 +116,7 @@ export class AlimentationComponent implements OnInit {
         private _page: Page,
         private router: RouterExtensions,
         private validateService: ValidateService,
+        private store: Store<fromRoot.State>,
 
     ) {
 
@@ -119,16 +125,26 @@ export class AlimentationComponent implements OnInit {
         this.lunch = [];
         this.dinner = [];
         this.snack = [];
-
+        this.store.select(fromRoot.getFoods).subscribe((foods: any) => {
+            if (foods.length > 0){
+                this.initDataItems(foods);
+            }
+             // this.renderDataTable(guests);
+          })
 
         //this.myItems = [];
-        this.initDataItems();
+      //  this.initDataItems();
+      //  localStorage.setItem("alimentation", JSON.stringify(alimentation));
+       // var retrievedData = localStorage.getItem("alimentation");
+      //this.food2 = JSON.parse(retrievedData);
     }
 
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
+       
+ 
         /*  this.searchInput$ = this.searchInput
           .debounceTime(100)
           .distinctUntilChanged()
@@ -162,11 +178,11 @@ export class AlimentationComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-    private initDataItems() {
+    private initDataItems(food) {
         this._items = new ObservableArray<TokenModel>();
 
-        for (var i = 0; i < this.food.length; i++) {
-            this._items.push(new TokenModel(this.food[i], undefined));
+        for (var i = 0; i < food.length; i++) {
+            this._items.push(new TokenModel(food[i], undefined));
         }
     }
 
