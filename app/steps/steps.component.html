@@ -18,30 +18,35 @@
     </StackLayout>
 
     <GridLayout class="page page-content" tkMainContent>
-       
+        <ScrollView>
 
             <GridLayout columns="*,*,*" rows="auto,*,*,*,auto,auto" verticalAlignment="top">
                 <Label row="0" colspan="3" text="Aujourd'hui" fontSize="30" padding="30" color="#4abd73" horizontalAlignment="center" marginBottom="40"></Label>
-          
-                <Image  colspan="3" row="1" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/step.PNG">
+
+                <Image colspan="3" row="1" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                    src="~/assets/images/step.PNG">
                 </Image>
-                <Label row="2" colspan="3" text="8.326 pas" fontSize="30" padding="30" color="#777777"  verticalAlignment="top" horizontalAlignment="center" marginBottom="40"></Label>
-               
-                <Image  col="0" row="3"stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/floors.png">
+                <Label row="2" colspan="3" text="8.326 pas" fontSize="30" padding="30" color="#777777" verticalAlignment="top" horizontalAlignment="center"
+                    marginBottom="40"></Label>
+
+                <Image col="0" row="3" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                    src="~/assets/images/floors.png">
                 </Image>
                 <Label row="4" col="0" text="11" fontSize="18" padding="10" color="#777777" horizontalAlignment="center"></Label>
                 <Label row="5" col="0" text="étages" fontSize="12" padding="10" color="#777777" horizontalAlignment="center" verticalAlignment="top"></Label>
-             
-                <Image  col="1" row="3"stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/miles.PNG">
+
+                <Image col="1" row="3" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                    src="~/assets/images/miles.PNG">
                 </Image>
-                <Label row="4" col="1" text="3.25" fontSize="18" padding="10" color="#777777" horizontalAlignment="center" ></Label>
+                <Label row="4" col="1" text="3.25" fontSize="18" padding="10" color="#777777" horizontalAlignment="center"></Label>
                 <Label row="5" col="1" text="Kilométres" fontSize="12" padding="10" color="#777777" horizontalAlignment="center" verticalAlignment="top"></Label>
 
-                <Image  col="2" row="3"stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/clock.PNG">
+                <Image col="2" row="3" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                    src="~/assets/images/clock.PNG">
                 </Image>
                 <Label row="4" col="2" text="26" fontSize="18" padding="10" color="#777777" horizontalAlignment="center" marginBottom="10"></Label>
                 <Label row="5" col="2" text="minutes" fontSize="12" padding="10" color="#777777" horizontalAlignment="center" verticalAlignment="top"></Label>
             </GridLayout>
-      
+        </ScrollView>
     </GridLayout>
 </RadSideDrawer>

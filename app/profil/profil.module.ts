@@ -5,7 +5,9 @@ import { SharedModule } from "../shared/shared.module";
 import { ProfilRoutingModule } from "./profil-routing.module";
 import { ProfilComponent } from "./profil.component";
 import { SlidesModule } from "nativescript-ngx-slides";
-
+import {registerElement} from "nativescript-angular/element-registry";
+ 
+registerElement("Ripple", () => require("nativescript-ripple").Ripple);
 @NgModule({
     imports: [
         NativeScriptCommonModule,

@@ -110,20 +110,20 @@
 
 
         <AbsoluteLayout #addLayout visibility="{{ showAdd ? 'visible' : 'collapse' }}">
-            <StackLayout>
-                <GridLayout columns="*,*,*,*" rows="*,*,*" horizontalAlignment="center">
-                    <image row="0" colspan="4" src="~/assets/images/cake.jpg" height="300" width="600" stretch="aspectFill"></image>
-                    <Label row="0" col="0" fontSize="28" class="h3  m-55 text-left" padding="5" horizontalAlignment="left" verticalAlignment="bottom"
+            <StackLayout width="100%">
+                <GridLayout columns="*,*,*,*" rows="*,*,*" width="100%" >
+                    <image row="0" colspan="4" src="~/assets/images/cake.jpg" height="300" width="100%" stretch="aspectFill"></image>
+                    <Label row="0" col="0" fontSize="20" class="h3  m-55 text-left" padding="5" horizontalAlignment="left" verticalAlignment="bottom"
                         color="white" [text]="foodToken" textWrap="false">
                     </Label>
-                    <label text="Energie" row="1" col="0" horizontalAlignment="center"></label>
-                    <label text=" 0 Kcal" row="2" col="0" horizontalAlignment="center"></label>
-                    <label text="Glucides" row="1" col="1" horizontalAlignment="center"></label>
-                    <label text="0 g" col="1" row="2" horizontalAlignment="center"></label>
-                    <label text="Proteines (g)" row="1" col="2" horizontalAlignment="center"></label>
-                    <label text="0 g" col="2" row="2" horizontalAlignment="center"></label>
-                    <label text="Lipides (g)" row="1" col="3" horizontalAlignment="center"></label>
-                    <label text="0 g" col="3" row="2" horizontalAlignment="center"></label>
+                    <label text="Energie" row="1" col="0" horizontalAlignment="left" ></label>
+                    <label text=" 0 Kcal" row="2" col="0" horizontalAlignment="left"></label>
+                    <label text="Glucides" row="1" col="1" horizontalAlignment="left" ></label>
+                    <label text="0 g" col="1" row="2" horizontalAlignment="left" ></label>
+                    <label text="Proteines (g)" row="1" col="2" horizontalAlignment="left" ></label>
+                    <label text="0 g" col="2" row="2" horizontalAlignment="left" ></label>
+                    <label text="Lipides (g)" row="1" col="3" horizontalAlignment="left"></label>
+                    <label text="0 g" col="3" row="2" horizontalAlignment="left"></label>
                 </GridLayout>
                 <StackLayout class="hr-light" marginTop="20"></StackLayout>
                 <GridLayout columns="*,*" horizontalAlignment="center">
@@ -131,7 +131,7 @@
                     </TextField>
                     <label text="Portion (100g)" col="1" verticalAlignment="center" horizontalAlignment="center"></label>
                 </GridLayout>
-                <Button class="btn btn-primary" padding="20" borderRadius="5" text="Ajouter" (tap)="saveFood()">
+                <Button class="btn btn-primary" padding="20" borderRadius="5"  width="80%" text="Ajouter" (tap)="saveFood()">
                 </Button>
             </StackLayout>
         </AbsoluteLayout>

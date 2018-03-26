@@ -509,6 +509,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  navigateToIntro() {
+    this.routerExtensions.navigate(["/intro"], {
+       queryParams: {
+         newaccount: true
+       }
+    });
+  }
   /*  displayShowWelcome() {
       this.fadeOutTypelayout().then(() => {
       });

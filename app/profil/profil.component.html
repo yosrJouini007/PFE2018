@@ -1,32 +1,41 @@
 <ActionBar class="action-bar" title="Mon Profil">
-   
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showBand && !showSet" (tap)="onDrawerButtonTap()"></NavigationButton>
+
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" *ngIf="!showBand && !showSet" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeBandLayout()" *ngIf="showBand" android.position="right" icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)="closeBandLayout()" *ngIf="showBand" ios.position="right" icon="res://navigation/ic_close_white">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeSetLayout()" *ngIf="showSet" android.position="right" icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)="closeSetLayout()" *ngIf="showSet" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Mon Profil"></Label>
 </ActionBar>
 
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-   
+
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Mon Profil'"></MyDrawer>
 
 
     </StackLayout>
 
-  
-    <GridLayout class="page page-content" tkMainContent>
-      
-<StackLayout>
-        <StackLayout verticalAlignment="top" backgroundColor="#4abd73"height="150"> 
 
-            <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
-            <Label class="sidedrawer-header-brand" text="Moi" horizontalAlignment="center"></Label>
-        </StackLayout>
-           
-       
+    <GridLayout class="page page-content" tkMainContent>
+
+        <StackLayout #profilLayout visibility="{{ showProfil? 'visible' : 'collapse' }}">
+            <StackLayout verticalAlignment="top" backgroundColor="#4abd73" height="150">
+
+                <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+                <Label class="sidedrawer-header-brand" text="Moi" horizontalAlignment="center"></Label>
+            </StackLayout>
+
+
             <StackLayout height="300">
                 <slides #detailsSlider [pageIndicators]="true" [loop]="true" [class]="'xslides'" [pageHeight]="300">
 
@@ -61,57 +70,104 @@
 
                 </slides>
             </StackLayout>
-        
-            
+
+
             <ScrollView>
-            <GridLayout columns="*,*" rows="*,*" backgroundColor="white" height="600">
-                <CardView class="cardStyle" col="0" row="0" elevation="20" radius="1" backgroundColor="white" width="47%" 
-                    marginRight="10">
+                <GridLayout columns="*,*" rows="*,*" backgroundColor="white" height="600">
+                    <CardView class="cardStyle" col="0" row="0" elevation="20" radius="1" backgroundColor="white" width="47%" marginRight="10">
 
-                    <StackLayout col="0">
-                        <Label text="Liste d'amis" fontSize="20"  horizontalAlignment="center"></Label>
-                        <Button class="btn btn-primary" text="Inviter des amis"  verticalAlignment="center"></Button>
-                    </StackLayout>
-
-
-
-                </CardView>
-                <CardView class="cardStyle" col="1" row="0" elevation="20" radius="1" backgroundColor="white" width="47%" >
-
-
-                    <StackLayout col="1">
-                        <Label text="Rappels du jour" fontSize="20" horizontalAlignment="center"></Label>
-                        <Button class="btn btn-primary" text="Ajouter un rappel" verticalAlignment="center"></Button>
-                    </StackLayout>
-
-
-                </CardView>
-                <CardView class="cardStyle" elevation="20" marginTop="10" row="1" colspan="2" radius="1" backgroundColor="white" width="100%">
-                    <StackLayout>
-                        <Label text="Plus de fonctionnalités" horizontalAlignment="center" fontSize="20"></Label>
-                        
-                        <Label icon="&#xf013;" text="Editer profil" horizontalAlignment="left" fontSize="15" padding="15" (tap)="gotToEditAccount()"></Label>
-                        <StackLayout class="hr-light"></StackLayout>
-                        <Label icon="&#xf293;" text="Applications et appareils" horizontalAlignment="left" fontSize="15" padding="15"></Label>
-                        <StackLayout class="hr-light"></StackLayout>
-                        <Label icon="&#xf0f3;" text="Notifications" horizontalAlignment="left" fontSize="15"padding="15"></Label>
-                    </StackLayout>
-                </CardView>
-            </GridLayout>
-       
+                        <StackLayout col="0">
+                            <Label text="Liste d'amis" fontSize="20" horizontalAlignment="center"></Label>
+                            <Button class="btn btn-primary" text="Inviter des amis" verticalAlignment="center"></Button>
+                        </StackLayout>
 
 
 
-       
+                    </CardView>
+                    <CardView class="cardStyle" col="1" row="0" elevation="20" radius="1" backgroundColor="white" width="47%">
+
+
+                        <StackLayout col="1">
+                            <Label text="Rappels du jour" fontSize="20" horizontalAlignment="center"></Label>
+                            <Button class="btn btn-primary" text="Ajouter un rappel" verticalAlignment="center"></Button>
+                        </StackLayout>
+
+
+                    </CardView>
+                    <CardView class="cardStyle" elevation="20" marginTop="10" row="1" colspan="2" radius="1" backgroundColor="white" width="100%">
+                        <StackLayout>
+                            <Label text="Plus de fonctionnalités" horizontalAlignment="center" fontSize="20"></Label>
+                            <Ripple rippleColor="#c8d3e5" margin="15" (tap)="gotToEditAccount()">
+                                <Label icon="&#xf013;" text="Editer profil" horizontalAlignment="left" fontSize="15" padding="15" (tap)="gotToEditAccount()"></Label>
+                            </Ripple>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Ripple rippleColor="#c8d3e5" margin="15" (tap)="openBandLayout()">
+                                <Label icon="&#xf293;" text="Applications et appareils" (tap)="openBandLayout()" horizontalAlignment="left" fontSize="15"
+                                    padding="15"></Label>
+                            </Ripple>
+                            <StackLayout class="hr-light"></StackLayout>
+                            <Ripple rippleColor="#f5f5f5" margin="15">
+                                <Label icon="&#xf0f3;" text="Notifications" horizontalAlignment="left" fontSize="15" padding="15"></Label>
+                            </Ripple>
+                        </StackLayout>
+                    </CardView>
+                </GridLayout>
 
 
 
 
-        <!-- <Button class="btn btn-primary" color="white" padding="20" borderRadius="5" width="50%" text="S'inscrire" (tap)="goToRegister()"></Button>-->
 
-        <!-- <Label padding="12" id="xpasser" class="passer xpasser" text="Passer" (tap)="planYourFirstSession()"></Label>-->
 
-    </ScrollView>
-</StackLayout>
+
+
+
+                <!-- <Button class="btn btn-primary" color="white" padding="20" borderRadius="5" width="50%" text="S'inscrire" (tap)="goToRegister()"></Button>-->
+
+                <!-- <Label padding="12" id="xpasser" class="passer xpasser" text="Passer" (tap)="planYourFirstSession()"></Label>-->
+
+            </ScrollView>
+        </StackLayout>
+        <AbsoluteLayout #bandLayout visibility="{{ showBand ? 'visible' : 'collapse' }}">
+            <StackLayout width="100%">
+                <Label row="0" colspan="2" fontSize="25" padding="5" horizontalAlignment="center" verticalAlignment="top" text="Quel appareil souhaitez-vous configurez ?"
+                    textWrap="false"></Label>
+                <StackLayout class="hr-light" marginBottom="10%" marginTop="10%"></StackLayout>
+                <GridLayout columns="*,*" rows="*,*,*,*,*" width="100%">
+
+
+                    <image row="0" col="1" src="~/assets/images/bandeFitBit.jpeg" height="300" width="100%" stretch="aspectFill" (tap)="openSetLayout()"></image>
+                    <Label row="0" col="0" fontSize="18" padding="5" horizontalAlignment="left" verticalAlignment="center" text="Bande FitBit"
+                        textWrap="false"></Label>
+                    <Button row="1" colspan="2" marginTop="15" marginBottom="15" backgroundColor="#acacab" verticalAlignment="center" horizontalAlignment="center" color="white" padding="20"
+                        borderRadius="8" width="50%" text="Configurer votre appareil" (tap)="setBand()">
+                    </Button>
+                    <StackLayout row="2" class="hr-light" colspan="2" marginBottom="10%" marginTop="10%"></StackLayout>
+                    <image row="3" col="1" src="~/assets/images/bandeNormale.jpg" height="300" width="100%" stretch="aspectFill" (tap)="openSetLayout()"></image>
+                    <Label row="3" col="0" fontSize="18" padding="5" horizontalAlignment="left" verticalAlignment="center" text="Bande normale"
+                        textWrap="false"></Label>
+                    <Button row="4" colspan="2" marginTop="15" backgroundColor="#acacab" verticalAlignment="center" horizontalAlignment="center"
+                        color="white" padding="20" borderRadius="8" width="50%" text="Configurer votre appareil" (tap)="setBand()">
+                    </Button>
+
+                </GridLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+        <AbsoluteLayout #setLayout opacity="0" backgroundColor="gray" visibility="{{ showSet ? 'visible' : 'collapse' }}" (tap)="closeSetLayout()">
+
+            <StackLayout height="30%" width="80%" backgroundColor="white" borderRadius="10" borderWidth="2" borderColor="#e6f0e1" marginTop="25%"
+                marginLeft="10%">
+                <Label *ngIf="!isBluetoothEnabled" text="Veuillez activer votre bluetooth" class="text-danger text-center h2" verticalAlignment="center" horizontalAlignment="center"></Label>
+              <!--  <Button *ngIf="!isBluetoothEnabled" marginTop="15" backgroundColor="#4abd73" verticalAlignment="center" color="white" padding="20"
+                borderRadius="8" width="40%" text="Activer" (tap)="turnOnBluetooth()">-->
+                <StackLayout *ngIf="isBluetoothEnabled">
+                    <Label text="Liste d'appareils connectés" class="h2 text-center m-10"></Label>
+                    <ListView [items]="devices" (itemTap)="onItemTap(event)" class="list-group">
+                        <ng-template let-device="item">
+                            <Button [text]="device.name" (tap)="connect(device.UUID)" class="btn btn-primary btn-grey"></Button>
+                        </ng-template>
+                    </ListView>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
     </GridLayout>
 </RadSideDrawer>

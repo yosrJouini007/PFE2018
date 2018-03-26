@@ -124,26 +124,21 @@ export class AlimentationComponent implements OnInit {
         this.lunch = [];
         this.dinner = [];
         this.snack = [];
-      //  this.store.select(fromRoot.getFoods).subscribe((foods: any) => {
-        //    if (foods.length > 0){
-         //       this.initDataItems(foods);
-           // }
-             // this.renderDataTable(guests);
-         // })
 
-        //this.myItems = [];
-       this.initDataItems();
-      //  localStorage.setItem("alimentation", JSON.stringify(alimentation));
-       // var retrievedData = localStorage.getItem("alimentation");
-      //this.food2 = JSON.parse(retrievedData);
+         this.store.select(fromRoot.getFoods).subscribe((foods) => {
+              
+                  this.initDataItems(foods);
+             })
+      //  this.initDataItems();
+
     }
 
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
-       
- 
+
+
         /*  this.searchInput$ = this.searchInput
           .debounceTime(100)
           .distinctUntilChanged()
@@ -177,18 +172,25 @@ export class AlimentationComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-    private initDataItems() {
+  /*  private initDataItems() {
         this._items = new ObservableArray<TokenModel>();
 
         for (var i = 0; i < this.food.length; i++) {
             this._items.push(new TokenModel(this.food[i], undefined));
         }
+    }*/
+
+     
+    private initDataItems(data) {
+        this._items = new ObservableArray<TokenModel>();
+
+        for (var i = 0; i < data.length; i++) {
+            this._items.push(new TokenModel(data[i], undefined));
+        }
     }
-//public onDidAutoComplete(args)
+
     public onDidAutoComplete(args) {
-        //  this.logEvent("Selected Token: " + args.token.text);
         this.foodToken = args.text;
-        // this.foodToken = args.text;
         this.addLayout
             .animate({
                 translate: { x: 0, y: 0 },
@@ -323,20 +325,13 @@ export class AlimentationComponent implements OnInit {
 
         this.showAdd = false;
         this.showSearch = true;
-        // this.showDailyChart = true;
         this.addLayout
             .animate({
                 translate: { x: 0, y: this.screenHeight },
                 duration: 250,
                 opacity: 0
             })
-        // this.input.glucose.value = "";
     }
-
-
-
-
-
 
 
     hideKeyboard() {

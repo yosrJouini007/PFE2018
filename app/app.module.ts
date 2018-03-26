@@ -15,6 +15,7 @@ import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import * as elementRegistryModule from 'nativescript-angular/element-registry';
 elementRegistryModule.registerElement("CardView", () => require("nativescript-cardview").CardView);
 
+
 @NgModule({
     bootstrap: [
         AppComponent

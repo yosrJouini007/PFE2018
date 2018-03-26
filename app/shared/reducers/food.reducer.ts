@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import * as foodActions from "../actions/food.actions";
+import { InitialState } from "@ngrx/store/src/models";
 
 export interface State {
   foodSelected: String;
@@ -7,7 +8,10 @@ export interface State {
 }
 export const initialState: State = {
   foodSelected: "",
-  foods: []
+  foods: ["Lait", "Jus d'orange", "Pain", "Kaki", "Céreales", "Beurre", "Confiture", "Chocolat", "Pizza", "Spaghetti",
+  "Couscous", "Sandwitch", "Soufflet", "Croustina", "Chocotom", "Lait de Poule", "Banane",
+  "Fraise", "Escalope", "Poulet", "Viande", "Salade", "Yaourt", "Fromage",
+  "Crépe", "Cake", "Gateau", "Croissant", "Boeuf"]
 };
 
 export function reducer(state = initialState, action: foodActions.All) {
