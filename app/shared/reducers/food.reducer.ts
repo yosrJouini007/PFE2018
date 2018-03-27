@@ -30,6 +30,7 @@ export function reducer(state = initialState, action: foodActions.All) {
 
     case foodActions.SELECT:
       let currentFood;
+      if(state)
       state.foods.map(Food => {
         if (Food.name == action.payload) {
           currentFood = Food;
@@ -47,7 +48,7 @@ export function reducer(state = initialState, action: foodActions.All) {
   }
 }
 
-export const getFoods = (state: State) => state.foods;
+export const getFoods = (state: State) => state.foods; //state
 export const getSelectedFood = (state: State) => state.foodSelected;
 
 const newState = (state, newData) => {

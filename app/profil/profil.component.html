@@ -1,8 +1,8 @@
 <ActionBar class="action-bar" title="Mon Profil">
 
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showBand && !showSet" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showBand && !showSet&& !showReminder" (tap)="onDrawerButtonTap()"></NavigationButton>
 
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" *ngIf="!showBand && !showSet" (tap)="onDrawerButtonTap()"
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" *ngIf="!showBand && !showSet && !showReminder" (tap)="onDrawerButtonTap()"
         ios.position="left">
     </ActionItem>
     <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeBandLayout()" *ngIf="showBand" android.position="right" icon="res://ic_close_white_24dp">
@@ -12,6 +12,12 @@
     <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeSetLayout()" *ngIf="showSet" android.position="right" icon="res://ic_close_white_24dp">
     </ActionItem>
     <ActionItem padding="5" android:visibility="collapsed" (tap)="closeSetLayout()" *ngIf="showSet" ios.position="right" icon="res://navigation/ic_close_white">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeReminderLayout()" *ngIf="showReminder" android.position="right"
+        icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)="closeReminderLayout()" *ngIf="showReminder" ios.position="right"
+        icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Mon Profil"></Label>
 </ActionBar>
@@ -89,7 +95,14 @@
 
                         <StackLayout col="1">
                             <Label text="Rappels du jour" fontSize="20" horizontalAlignment="center"></Label>
-                            <Button class="btn btn-primary" text="Ajouter un rappel" verticalAlignment="center"></Button>
+                            <StackLayout *ngIf="listReminders" height="70%">
+                                    <ListView [items]="reminders" (itemTap)="onItemTap(event)" class="list-group" >
+                                        <ng-template let-reminder="item">
+                                            <Button [text]="reminders.name" class="btn btn-primary"></Button>
+                                        </ng-template>
+                                    </ListView>
+                                </StackLayout>
+                            <Button class="btn btn-primary" text="Ajouter un rappel" verticalAlignment="center" (tap)="openReminderLayout()"></Button>
                         </StackLayout>
 
 
@@ -138,8 +151,8 @@
                     <image row="0" col="1" src="~/assets/images/bandeFitBit.jpeg" height="300" width="100%" stretch="aspectFill" (tap)="openSetLayout()"></image>
                     <Label row="0" col="0" fontSize="18" padding="5" horizontalAlignment="left" verticalAlignment="center" text="Bande FitBit"
                         textWrap="false"></Label>
-                    <Button row="1" colspan="2" marginTop="15" marginBottom="15" backgroundColor="#acacab" verticalAlignment="center" horizontalAlignment="center" color="white" padding="20"
-                        borderRadius="8" width="50%" text="Configurer votre appareil" (tap)="setBand()">
+                    <Button row="1" colspan="2" marginTop="15" marginBottom="15" backgroundColor="#acacab" verticalAlignment="center" horizontalAlignment="center"
+                        color="white" padding="20" borderRadius="8" width="50%" text="Configurer votre appareil" (tap)="setBand()">
                     </Button>
                     <StackLayout row="2" class="hr-light" colspan="2" marginBottom="10%" marginTop="10%"></StackLayout>
                     <image row="3" col="1" src="~/assets/images/bandeNormale.jpg" height="300" width="100%" stretch="aspectFill" (tap)="openSetLayout()"></image>
@@ -156,8 +169,9 @@
 
             <StackLayout height="30%" width="80%" backgroundColor="white" borderRadius="10" borderWidth="2" borderColor="#e6f0e1" marginTop="25%"
                 marginLeft="10%">
-                <Label *ngIf="!isBluetoothEnabled" text="Veuillez activer votre bluetooth" class="text-danger text-center h2" verticalAlignment="center" horizontalAlignment="center"></Label>
-              <!--  <Button *ngIf="!isBluetoothEnabled" marginTop="15" backgroundColor="#4abd73" verticalAlignment="center" color="white" padding="20"
+                <Label *ngIf="!isBluetoothEnabled" text="Veuillez activer votre bluetooth" class="text-danger text-center h2" verticalAlignment="center"
+                    horizontalAlignment="center"></Label>
+                <!--  <Button *ngIf="!isBluetoothEnabled" marginTop="15" backgroundColor="#4abd73" verticalAlignment="center" color="white" padding="20"
                 borderRadius="8" width="40%" text="Activer" (tap)="turnOnBluetooth()">-->
                 <StackLayout *ngIf="isBluetoothEnabled">
                     <Label text="Liste d'appareils connectés" class="h2 text-center m-10"></Label>
@@ -169,5 +183,34 @@
                 </StackLayout>
             </StackLayout>
         </AbsoluteLayout>
+
+        <AbsoluteLayout #reminderLayout opacity="0" backgroundColor="gray" visibility="{{ showReminder ? 'visible' : 'collapse' }}"
+            (tap)="closeReminderLayout()">
+
+            <StackLayout height="50%" width="80%" backgroundColor="white" borderRadius="10" borderWidth="2" borderColor="#e6f0e1" marginTop="25%"
+                marginLeft="10%">
+                <Label text="Ajouter un rappel" fontSize="20" horizontalAlignment="center" marginBottom="10"></Label>
+                <StackLayout class="hr-light"></StackLayout>
+                <GridLayout columns="*,*" rows="*,*,*,*">
+                    <Label col="0" row="0" text="Choisissez la date" verticalAlignment="center"></Label>
+                    <GridLayout col="1" row="0" (tap)="pickDateTime()" verticalAlignment="center" horizontalAlignment="center">
+                        <Label horizontalAlignment="center" verticalAlignment="center" class="selectDateTime fa" textWrap="true" padding="12" fontWeight="bold"
+                            fontSize="18" style="text-align : left;  color: gray;" row="1" col="0" marginTop="10" [text]="'&#xf073;  ' + dateTextHolder">
+                        </Label>
+                    </GridLayout>
+                    <Label col="0" row="1" text="Titre" verticalAlignment="center"></Label>
+                    <TextField col="1" row="1" (returnPress)="focusDesc()" returnKeyType="next" #inputTitle class="input" [(ngModel)]="input.title"
+                        hint="Votre titre ici" borderRadius="6" fontSize="15" placeholderColor="#bbbbbb"></TextField>
+                    <Label col="0" row="2" text="Description" verticalAlignment="center"></Label>
+                    <TextField col="1" row="2" [(ngModel)]="input.description" #inputDesc hint=" Votre Description ici " placeholderColor="#bbbbbb" returnKeyType="done"
+                        (returnPress)="showWithSound(inputTitle.text,inputDesc.text)" padding="20"></TextField>
+                    <Button row="3" colspan="2" marginTop="15" backgroundColor="#4abd73" color="white" height="20%" borderRadius="8" width="40%"
+                        text="Confirmer" (tap)="showWithSound(inputTitle.text,inputDesc.text)">
+                    </Button>
+                </GridLayout>
+            </StackLayout>
+
+        </AbsoluteLayout>
+
     </GridLayout>
 </RadSideDrawer>
