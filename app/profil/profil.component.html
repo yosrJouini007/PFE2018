@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" title="Mon Profil">
+<ActionBar class="action-bar" [title]="!showBand ? 'Mon Profil' : 'Configuration'">
 
     <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showBand && !showSet&& !showReminder" (tap)="onDrawerButtonTap()"></NavigationButton>
 

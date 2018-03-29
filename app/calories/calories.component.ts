@@ -7,10 +7,10 @@ import { Pedometer } from "nativescript-pedometer";
 @Component({
     selector: "Steps",
     moduleId: module.id,
-    templateUrl: "./steps.component.html",
-    styleUrls: ["./steps.component.css"]
+    templateUrl: "./calories.component.html",
+    styleUrls: ["./calories.component.css"]
 })
-export class StepsComponent implements OnInit {
+export class CaloriesComponent implements OnInit {
     steps:any;
     startDate:any;
     endDate:any;
@@ -29,7 +29,7 @@ export class StepsComponent implements OnInit {
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
-        this.stepCounting();
+      //  this.stepCounting();
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {

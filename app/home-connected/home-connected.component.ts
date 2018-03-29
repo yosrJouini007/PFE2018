@@ -57,5 +57,9 @@ export class HomeConnectedComponent implements OnInit {
         });
       }
 
+      public goToCalories() {
+        this.router.navigate(["/calories"], {
+        });
+      }
  
 }

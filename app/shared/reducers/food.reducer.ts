@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import * as foodActions from "../actions/food.actions";
-import { InitialState } from "@ngrx/store/src/models";
+//import { InitialState } from "@ngrx/store/src/models";
 
 export interface State {
   foodSelected: String;
@@ -15,7 +15,6 @@ export const initialState: State = {
 };
 
 export function reducer(state = initialState, action: foodActions.All) {
-  console.log(action.type);
   switch (action.type) {
     case foodActions.LOAD:
       let foods = action.payload.map(food => {
