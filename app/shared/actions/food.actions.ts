@@ -10,17 +10,17 @@ export const LOAD_COMPLETE = "[FOOD] Load";
 
 export class LoadAction implements Action {
   readonly type = LOAD;
-  constructor(public payload) {}
+  constructor(public payload) { }
 }
 
 export class AddAction implements Action {
   readonly type = ADD;
-  constructor(public payload) {}
+  constructor(public payload) { }
 }
 
 export class SelectAction implements Action {
   readonly type = SELECT;
-  constructor(public payload) {}
+  constructor(public payload) { }
 }
 
 export class FireLoadAction implements Action {
@@ -32,7 +32,7 @@ export class FireLoadAction implements Action {
 
 export class LoadCompleteAction implements Action {
   readonly type = LOAD_COMPLETE;
-  constructor(public payload) {}
+  constructor(public payload) { }
 }
 
 export type All =

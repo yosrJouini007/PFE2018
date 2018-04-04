@@ -26,7 +26,14 @@ import alimentation from "./data";
 import { Store } from "@ngrx/store";
 import * as fromRoot from "./../shared/reducers";
 import * as foodAction from "./../shared/actions/food.actions";
-
+import {
+    getBoolean,
+    setBoolean,
+    getString,
+    setString,
+    remove,
+    clear
+  } from "application-settings";
 
 
 
@@ -120,16 +127,16 @@ export class AlimentationComponent implements OnInit {
     ) {
 
         this.currentdate = new Date();
-        this.breakFast = [];
-        this.lunch = [];
-        this.dinner = [];
-        this.snack = [];
+        this.breakFast =JSON.parse(getString("breakfast", "Nothing"));
+        this.lunch = JSON.parse(getString("lunch", "{}"));
+        this.dinner = JSON.parse(getString("dinner", "{}"));
+        this.snack = JSON.parse(getString("snack", "{}"));
 
-         this.store.select(fromRoot.getFoods).subscribe((foods) => {
+     /*   this.store.select(fromRoot.getFoods).subscribe((foods) => {
               
                   this.initDataItems(foods);
-             })
-      //  this.initDataItems();
+             })*/
+      this.initDataItems();
 
     }
 
@@ -172,25 +179,27 @@ export class AlimentationComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-  /*  private initDataItems() {
+   private initDataItems() {
         this._items = new ObservableArray<TokenModel>();
 
         for (var i = 0; i < this.food.length; i++) {
             this._items.push(new TokenModel(this.food[i], undefined));
         }
-    }*/
+    }
 
      
-    private initDataItems(data) {
+   /* private initDataItems(data) {
         this._items = new ObservableArray<TokenModel>();
 
         for (var i = 0; i < data.length; i++) {
             this._items.push(new TokenModel(data[i], undefined));
         }
-    }
+    }*/
 
     public onDidAutoComplete(args) {
         this.foodToken = args.text;
+      //  setString("food", JSON.stringify(args.text));
+
         this.addLayout
             .animate({
                 translate: { x: 0, y: 0 },
@@ -204,20 +213,25 @@ export class AlimentationComponent implements OnInit {
     }
 
     saveFood() {
+       
         if (this.showBreak == true) {
-            this.breakFast.push(new food(this.foodToken));
+          //  this.breakFast.push(new food(this.foodToken));
+            setString("breakfast", JSON.stringify(this.foodToken));
         }
         else
             if (this.showLunch == true) {
                 this.lunch.push(new food(this.foodToken));
+                setString("lunch", JSON.stringify(this.breakFast));
             }
             else
                 if (this.showSnack == true) {
                     this.snack.push(new food(this.foodToken));
+                    setString("snack", JSON.stringify(this.breakFast));
                 }
                 else
                     if (this.showDinner == true) {
                         this.dinner.push(new food(this.foodToken));
+                        setString("dinner", JSON.stringify(this.breakFast));
                     }
         this.closeAdd();
 

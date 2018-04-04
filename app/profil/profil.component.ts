@@ -13,12 +13,16 @@ import { Observable } from 'rxjs/Observable';
 import { FormsModule } from '@angular/forms';
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import { Subscription } from 'rxjs/Subscription';
+import { Switch } from "ui/switch";
 import 'rxjs/add/operator/distinctUntilChanged';
 import * as LocalNotifications from "nativescript-local-notifications";
 const ModalPicker = require("nativescript-modal-datetimepicker").ModalDatetimepicker;
 const picker = new ModalPicker();
 import * as moment from "moment";
 moment.locale("fr");
+class reminder {
+    constructor(public name: string, public date:string) { }
+}
 @Component({
     selector: "profil",
     moduleId: module.id,
@@ -29,6 +33,7 @@ export class ProfilComponent implements OnInit {
     //Layouts variables
     showProfil: boolean = true;
     showBand: boolean = false;
+    showNotification: boolean = false;
     showSet: boolean = false;
     showReminder: boolean = false;
     listReminders: boolean = false;
@@ -43,9 +48,10 @@ export class ProfilComponent implements OnInit {
         UUID: '2222',
         name: 'test mip 2'
     }];
-    reminders: any[] = [{
-        name: 'test '
-    }, ];
+
+   public reminders: Array<reminder>;
+   public firstSwitchState = "Activer";
+
 
     // Date variables
     public dateTextHolder: string = "";
@@ -57,6 +63,7 @@ export class ProfilComponent implements OnInit {
     private dateStr;
     private hourStr;
     public fulldateStr: string = "";
+    public ID: number ;
     PLEASE_SELECT_DATE = "Vous devez sélectionner la date";
     PLEASE_SELECT_HOUR = "Vous devez sélectionner l'heure";
 
@@ -64,6 +71,7 @@ export class ProfilComponent implements OnInit {
     input: any;
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("bandLayout") bandLayoutRef: ElementRef;
+    @ViewChild("notificationLayout") notificationLayoutRef: ElementRef;
     @ViewChild("setLayout") setLayoutRef: ElementRef;
     @ViewChild("reminderLayout") reminderLayoutRef: ElementRef;
     @ViewChild("profilLayout") profilLayoutRef: ElementRef;
@@ -80,6 +88,9 @@ export class ProfilComponent implements OnInit {
 
     private get bandLayout(): AbsoluteLayout {
         return this.bandLayoutRef.nativeElement;
+    }
+    private get notificationLayout(): AbsoluteLayout {
+        return this.notificationLayoutRef.nativeElement;
     }
     private get setLayout(): AbsoluteLayout {
         return this.setLayoutRef.nativeElement;
@@ -110,7 +121,8 @@ export class ProfilComponent implements OnInit {
                 error: false
             },
         };
-        this.reminders = [];
+        this.reminders=[];
+       
         bluetooth.setCharacteristicLogging(false);
         this.currentDate = new Date();
         this.currentDateHolder = moment(this.currentDate, "mm/dd/yyyy hh:mm").format('LLLL')
@@ -120,6 +132,7 @@ export class ProfilComponent implements OnInit {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         // this._page.actionBarHidden = true;
         this.bandLayout.translateY = this.screenHeight;
+        this.notificationLayout.translateY = this.screenHeight;
         /*    if (bluetooth.isBluetoothEnabled())
             {
                 this.scan();
@@ -179,6 +192,14 @@ export class ProfilComponent implements OnInit {
                 console.log("Error: " + error);
             });
     }
+    public onFirstChecked(args) {
+        let firstSwitch = <Switch>args.object;
+        if (firstSwitch.checked) {
+            this.firstSwitchState = "Activer";
+        } else {
+            this.firstSwitchState = "Désactiver";
+        }
+    }
 
     /*  showWithSound(): void {
           LocalNotifications.schedule([{
@@ -206,17 +227,18 @@ export class ProfilComponent implements OnInit {
             badge: 1,
             at: new Date(new Date(this.fulldateStr).getTime() ) // 5 seconds from now
         }]);
+        
 
         // adding a handler, so we can do something with the received notification.. in this case an alert
         LocalNotifications.addOnMessageReceivedCallback(data => {
             alert({
                 title: " Votre Rappel",
-                message: `id: '${data.id}', title: '${data.title}'.`,
-                okButtonText: "ok"
+                message: `Titre: ${data.title}, Description: ${data.body}`,
+                okButtonText: "Ok"
             });
         });
        
-        this.reminders.push("rappel:"+title);
+        this.reminders.push(new reminder(title,this.selectedTimeStr));
         this.listReminders=true;
         this.closeReminderLayout();
     }
@@ -226,6 +248,20 @@ export class ProfilComponent implements OnInit {
     cancelAll(): void {
         LocalNotifications.cancelAll();
     }
+    onItemTap()
+    {
+        LocalNotifications.getScheduledIds().then (id=> 
+
+            {
+                alert({
+                    title: " Votre Rappel",
+                    message: `Supprimer`,
+                    okButtonText: "Ok"
+                });
+                LocalNotifications.cancel(id);
+            }
+
+        ) }
 
 
     focusTitle() {
@@ -322,6 +358,29 @@ export class ProfilComponent implements OnInit {
         this.showBand = false;
         this.showProfil = true;
         this.bandLayout
+            .animate({
+                translate: { x: 0, y: this.screenHeight },
+                duration: 250,
+                opacity: 0
+            })
+    }
+    public openNotificationLayout() {
+        this.notificationLayout
+            .animate({
+                translate: { x: 0, y: 0 },
+                duration: 200,
+                opacity: 1
+            })
+        this.showNotification = true;
+        this.showProfil = false;
+
+    }
+
+    closeNotificationLayout() {
+
+        this.showNotification = false;
+        this.showProfil = true;
+        this.notificationLayout
             .animate({
                 translate: { x: 0, y: this.screenHeight },
                 duration: 250,

@@ -26,19 +26,19 @@
                 <Image colspan="3" row="1" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
                     src="~/assets/images/flame.png">
                 </Image>
-                <Label row="2" colspan="3" text="200 Calories" fontSize="30" padding="30" color="#777777" verticalAlignment="top" horizontalAlignment="center"
+                <Label row="2" colspan="3" [text]="calories" fontSize="30" padding="30" color="#777777" verticalAlignment="top" horizontalAlignment="center"
                     marginBottom="40"></Label>
 
                 <Image col="0" row="3" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
                     src="~/assets/images/objectif.png">
                 </Image>
-                <Label row="4" col="0" text="1000" fontSize="18" padding="15" color="#777777" horizontalAlignment="center" textWrap="false"></Label>
+                <Label row="4" col="0" [text]="goal" fontSize="18" padding="15" color="#777777" horizontalAlignment="center" textWrap="false"></Label>
                 <Label row="5" col="0" text="Votre Objectif" fontSize="12" padding="10" color="#777777" horizontalAlignment="center" verticalAlignment="top"></Label>
 
                 <Image col="1" row="3" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
                     src="~/assets/images/rest.png">
                 </Image>
-                <Label row="4" col="1" text="800" fontSize="18" padding="15" color="#777777" horizontalAlignment="center" textWrap="false"></Label>
+                <Label row="4" col="1" [text]="rest" fontSize="18" padding="15" color="#777777" horizontalAlignment="center" textWrap="false"></Label>
                 <Label row="5" col="1" text="Calories restantes" fontSize="11" padding="10" color="#777777" horizontalAlignment="center" verticalAlignment="top"></Label>
 
                 <Image col="2" row="3" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"

@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { NgModule, NO_ERRORS_SCHEMA, NgModuleFactoryLoader } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 
 import { SharedModule } from "../shared/shared.module";
@@ -8,6 +8,7 @@ import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import { ValidateService } from './validate.service';
 import { FormsModule } from "@angular/forms";
 import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-ui-autocomplete/angular";
+import { NSModuleFactoryLoader } from "nativescript-angular/router";
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-ui-autoco
     declarations: [
         AlimentationComponent,
     ],
-    providers:[ValidateService],
+    providers:[ValidateService,
+        { provide: NgModuleFactoryLoader, useClass: NSModuleFactoryLoader }],
     schemas: [
         NO_ERRORS_SCHEMA
     ]

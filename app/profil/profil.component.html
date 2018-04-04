@@ -1,9 +1,10 @@
 <ActionBar class="action-bar" [title]="!showBand ? 'Mon Profil' : 'Configuration'">
 
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showBand && !showSet&& !showReminder" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" *ngIf="!showBand && !showSet&& !showReminder && !showNotification"
+        (tap)="onDrawerButtonTap()"></NavigationButton>
 
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" *ngIf="!showBand && !showSet && !showReminder" (tap)="onDrawerButtonTap()"
-        ios.position="left">
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" *ngIf="!showBand && !showSet && !showReminder && !showNotification"
+        (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
     <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeBandLayout()" *ngIf="showBand" android.position="right" icon="res://ic_close_white_24dp">
     </ActionItem>
@@ -17,6 +18,12 @@
         icon="res://ic_close_white_24dp">
     </ActionItem>
     <ActionItem padding="5" android:visibility="collapsed" (tap)="closeReminderLayout()" *ngIf="showReminder" ios.position="right"
+        icon="res://navigation/ic_close_white">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)="closeNotificationLayout()" *ngIf="showNotification" android.position="right"
+        icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)="closeNotificationLayout()" *ngIf="showNotification" ios.position="right"
         icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Mon Profil"></Label>
@@ -42,12 +49,12 @@
             </StackLayout>
 
 
-            <StackLayout height="300">
-                <slides #detailsSlider [pageIndicators]="true" [loop]="true" [class]="'xslides'" [pageHeight]="300">
+            <StackLayout height="250">
+                <slides #detailsSlider [pageIndicators]="true" [loop]="true" [class]="'xslides'" [pageHeight]="250">
 
                     <slide>
                         <GridLayout rows="auto,auto">
-                            <Image height="300" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/health1.jpg">
+                            <Image height="250" row="0" stretch="aspectFill" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/health1.jpg">
                             </Image>
                             <Label row="0" horizontalAlignment="center" verticalAlignment="center" padding="12" text="Stabilisez votre glycémie avec votre support médical et amical."
                                 fontSize="20" color="white" fontWeight="Bold"></Label>
@@ -83,7 +90,7 @@
                     <CardView class="cardStyle" col="0" row="0" elevation="20" radius="1" backgroundColor="white" width="47%" marginRight="10">
 
                         <StackLayout col="0">
-                            <Label text="Liste d'amis" fontSize="20" horizontalAlignment="center"></Label>
+                            <Label text="Liste d'amis" fontSize="20" horizontalAlignment="center" marginTop="10"></Label>
                             <Button class="btn btn-primary" text="Inviter des amis" verticalAlignment="center"></Button>
                         </StackLayout>
 
@@ -94,14 +101,19 @@
 
 
                         <StackLayout col="1">
-                            <Label text="Rappels du jour" fontSize="20" horizontalAlignment="center"></Label>
-                            <StackLayout *ngIf="listReminders" height="70%">
-                                    <ListView [items]="reminders" (itemTap)="onItemTap(event)" class="list-group" >
+                            <Label text="Rappels du jour" fontSize="20" horizontalAlignment="center" marginTop="10"></Label>
+                            <StackLayout *ngIf="listReminders">
+                                <ScrollView height="80%">
+                                    <ListView [items]="reminders" (itemTap)="onItemTap()" class="list-group">
                                         <ng-template let-reminder="item">
-                                            <Button [text]="reminders.name" class="btn btn-primary"></Button>
+                                            <GridLayout class="list-group-item" columns="auto auto">
+                                                <Label col='0' [text]="reminder.name" horizontalAlignment="left" fontSize="15" marginLeft="10"> </Label>
+                                                <Label col='1' [text]="reminder.date" marginLeft="15"> </Label>
+                                            </GridLayout>
                                         </ng-template>
                                     </ListView>
-                                </StackLayout>
+                                </ScrollView>
+                            </StackLayout>
                             <Button class="btn btn-primary" text="Ajouter un rappel" verticalAlignment="center" (tap)="openReminderLayout()"></Button>
                         </StackLayout>
 
@@ -109,7 +121,7 @@
                     </CardView>
                     <CardView class="cardStyle" elevation="20" marginTop="10" row="1" colspan="2" radius="1" backgroundColor="white" width="100%">
                         <StackLayout>
-                            <Label text="Plus de fonctionnalités" horizontalAlignment="center" fontSize="20"></Label>
+                            <Label text="Plus de fonctionnalités" horizontalAlignment="center" fontSize="20" marginTop="10"></Label>
                             <Ripple rippleColor="#c8d3e5" margin="15" (tap)="gotToEditAccount()">
                                 <Label icon="&#xf013;" text="Editer profil" horizontalAlignment="left" fontSize="15" padding="15" (tap)="gotToEditAccount()"></Label>
                             </Ripple>
@@ -119,8 +131,8 @@
                                     padding="15"></Label>
                             </Ripple>
                             <StackLayout class="hr-light"></StackLayout>
-                            <Ripple rippleColor="#f5f5f5" margin="15">
-                                <Label icon="&#xf0f3;" text="Notifications" horizontalAlignment="left" fontSize="15" padding="15"></Label>
+                            <Ripple rippleColor="#c8d3e5" margin="15" (tap)="openNotificationLayout()">
+                                <Label icon="&#xf0f3;" text="Paramètres" horizontalAlignment="left" fontSize="15" padding="15"></Label>
                             </Ripple>
                         </StackLayout>
                     </CardView>
@@ -202,14 +214,26 @@
                     <TextField col="1" row="1" (returnPress)="focusDesc()" returnKeyType="next" #inputTitle class="input" [(ngModel)]="input.title"
                         hint="Votre titre ici" borderRadius="6" fontSize="15" placeholderColor="#bbbbbb"></TextField>
                     <Label col="0" row="2" text="Description" verticalAlignment="center"></Label>
-                    <TextField col="1" row="2" [(ngModel)]="input.description" #inputDesc hint=" Votre Description ici " placeholderColor="#bbbbbb" returnKeyType="done"
-                        (returnPress)="showWithSound(inputTitle.text,inputDesc.text)" padding="20"></TextField>
+                    <TextField col="1" row="2" [(ngModel)]="input.description" #inputDesc hint=" Votre Description ici " placeholderColor="#bbbbbb"
+                        returnKeyType="done" (returnPress)="showWithSound(inputTitle.text,inputDesc.text)" padding="20"></TextField>
                     <Button row="3" colspan="2" marginTop="15" backgroundColor="#4abd73" color="white" height="20%" borderRadius="8" width="40%"
                         text="Confirmer" (tap)="showWithSound(inputTitle.text,inputDesc.text)">
                     </Button>
                 </GridLayout>
             </StackLayout>
 
+        </AbsoluteLayout>
+        <AbsoluteLayout #notificationLayout visibility="{{ showNotification ? 'visible' : 'collapse' }}">
+            <StackLayout width="100%">
+                <Label row="0" colspan="2" fontSize="25" padding="5" horizontalAlignment="center" verticalAlignment="top" text="Paramètres"></Label>
+                <StackLayout class="hr-light" marginBottom="10%" marginTop="10%"></StackLayout>
+                <GridLayout rows="auto auto auto" columns="* *" class="m-5">
+                    <Label row="0" colspan="2" fontSize="15" padding="5" horizontalAlignment="left" verticalAlignment="top" text="Notifications"></Label>
+                    <Label class="h3 m-15" [text]="firstSwitchState" textWrap="true" row="1" col="0"></Label>
+                    <Switch class="m-15" checked="true" (checkedChange)="onFirstChecked($event)" row="1" col="1"></Switch>
+
+                </GridLayout>
+            </StackLayout>
         </AbsoluteLayout>
 
     </GridLayout>

@@ -4,6 +4,7 @@ import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "tns-core-modules/ui/page/page";
 import { Pedometer } from "nativescript-pedometer";
+import { getString, setString } from "tns-core-modules/application-settings/application-settings";
 @Component({
     selector: "Steps",
     moduleId: module.id,
@@ -11,11 +12,13 @@ import { Pedometer } from "nativescript-pedometer";
     styleUrls: ["./calories.component.css"]
 })
 export class CaloriesComponent implements OnInit {
-    steps:any;
+    caloriesData:any;
+    stepsData:any;
     startDate:any;
     endDate:any;
-    kilometre:number;
-    floors:number;
+    calories: any;
+    rest:number;
+    goal:number;
     duration:number;
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
@@ -30,10 +33,18 @@ export class CaloriesComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
       //  this.stepCounting();
+      this.caloriesData=JSON.parse(getString("caloriesData", "{}"));
+      this.calories=this.caloriesData.burned;
+      this.goal=1000;
+     // this.duration=this.stepsData.duration;
+      this.rest=this.caloriesData.rest;
+
+      this.caloriesCounting();
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
+        
     }
 
     
@@ -42,36 +53,22 @@ export class CaloriesComponent implements OnInit {
     }
 
 
- stepCounting(){
-    let pedometer = new Pedometer();
-
-    pedometer.isStepCountingAvailable().then(avail => {
-      alert(avail ? "your device have a step sensor" : "your device doesn't have a step sensor");
-    });
-    let midnight = new Date();
-    midnight.setHours(0, 0, 0, 0);
-    pedometer.startUpdates({
-       fromDate:midnight,
-       //toDate: new Date(); //  default: now
-        onUpdate: result => {
-          this.steps=result.steps;
-          this.endDate=result.endDate;
-          this.startDate=result.startDate;
-          this.stepconvert(result.steps);
-         // console.log(`Pedometer update: ${JSON.stringify(result)}`);
-        }
-      }).then(() => {
-        console.log("Pedometer updates started.");
-       // this.stepconvert(this.steps);
-      }, err => {
-        console.log("Error: " + err);
-      });
-    //  this.kilometre=parseInt(this.steps)/1250;
+ caloriesCounting(){
+   
+  this.stepsData=JSON.parse(getString("stepsData", "{}"));
+  let calories;
+  calories = {
+    burned:Number(this.stepsData.number)/2,
+    goal: this.goal,
+    rest:this.goal-Number(this.stepsData.number)/2,
+  };
+  setString("caloriesData", JSON.stringify(calories));
  }
+ 
  stepconvert(args)
  {
-    this.kilometre=args/1250;
-    this.floors=args/20;
+    //this.kilometre=args/1250;
+   // this.floors=args/20;
     this.duration=(args/1250)*9.4;
  }
 }

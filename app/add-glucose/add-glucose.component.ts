@@ -18,6 +18,8 @@ var application = require("application");
 import { registerElement } from "nativescript-angular/element-registry";
 import { ValidateService } from "./validate.service";
 registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
+//registerElement('PDFView', () => PDFView);
+//import { PDFView } from 'nativescript-pdf-view';
 import * as moment from "moment";
 moment.locale("fr");
 import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/absolute-layout";
@@ -26,6 +28,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from "@ngrx/store";
 import * as fromRoot from "./../shared/reducers";
 import * as appAction from "./../shared/actions/app.actions";
+
 
 
 
