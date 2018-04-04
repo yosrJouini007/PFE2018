@@ -26,7 +26,7 @@ let frameModule = require("tns-core-modules/ui/frame");
 // Services
 import { AuthService } from "../shared/auth.service";
 import { ValidateService } from "../shared/validate.service";
-
+import { getString, setString, setBoolean } from "tns-core-modules/application-settings/application-settings";
 
 @Component({
   selector: "login-auth",
@@ -60,12 +60,12 @@ export class LoginComponent implements OnInit {
     return this.passwordLayoutRef.nativeElement;
   }
 
- /* public onBackButtonTap(args) {
-    if (this.showPasswordStep) {
-      this.fadeInEmaillayout();
-      args.cancel = true;
-    }
-  }*/
+  /* public onBackButtonTap(args) {
+     if (this.showPasswordStep) {
+       this.fadeInEmaillayout();
+       args.cancel = true;
+     }
+   }*/
   input: any;
   spinner: boolean = false;
   password: string;
@@ -80,12 +80,12 @@ export class LoginComponent implements OnInit {
     private store: Store<fromRoot.State>
   ) {
 
-   /* if (application.android) {
-      application.android.on(
-        application.AndroidApplication.activityBackPressedEvent,
-        this.onBackButtonTap.bind(this)
-      );
-    }*/
+    /* if (application.android) {
+       application.android.on(
+         application.AndroidApplication.activityBackPressedEvent,
+         this.onBackButtonTap.bind(this)
+       );
+     }*/
 
 
     this.input = {
@@ -214,38 +214,31 @@ export class LoginComponent implements OnInit {
   login() {
     this.store.dispatch(new appAction.ShowLoadingAction());
     if (this.formValidate()) {
-      this.spinner = true;
+    
       let creds;
       creds = {
         password: this.input.password.value,
         email: this.input.email.value
       };
 
-      this.authService.login(creds).subscribe(
-        user => {
-          this.store.dispatch(new appAction.HideLoadingAction());
-          this.spinner = false;
-          this.store.dispatch(new appAction.FireAction("login"));
-          this.routerExtensions.navigate(["home"], {
-            clearHistory: true,
-            transition: {
-              name: "slide"
-            }
-          });
-          console.log(JSON.stringify(user));
-        },
-        error => {
-          this.spinner = false;
-          this.store.dispatch(new appAction.HideLoadingAction());
-          TNSFancyAlert.showError(
-            "Erreur!",
-            this.INVALID_LOGIN_CREDS
-          );
-          console.log(JSON.stringify(error));
-        }
-      );
+      let account = this.authService.login(creds);
+      if (creds.email==account.email&& creds.password==account.password) {
+        setBoolean("authenticated", true);
+        this.routerExtensions.navigate(["/home-connected"], { clearHistory: true });
+        this.store.dispatch(new appAction.HideLoadingAction());
+      }
+      else {
+        this.store.dispatch(new appAction.HideLoadingAction());
+        TNSFancyAlert.showError(
+          "Erreur!",
+          this.INVALID_LOGIN_CREDS
+        );
+      }
+
+
     }
   }
+
   private formValidate() {
 
     let formIsValide = true;

@@ -15,6 +15,7 @@ import * as appAction from "./../../shared/actions/app.actions";
 //Services
 var fetchModule = require("fetch");
 import { Http, Headers } from "@angular/http";
+import { getString, setString, setBoolean } from "tns-core-modules/application-settings/application-settings";
 
 @Injectable()
 export class AuthService {
@@ -41,15 +42,29 @@ export class AuthService {
   }
 
   login(credentials) {
-    return this.userApi.login(credentials);
-  }
+    
+   // return this.userApi.login(credentials);
+   let userString =JSON.parse(getString("account", "{}"));
+ try {
+     
+     return (userString);
+
+   } catch (e) {
+     return  {}
+   }
+    
+  
+ }
+  
 
   logout() {
     return this.userApi.logout();
   }
 
   register(credentials) {
-    return this.userApi.create(credentials);
+   //return this.userApi.create(credentials);
+   setString("account", JSON.stringify(credentials));
+   
   }
   changePassword(oldpassword, newpassword) {
     return this.userApi.changePassword(oldpassword, newpassword)
@@ -57,7 +72,10 @@ export class AuthService {
 
 
   createGuestProfile(data: any) {
-    return this.guestsApi.create(data);
+    //return this.guestsApi.create(data);
+    setString("profile", JSON.stringify(data));
+    setBoolean("authenticated", true);
+
   }
 
   updateGuestProfile(data: any, profile_id) {

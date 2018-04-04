@@ -23,6 +23,7 @@ import * as fromRoot from "./../../shared/reducers";
 import * as appAction from "./../../shared/actions/app.actions";
 import { Observable } from "tns-core-modules/data/observable";
 
+
 //Platform 
 import {
   getBoolean,
@@ -492,7 +493,7 @@ export class RegisterComponent implements OnInit {
       }
     }
     else if (!this.showWelcome) {
-    //  this.register();
+      //  this.register();
       this.fadeOutTypelayout().then(() => {
       });
       this.fadeInWelcomelayout().then(() => {
@@ -503,17 +504,17 @@ export class RegisterComponent implements OnInit {
 
   navigateToWelcome() {
     this.routerExtensions.navigate(["/home-connected"], {
-       queryParams: {
-         newaccount: true
-       }
+      queryParams: {
+        newaccount: true
+      }
     });
   }
 
   navigateToIntro() {
     this.routerExtensions.navigate(["/intro"], {
-       queryParams: {
-         newaccount: true
-       }
+      queryParams: {
+        newaccount: true
+      }
     });
   }
   /*  displayShowWelcome() {
@@ -534,51 +535,80 @@ export class RegisterComponent implements OnInit {
         password: this.input.password.value
       };
       console.log(JSON.stringify(creds));
-
+      this.authService.register(creds)
       this.store.dispatch(new appAction.ShowLoadingAction());
-      this.authService.register(creds).subscribe(
 
-        user => {
-          let guestProfile: any;
-          guestProfile = {
-            name: this.input.firstname.value,
-            lastname: this.input.lastname.value,
-            weight: this.input.weight.value,
-            size: this.input.size.value,
-            type:this.input.type.value,
-            userId: String(user.id),
-            // email: this.input.email.value,
-          };
-          // guestProfile.email = this.input.email.value;
-          console.log("user", user);
-          console.log(JSON.stringify(user));
-          this.authService
-            .createGuestProfile(guestProfile)
-            .subscribe(account => {
-              setString("guest_profile", JSON.stringify(account));
-              console.log(JSON.stringify(account));
-              this.authService.login(creds).subscribe(success => {
-                // this.displayShowTextStep()
-                this.store.dispatch(new appAction.FireAction("login"));
-                TNSFancyAlert.showSuccess("Success", "Inscription effectué");
-                this.navigateToWelcome();
-              });
-            });
-          this.store.dispatch(new appAction.HideLoadingAction());
-        },
-        error => {
-          error = error.error
-          console.log(JSON.stringify(error));
-          this.store.dispatch(new appAction.HideLoadingAction());
 
-          // if ("email" in error.details.codes) {
-          TNSFancyAlert.showError("Erreur", "Email existe");
-          //  console.log(JSON.stringify(error));
-        }
+      let profile: any;
+      profile = {
+        name: this.input.firstname.value,
+        lastname: this.input.lastname.value,
+        weight: this.input.weight.value,
+        size: this.input.size.value,
+        type: this.input.type.value,
+        // userId: String(profile.id),
+        // email: this.input.email.value,
+      };
+      profile.email = this.input.email.value;
 
-      );
+      this.store.dispatch(new appAction.SetUserAction(profile));
+      this.authService.createGuestProfile(profile)
+      // this.displayShowTextStep()
+      this.store.dispatch(new appAction.FireAction("login"));
+      TNSFancyAlert.showSuccess("Success", "Inscription effectué");
+      this.navigateToIntro();
+      this.store.dispatch(new appAction.HideLoadingAction());
     }
+    else {
+      this.store.dispatch(new appAction.HideLoadingAction());
+      TNSFancyAlert.showError("Erreur", "Email existe")
+    }
+
   }
+
+  /*  .subscribe(
+
+      profile => {
+        let guestProfile: any;
+        guestProfile = {
+          name: this.input.firstname.value,
+          lastname: this.input.lastname.value,
+          weight: this.input.weight.value,
+          size: this.input.size.value,
+          type:this.input.type.value,
+          userId: String(profile.id),
+          // email: this.input.email.value,
+        };
+        // guestProfile.email = this.input.email.value;
+        console.log("user", profile);
+        console.log(JSON.stringify(profile));
+        this.authService
+          .createGuestProfile(guestProfile)
+          .subscribe(account => {
+            setString("guest_profile", JSON.stringify(account));
+            console.log(JSON.stringify(account));
+            this.authService.login(creds).subscribe(success => {
+              // this.displayShowTextStep()
+              this.store.dispatch(new appAction.FireAction("login"));
+              TNSFancyAlert.showSuccess("Success", "Inscription effectué");
+              this.navigateToWelcome();
+            });
+          });
+        this.store.dispatch(new appAction.HideLoadingAction());
+      },
+      error => {
+        error = error.error
+        console.log(JSON.stringify(error));
+        this.store.dispatch(new appAction.HideLoadingAction());
+
+        // if ("email" in error.details.codes) {
+        TNSFancyAlert.showError("Erreur", "Email existe");
+        //  console.log(JSON.stringify(error));
+      }
+
+    );*/
+
+
 
 
   /* initViewFormPasswordExsit() {
