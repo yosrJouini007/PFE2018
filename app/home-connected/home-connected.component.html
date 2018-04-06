@@ -27,7 +27,7 @@
                     <GridLayout  colums="*,*" rows="*,*">
                         <Image  colspan="2"row="0"stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/dropIcon.png">
                         </Image>
-                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" text="1.16 g/l" fontSize="20" padding="15" color="#777777"></Label>
+                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" [text]="mesure" fontSize="20" padding="15" color="#777777"></Label>
                         <Label row="1" col="0" verticalAlignment="bottom" text="Suivi Glycémie" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
                     </GridLayout>
                 </CardView>
@@ -36,7 +36,7 @@
                     <GridLayout  colums="*,*" rows="*,*">
                         <Image colspan="2" row="0"  stretch="Fill"  horizontalAlignment="center" verticalAlignment="center"placeholder="localPlaceholderImgorResUrl" src="~/assets/images/foodIcon.PNG">
                         </Image>
-                        <Label row="1" col="1" verticalAlignment="top" text="1050.20 calories"  horizontalAlignment="center" fontSize="18" padding="15" color="#777777"></Label>
+                        <Label row="1" col="1" verticalAlignment="top" [text]="caloriesConsumed"  horizontalAlignment="center" fontSize="18" padding="15" color="#777777"></Label>
                         <Label   verticalAlignment="bottom"row="1" col="0"text="Calories Consommées" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
                     </GridLayout>
                 </CardView>
@@ -45,7 +45,7 @@
                     <GridLayout colums="*,*" rows="*,*">
                         <Image   colspan="2" row="0"  stretch="Fill" horizontalAlignment="center" verticalAlignment="center"placeholder="localPlaceholderImgorResUrl" src="~/assets/images/stepsIcon.png">
                         </Image>
-                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" text="8,320" fontSize="20" padding="15" color="#777777" textWrap="false"></Label>
+                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" [text]="steps" fontSize="20" padding="15" color="#777777" textWrap="false"></Label>
                       <!--  <Label row="1" col="2" verticalAlignment="top" horizontalAlignment="center" text="pas" fontSize="15" padding="15" color="#777777" marginLeft="10%"></Label>-->
                         <Label  row="1" col="0" text=" Nombre de Pas" fontSize="18" padding="15" color="#777777"  textWrap="false"verticalAlignment="bottom"></Label>
                     </GridLayout>
@@ -55,7 +55,7 @@
                     <GridLayout   colums="*,*"  rows="*,*">
                         <Image colspan="2" row="0"  stretch="Fill"  horizontalAlignment="center" verticalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/fireIcon3.png">
                         </Image>
-                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center"  text="201.25 calories" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
+                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center"  [text]="caloriesBurned" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
                         <Label row="1"  col="0" text="Calories Brulées" fontSize="18" padding="15" verticalAlignment="bottom" color="#777777" textWrap="false" ></Label>
                     </GridLayout>
                 </CardView>

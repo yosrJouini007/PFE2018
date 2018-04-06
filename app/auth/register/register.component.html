@@ -16,7 +16,7 @@
         icon="res://ic_check_white_24dp">
     </ActionItem>
 
-    
+
 </ActionBar>
 
 
@@ -99,31 +99,41 @@
 
 
                 <StackLayout #profileLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showProfileStep ? 'visible' : 'collapse' }}">
-                    <GridLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40' rows="*,*,*">
-                        <Label row="0" marginTop="30" fontSize="25" padding="15" textAlign="center" textWrap="false" text="Finaliser Votre Profil (1/2)"
-                            class="headline center"></Label>
-                        <StackLayout row="1" class="input-field regLogin">
-                            <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Taille (cm):" class="headline center"></Label>
-                            <TextField (returnPress)="focus()" returnKeyType="done" #sizeText class="input" padding="18" [ngModel]='input.size.value'
-                                (ngModelChange)='input.size.value=$event' keyboardType="phone"></TextField>
-                            <StackLayout class="hr-light"></StackLayout>
-                            <Label marginTop="3" class="text-danger" visibility="{{  input.size.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
-                        </StackLayout>
-                        <StackLayout row="2" class="input-field regLogin">
-                            <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Poids (Kg):" class="headline center"></Label>
-                            <TextField (returnPress)="nextRegister()" keyboardType="phone" returnKeyType="done" #weightText class="input" padding="18"
-                                [ngModel]='input.weight.value' (ngModelChange)='input.weight.value=$event'></TextField>
-                            <StackLayout class="hr-light"></StackLayout>
-                            <Label marginTop="3" class="text-danger" visibility="{{  input.weight.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
-                        </StackLayout>
-                    </GridLayout>
+                    <ScrollView>
+                        <GridLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40' rows="*,*,*,*,*,*">
+                            <Label row="0" marginTop="5" fontSize="25" padding="15" textAlign="center" textWrap="false" text="Finaliser Votre Profil (1/2)"
+                                class="headline center"></Label>
+
+                            <StackLayout row="1" class="input-field regLogin">
+                                <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Taille (cm):" class="headline center"></Label>
+                                <TextField (returnPress)="focus()" returnKeyType="done" #sizeText class="input" padding="18" [ngModel]='input.size.value'
+                                    (ngModelChange)='input.size.value=$event' keyboardType="phone"></TextField>
+                                <StackLayout class="hr-light"></StackLayout>
+                                <Label marginTop="3" class="text-danger" visibility="{{  input.size.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
+                            </StackLayout>
+                            <StackLayout row="2" class="input-field regLogin">
+                                <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Poids (Kg):" class="headline center"></Label>
+                                <TextField (returnPress)="focusAge()" keyboardType="phone" returnKeyType="done" #weightText class="input" padding="18" [ngModel]='input.weight.value'
+                                    (ngModelChange)='input.weight.value=$event'></TextField>
+                                <StackLayout class="hr-light"></StackLayout>
+                                <Label marginTop="3" class="text-danger" visibility="{{  input.weight.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
+                            </StackLayout>
+                            <StackLayout row="3" class="input-field regLogin">
+                                <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Age:" class="headline center"></Label>
+                                <TextField (returnPress)="nextRegister()" keyboardType="phone" returnKeyType="done" #ageText class="input" padding="18" [ngModel]='input.age.value'
+                                    (ngModelChange)='input.age.value=$event'></TextField>
+                                <StackLayout class="hr-light"></StackLayout>
+                                <Label marginTop="3" class="text-danger" visibility="{{  input.age.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
+                            </StackLayout>
+                        </GridLayout>
+                    </ScrollView>
                 </StackLayout>
 
                 <StackLayout #typeLayout class="parent-container" verticalAlignement="top" visibility="{{showTypeStep ? 'visible' : 'collapse' }}">
                     <GridLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40' rows="*,*,*">
                         <Label row="0" marginTop="30" fontSize="25" padding="15" textAlign="center" textWrap="false" text="Finaliser Votre Profil (2/2)"
                             class="headline center"></Label>
-                        <Label  row="1"marginTop="30" fontSize="28" padding="15" textAlign="center" textWrap="false" text="Type:" class="headline center"></Label>
+                        <Label row="1" marginTop="30" fontSize="28" padding="15" textAlign="center" textWrap="false" text="Type:" class="headline center"></Label>
                         <StackLayout row="2">
                             <Button text="Type 1" (tap)="pickOne()" verticalAlignment="top" class="btn btn-primary" borderWidth="2" height="35%" width="100%"
                                 borderRadius="2" borderWidth="2" isEnabled="{{ enableOne ? 'true' : 'false' }}">
@@ -133,8 +143,8 @@
                                 borderRadius="10" borderWidth="2" isEnabled="{{ enableTwo ? 'true' : 'false' }}">
                             </Button>
 
-                            <Button text="Gestationnel" (tap)="pickG()" verticalAlignment="top" class="btn btn-primary" borderWidth="2" height="35%" width="100%"
-                                borderRadius="10" borderWidth="2" isEnabled="{{ enableG ? 'true' : 'false' }}">
+                            <Button text="Gestationnel" (tap)="pickG()" verticalAlignment="top" class="btn btn-primary" borderWidth="2" height="35%"
+                                width="100%" borderRadius="10" borderWidth="2" isEnabled="{{ enableG ? 'true' : 'false' }}">
                             </Button>
 
                             <Button text="Lada" (tap)="pickL()" verticalAlignment="top" class="btn btn-primary" borderWidth="2" height="35%" width="100%"
@@ -144,13 +154,12 @@
                     </GridLayout>
                 </StackLayout>
                 <StackLayout #welcomeLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showWelcome ? 'visible' : 'collapse' }}">
-                        <StackLayout margin="2" verticalAlignment="top">
-                            <Label marginTop="20" textAlign="center" textWrap="true" text="Bienvenu, Nous somme heureux de vous compter parmi nous">
-                            </Label>
-                            <Button marginTop="30" class="btn btn-primary"  color="white" padding="20" borderRadius="5" text="commencer"
-                                (tap)="begin()"></Button>
-                        </StackLayout>
+                    <StackLayout margin="2" verticalAlignment="top">
+                        <Label marginTop="20" textAlign="center" textWrap="true" text="Bienvenu, Nous somme heureux de vous compter parmi nous">
+                        </Label>
+                        <Button marginTop="30" class="btn btn-primary" color="white" padding="20" borderRadius="5" text="commencer" (tap)="begin()"></Button>
                     </StackLayout>
+                </StackLayout>
 
                 <!-- 
                       

@@ -12,7 +12,7 @@ import { getString, setString } from "tns-core-modules/application-settings/appl
     styleUrls: ["./calories.component.css"]
 })
 export class CaloriesComponent implements OnInit {
-    caloriesData:any;
+    caloriesBurnedData:any;
     stepsData:any;
     startDate:any;
     endDate:any;
@@ -33,11 +33,11 @@ export class CaloriesComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
       //  this.stepCounting();
-      this.caloriesData=JSON.parse(getString("caloriesData", "{}"));
-      this.calories=this.caloriesData.burned;
+      this.caloriesBurnedData=JSON.parse(getString("caloriesBurnedData", "{}"));
+      this.calories=this.caloriesBurnedData.burned;
       this.goal=1000;
      // this.duration=this.stepsData.duration;
-      this.rest=this.caloriesData.rest;
+      this.rest=this.caloriesBurnedData.rest;
 
       this.caloriesCounting();
     }
@@ -62,7 +62,7 @@ export class CaloriesComponent implements OnInit {
     goal: this.goal,
     rest:this.goal-Number(this.stepsData.number)/2,
   };
-  setString("caloriesData", JSON.stringify(calories));
+  setString("caloriesBurnedData", JSON.stringify(calories));
  }
  
  stepconvert(args)

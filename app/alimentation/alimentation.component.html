@@ -34,63 +34,129 @@
                 col="2" borderWidth="2" isEnabled="{{ enableDinner ? 'true' : 'false' }}"></Button>
             <Button text="Grignotage" (tap)="showSnackLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
                 col="3" borderWidth="2" isEnabled="{{ enableSnack ? 'true' : 'false' }}"></Button>
-            <StackLayout verticalAlignment="top" row="1" colspan="4" visibility="{{ showBreak ? 'visible' : 'collapse' }}" height="300">
+            <StackLayout row="1" colspan="4" visibility="{{ showBreak ? 'visible' : 'collapse' }}" height="300">
                 <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="top" textWrap="true" padding="12" fontWeight="bold">
                 </Label>
-                    <ListView [items]="breakFast"  class="list-group">
-                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                <ScrollView height="300">
+                    <ListView [items]="breakFast" class="list-group">
+                        <ng-template let-item="item">
                             <GridLayout class="list-group-item" columns="auto auto">
                                 <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
                                 </image>
-                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                                <Label col="1" [text]="item" fontSize="20"></Label>
                             </GridLayout>
                         </ng-template>
                     </ListView>
+                </ScrollView>
+                <GridLayout rows="*,*,*,*,*" columns="*,*">
+                    <Label row="0" col="0" text="Total Calories" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="0" [text]="consumed" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="0" col="1" text="Objectif" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="1" [text]="goal" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="2" colspan="2" text="Votre Progrès" marginTop="20" verticalAlignment="center" horizontalAlignment="center" fontSize="20"
+                        marginBottom="10"></Label>
+                    <Image row="3" colspan="2" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                        src="~/assets/images/objectif.png">
+                    </Image>
+                    <StackLayout row="4" colspan="2" verticalAlign="center" height="100">
+                        <Progress (loaded)="onProgressBarLoaded($event)" (valueChanged)="onValueChanged($event)" color="#8C489F" backgroundColor="#FFFF66"
+                            class="m-20" width="80%"></Progress>
+                    </StackLayout>
+
+                </GridLayout>
             </StackLayout>
             <StackLayout row="1" colspan="4" visibility="{{ showLunch ? 'visible' : 'collapse' }}">
                 <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
                 </Label>
                 <ScrollView height="300">
                     <ListView [items]="lunch" class="list-group">
-                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                        <ng-template let-item="item">
                             <GridLayout class="list-group-item" columns="auto auto">
                                 <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
                                 </image>
-                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                                <Label col="1" [text]="item" fontSize="20"></Label>
                             </GridLayout>
                         </ng-template>
                     </ListView>
                 </ScrollView>
+                <GridLayout rows="*,*,*,*,*" columns="*,*">
+                    <Label row="0" col="0" text="Total Calories" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="0" [text]="consumed" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="0" col="1" text="Objectif" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="1" [text]="goal" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="2" colspan="2" text="Votre Progrès" marginTop="20" verticalAlignment="center" horizontalAlignment="center" fontSize="20"
+                        marginBottom="10"></Label>
+                    <Image row="3" colspan="2" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                        src="~/assets/images/objectif.png">
+                    </Image>
+                    <StackLayout row="4" colspan="2" verticalAlign="center" height="100">
+                        <Progress (loaded)="onProgressBarLoaded($event)" (valueChanged)="onValueChanged($event)" color="#8C489F" backgroundColor="#FFFF66"
+                            class="m-20" width="80%"></Progress>
+                    </StackLayout>
+
+                </GridLayout>
             </StackLayout>
             <StackLayout row="1" colspan="4" visibility="{{ showDinner ? 'visible' : 'collapse' }}">
                 <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
                 </Label>
                 <ScrollView height="300">
                     <ListView [items]="dinner" class="list-group">
-                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                        <ng-template let-item="item">
                             <GridLayout class="list-group-item" columns="auto auto">
                                 <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
                                 </image>
-                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                                <Label col="1" [text]="item" fontSize="20"></Label>
                             </GridLayout>
                         </ng-template>
                     </ListView>
                 </ScrollView>
+                <GridLayout rows="*,*,*,*,*" columns="*,*">
+                    <Label row="0" col="0" text="Total Calories" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="0" [text]="consumed" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="0" col="1" text="Objectif" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="1" [text]="goal" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="2" colspan="2" text="Votre Progrès" marginTop="20" verticalAlignment="center" horizontalAlignment="center" fontSize="20"
+                        marginBottom="10"></Label>
+                    <Image row="3" colspan="2" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                        src="~/assets/images/objectif.png">
+                    </Image>
+                    <StackLayout row="4" colspan="2" verticalAlign="center" height="100">
+                        <Progress (loaded)="onProgressBarLoaded($event)" (valueChanged)="onValueChanged($event)" color="#8C489F" backgroundColor="#FFFF66"
+                            class="m-20" width="80%"></Progress>
+                    </StackLayout>
+
+                </GridLayout>
             </StackLayout>
             <StackLayout row="1" colspan="4" visibility="{{ showSnack ? 'visible' : 'collapse' }}">
                 <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="center" textWrap="true" padding="12" fontWeight="bold">
                 </Label>
                 <ScrollView height="300">
-                    <ListView [items]="snack"  class="list-group">
-                        <ng-template let-food="item" let-i="index" let-odd="odd" let-even="even">
+                    <ListView [items]="snack" class="list-group">
+                        <ng-template let-item="item">
                             <GridLayout class="list-group-item" columns="auto auto">
                                 <image col="0" src="~/assets/images/cake.jpg" height="20" width="28">
                                 </image>
-                                <Label col="1" [text]="food.name" fontSize="20"></Label>
+                                <Label col="1" [text]="item" fontSize="20"></Label>
                             </GridLayout>
                         </ng-template>
                     </ListView>
                 </ScrollView>
+                <GridLayout rows="*,*,*,*,*" columns="*,*">
+                    <Label row="0" col="0" text="Total Calories" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="0" [text]="consumed" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="0" col="1" text="Objectif" verticalAlignment="center" horizontalAlignment="center" fontSize="20" marginBottom="10"></Label>
+                    <Label row="1" col="1" [text]="goal" verticalAlignment="center" horizontalAlignment="center" fontSize="15" marginBottom="10"></Label>
+                    <Label row="2" colspan="2" text="Votre Progrès" marginTop="20" verticalAlignment="center" horizontalAlignment="center" fontSize="20"
+                        marginBottom="10"></Label>
+                    <Image row="3" colspan="2" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                        src="~/assets/images/objectif.png">
+                    </Image>
+                    <StackLayout row="4" colspan="2" verticalAlign="center" height="100">
+                        <Progress (loaded)="onProgressBarLoaded($event)" (valueChanged)="onValueChanged($event)" color="#8C489F" backgroundColor="#FFFF66"
+                            class="m-20" width="80%"></Progress>
+                    </StackLayout>
+
+                </GridLayout>
             </StackLayout>
         </GridLayout>
 
@@ -111,17 +177,17 @@
 
         <AbsoluteLayout #addLayout visibility="{{ showAdd ? 'visible' : 'collapse' }}">
             <StackLayout width="100%">
-                <GridLayout columns="*,*,*,*" rows="*,*,*" width="100%" >
+                <GridLayout columns="*,*,*,*" rows="*,*,*" width="100%">
                     <image row="0" colspan="4" src="~/assets/images/cake.jpg" height="300" width="100%" stretch="aspectFill"></image>
                     <Label row="0" col="0" fontSize="20" class="h3  m-55 text-left" padding="5" horizontalAlignment="left" verticalAlignment="bottom"
                         color="white" [text]="foodToken" textWrap="false">
                     </Label>
-                    <label text="Energie" row="1" col="0" horizontalAlignment="left" ></label>
+                    <label text="Energie" row="1" col="0" horizontalAlignment="left"></label>
                     <label text=" 0 Kcal" row="2" col="0" horizontalAlignment="left"></label>
-                    <label text="Glucides" row="1" col="1" horizontalAlignment="left" ></label>
-                    <label text="0 g" col="1" row="2" horizontalAlignment="left" ></label>
-                    <label text="Proteines (g)" row="1" col="2" horizontalAlignment="left" ></label>
-                    <label text="0 g" col="2" row="2" horizontalAlignment="left" ></label>
+                    <label text="Glucides" row="1" col="1" horizontalAlignment="left"></label>
+                    <label text="0 g" col="1" row="2" horizontalAlignment="left"></label>
+                    <label text="Proteines (g)" row="1" col="2" horizontalAlignment="left"></label>
+                    <label text="0 g" col="2" row="2" horizontalAlignment="left"></label>
                     <label text="Lipides (g)" row="1" col="3" horizontalAlignment="left"></label>
                     <label text="0 g" col="3" row="2" horizontalAlignment="left"></label>
                 </GridLayout>
@@ -131,7 +197,7 @@
                     </TextField>
                     <label text="Portion (100g)" col="1" verticalAlignment="center" horizontalAlignment="center"></label>
                 </GridLayout>
-                <Button class="btn btn-primary" padding="20" borderRadius="5"  width="80%" text="Ajouter" (tap)="saveFood()">
+                <Button class="btn btn-primary" padding="20" borderRadius="5" width="80%" text="Ajouter" (tap)="saveFood()">
                 </Button>
             </StackLayout>
         </AbsoluteLayout>

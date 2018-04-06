@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class ValidateService {
     private emailRegx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     private numberRegx=/^[0-9]+(\.[0-9]{1,2})$/;
+    private ageRegx=/^([1-9]\d?)?$/;
     constructor() { }
 
     isEmail(email): boolean {
@@ -11,6 +12,9 @@ export class ValidateService {
     }
     isNumber(num): boolean {
         return this.numberRegx.test(num)
+    }
+    isAge(age): boolean {
+        return this.ageRegx.test(age)
     }
   
     isEmpty(input): boolean {

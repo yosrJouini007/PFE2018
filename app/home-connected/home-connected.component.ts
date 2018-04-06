@@ -3,6 +3,7 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-si
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "tns-core-modules/ui/page/page";
+import { getString } from "tns-core-modules/application-settings/application-settings";
 
 @Component({
     selector: "Home",
@@ -11,17 +12,15 @@ import { Page } from "tns-core-modules/ui/page/page";
     styleUrls: ["./home-connected.component.css"]
 })
 export class HomeConnectedComponent implements OnInit {
-    /* ***********************************************************
-    * Use the @ViewChild decorator to get a reference to the drawer component.
-    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-    *************************************************************/
+  steps: any;
+  caloriesBurned:any;
+  caloriesConsumed:any;
+  mesure:any;
+  
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    /* ***********************************************************
-    * Use the sideDrawerTransition perty to change the open/close animation of the drawer.
-    *************************************************************/
    constructor(private _page: Page, private router: RouterExtensions)
    {
 
@@ -29,16 +28,21 @@ export class HomeConnectedComponent implements OnInit {
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
+        let stepsData=JSON.parse(getString("stepsData", "{}"));
+        this.steps=stepsData.number;
+        let caloriesBurnedData=JSON.parse(getString("caloriesBurnedData", "{}"));
+        this.caloriesBurned=caloriesBurnedData.burned;
+        let caloriesConsumedData=JSON.parse(getString("caloriesConsumedData", "{}"));
+        this.caloriesConsumed=caloriesConsumedData.consumed;
+        this.mesure=JSON.parse(getString("mesure", "{}"));
+
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
     }
 
-    /* ***********************************************************
-    * According to guidelines, if you have a drawer on your page, you should always
-    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-    *************************************************************/
+ 
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }

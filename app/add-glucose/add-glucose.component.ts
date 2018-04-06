@@ -28,6 +28,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from "@ngrx/store";
 import * as fromRoot from "./../shared/reducers";
 import * as appAction from "./../shared/actions/app.actions";
+import { setString, getString } from "tns-core-modules/application-settings/application-settings";
 
 
 
@@ -67,9 +68,9 @@ export class AddGlucoseComponent implements OnInit {
     private hourStr;
     public fulldateStr: string = "";
     private data = [];
-    chart: Data[] = [];
-    chartWeek: Data[] = [];
-    chartMonth: Data[] = [];
+    chart: any[] = [];
+    chartWeek: any[] = [];
+    chartMonth: any[] = [];
     PLEASE_SELECT_DATE = "Vous devez sélectionner la date";
     PLEASE_SELECT_HOUR = "Vous devez sélectionner l'heure";
     //textInput = new Subject<string>();
@@ -97,7 +98,7 @@ export class AddGlucoseComponent implements OnInit {
     private get screenWidth(): number {
         return screen.mainScreen.widthDIPs;
     }
-    private _SourceDaily: ObservableArray<Data>;
+    private _SourceDaily: ObservableArray<any>;
     private _SourceWeekly: ObservableArray<Data>;
     private _SourceMonthly: ObservableArray<Data>;
 
@@ -115,10 +116,10 @@ export class AddGlucoseComponent implements OnInit {
             },
         };
         this.chart = [
-            {
+           /* {
                 Date: "12:30",
-                Mesure: 2,
-            }];
+                Mesure:2,
+            }*/];
         this.chartWeek = [
             //{
             // Date: "7/03/2018",
@@ -136,6 +137,16 @@ export class AddGlucoseComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
+        let charts;
+        charts= {
+            chart: JSON.parse(getString("chart", "{}")),
+            chartWeek: JSON.parse(getString("chartWeek", "{}")),
+            chartMonth: JSON.parse(getString("chartMonth", "{}")),
+            
+        }
+        this.initDataItems(charts.chart, this.chart);
+        this.initDataItems(charts.chartWeek, this.chartWeek);
+        this.initDataItems(charts.chartMonth, this.chartMonth);
         this._SourceDaily = new ObservableArray(this.chart);
         this._SourceWeekly = new ObservableArray(this.chartWeek);
         this._SourceMonthly = new ObservableArray(this.chartMonth);
@@ -146,13 +157,13 @@ export class AddGlucoseComponent implements OnInit {
     }
 
 
-    get SourceDaily(): ObservableArray<Data> {
+    get SourceDaily(): ObservableArray<any> {
         return this._SourceDaily;
     }
-    get SourceWeekly(): ObservableArray<Data> {
+    get SourceWeekly(): ObservableArray<any> {
         return this._SourceWeekly;
     }
-    get SourceMonthly(): ObservableArray<Data> {
+    get SourceMonthly(): ObservableArray<any> {
         return this._SourceMonthly;
     }
     get sideDrawerTransition(): DrawerTransitionBase {
@@ -164,7 +175,13 @@ export class AddGlucoseComponent implements OnInit {
     }
 
 
+    private initDataItems(args1, args2) {
+        //this._items = new ObservableArray<any>();
 
+        for (var i = 0; i < args1.length; i++) {
+            args2.push(args1[i]);
+        }
+    }
 
     addGlucose() {
         this.dateTextHolder = this.currentDateHolder;
@@ -299,14 +316,18 @@ export class AddGlucoseComponent implements OnInit {
 
             //this.mesure=parseFloat(this.input.glucose.value);
             this.date = this.selectedDateStr;
-            this.chart.push(new Data(this.selectedTimeStr, this.mesure));
-            this._SourceDaily.push(new Data(this.selectedTimeStr, this.mesure));
+            this.chart.push({Date:this.selectedTimeStr,Mesure: this.mesure});
+            setString("chart", JSON.stringify(this.chart));
+            setString("mesure", JSON.stringify(this.mesure));//last Mesure
+            this._SourceDaily.push(this.chart);
             let week = this.chart.reduce((a, b) => a + b.Mesure, 0) / this.chart.length;
-            this.chartWeek.push(new Data(this.date, week));
-            this._SourceWeekly.push(new Data(this.date, week));
+            this.chartWeek.push({Date:this.date, Mesure:week});
+            setString("chartWeek", JSON.stringify(this.chartWeek));
+            this._SourceWeekly.push(this.chartWeek);
             let month = this.chartWeek.reduce((a, b) => a + b.Mesure, 0) / this.chartWeek.length;
-            this.chartMonth.push(new Data(this.month, month));
-            this._SourceMonthly.push(new Data(this.month, month));
+            this.chartMonth.push({Date:this.month,Mesure:month});
+            setString("chartMonth", JSON.stringify(this.chartMonth));
+            this._SourceMonthly.push(this.chartMonth);
             /* this.data.map(item => {
                   return {
                       Date: item.Date,

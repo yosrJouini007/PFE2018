@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms';
 import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 import alimentation from "./data";
 import { Store } from "@ngrx/store";
+import { Progress } from "ui/progress";
 import * as fromRoot from "./../shared/reducers";
 import * as foodAction from "./../shared/actions/food.actions";
 import {
@@ -33,13 +34,7 @@ import {
     setString,
     remove,
     clear
-  } from "application-settings";
-
-
-
-class food {
-    constructor(public name: string) { }
-}
+} from "application-settings";
 
 @Component({
     selector: "alimentation",
@@ -82,20 +77,14 @@ export class AlimentationComponent implements OnInit {
     showLunch: boolean = false;
     showDinner: boolean = false;
     showSearch: boolean = true;
-    PICK_DATE = "Choose Date";
-    public selectedDateStr: string = "";
-    public selectedTimeStr: string = "";
-    PICK_HOUR = "Choose Hour";
-    private dateStr;
-    private hourStr;
-    public fulldateStr: string = "";
-
-    //textInput = new Subject<string>();
-
-    public breakFast: Array<food>;
-    public lunch: Array<food>;
-    public dinner: Array<food>;
-    public snack: Array<food>;
+    public breakFast: Array<any> = [];
+    public lunch: Array<any>;
+    public dinner: Array<any>;
+    public snack: Array<any>;
+    caloriesConsumedData: any;
+    consumed: number;
+    rest: number;
+    goal: number;
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("addLayout") addLayoutRef: ElementRef;
     @ViewChild("autocmp") autocmp: RadAutoCompleteTextViewComponent;
@@ -127,16 +116,17 @@ export class AlimentationComponent implements OnInit {
     ) {
 
         this.currentdate = new Date();
-        this.breakFast =JSON.parse(getString("breakfast", "Nothing"));
-        this.lunch = JSON.parse(getString("lunch", "{}"));
-        this.dinner = JSON.parse(getString("dinner", "{}"));
-        this.snack = JSON.parse(getString("snack", "{}"));
+        this.breakFast = [];
+        this.lunch = [];
+        this.dinner = [];
+        this.snack = [];
 
-     /*   this.store.select(fromRoot.getFoods).subscribe((foods) => {
-              
-                  this.initDataItems(foods);
-             })*/
-      this.initDataItems();
+
+        /*   this.store.select(fromRoot.getFoods).subscribe((foods) => {
+                 
+                     this.initDataItems(foods);
+                })*/
+        this.initDataItems();
 
     }
 
@@ -144,26 +134,26 @@ export class AlimentationComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
+        let food;
+        food = {
+            breakfast: JSON.parse(getString("breakFast", "{}")),
+            lunch: JSON.parse(getString("lunch", "{}")),
+            dinner: JSON.parse(getString("dinner", "{}")),
+            snack: JSON.parse(getString("snack", "{}"))
+        }
+        
+        this.initFoodItems(food.breakfast, this.breakFast);
+        this.initFoodItems(food.lunch, this.lunch);
+        this.initFoodItems(food.dinner, this.dinner);
+        this.initFoodItems(food.snack, this.snack);
+        
+        this.caloriesConsumedData = JSON.parse(getString("caloriesConsumedData", "{}"));
+        this.consumed = 750;
+        this.goal = 1500;
+        // this.duration=this.stepsData.duration;
+        this.rest = this.caloriesConsumedData.rest;
+        this.CaloriesCounting();
 
-
-        /*  this.searchInput$ = this.searchInput
-          .debounceTime(100)
-          .distinctUntilChanged()
-          .subscribe(
-            (data: any) => {
-              let textField = <TextField>data.object;
-              if (this.connexionState == "NONE") {
-                this.store.dispatch(new appAction.NoInternetAction(new Date()));
-              } else {
-                this.zone.run(() => {
-                  this.search(textField.text);
-                });
-              }
-            },
-            error => {
-              console.log(error);
-            }
-          );*/
 
 
 
@@ -179,7 +169,7 @@ export class AlimentationComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-   private initDataItems() {
+    private initDataItems() {
         this._items = new ObservableArray<TokenModel>();
 
         for (var i = 0; i < this.food.length; i++) {
@@ -187,18 +177,26 @@ export class AlimentationComponent implements OnInit {
         }
     }
 
-     
-   /* private initDataItems(data) {
-        this._items = new ObservableArray<TokenModel>();
+    private initFoodItems(args1, args2) {
+        //this._items = new ObservableArray<any>();
 
-        for (var i = 0; i < data.length; i++) {
-            this._items.push(new TokenModel(data[i], undefined));
+        for (var i = 0; i < args1.length; i++) {
+            args2.push(args1[i]);
         }
-    }*/
+    }
+
+
+    /* private initDataItems(data) {
+         this._items = new ObservableArray<TokenModel>();
+ 
+         for (var i = 0; i < data.length; i++) {
+             this._items.push(new TokenModel(data[i], undefined));
+         }
+     }*/
 
     public onDidAutoComplete(args) {
         this.foodToken = args.text;
-      //  setString("food", JSON.stringify(args.text));
+        //  setString("food", JSON.stringify(args.text));
 
         this.addLayout
             .animate({
@@ -211,30 +209,55 @@ export class AlimentationComponent implements OnInit {
         this.hideKeyboard();
 
     }
+    onProgressBarLoaded(args) {
+        let myProgressBar = <Progress>args.object;
 
+        myProgressBar.value = this.consumed;
+        myProgressBar.maxValue = this.goal;
+
+        /*setInterval(function() {
+            myProgressBar.value += 2;
+        }, 300);*/
+    }
+    onValueChanged(args) {
+        let progressBar = <Progress>args.object;
+
+        console.log("Value changed for " + progressBar);
+        console.log("New value: " + progressBar.value);
+    }
     saveFood() {
-       
+
         if (this.showBreak == true) {
-          //  this.breakFast.push(new food(this.foodToken));
-            setString("breakfast", JSON.stringify(this.foodToken));
+            this.breakFast.push(this.foodToken);
+            setString("breakFast", JSON.stringify(this.breakFast));
         }
         else
             if (this.showLunch == true) {
-                this.lunch.push(new food(this.foodToken));
-                setString("lunch", JSON.stringify(this.breakFast));
+                this.lunch.push(this.foodToken );
+                setString("lunch", JSON.stringify(this.lunch));
             }
             else
                 if (this.showSnack == true) {
-                    this.snack.push(new food(this.foodToken));
-                    setString("snack", JSON.stringify(this.breakFast));
+                    this.snack.push(this.foodToken);
+                    setString("snack", JSON.stringify(this.snack));
                 }
                 else
                     if (this.showDinner == true) {
-                        this.dinner.push(new food(this.foodToken));
-                        setString("dinner", JSON.stringify(this.breakFast));
+                        this.dinner.push(this.foodToken);
+                        setString("dinner", JSON.stringify(this.dinner));
                     }
         this.closeAdd();
 
+    }
+
+    CaloriesCounting() {
+        let calories;
+        calories = {
+            consumed: this.consumed,
+            goal: this.goal,
+            rest: this.goal - this.consumed,
+        };
+        setString("caloriesConsumedData", JSON.stringify(calories));
     }
 
 
@@ -281,60 +304,6 @@ export class AlimentationComponent implements OnInit {
         this.enableDinner = true;
     }
 
-
-    selectDate(fn) {
-        picker
-            .pickDate({
-                title: this.PICK_DATE,
-                theme: "dark",
-                minDate: new Date(),
-                startingDate: new Date()
-            })
-            .then((result: any) => {
-                if (result) {
-                    this.dateStr = result.day + "-" + result.month + "-" + result.year;
-                    this.month = result.month + "-" + result.year;
-                    this.selectedDateStr =
-                        result.day + "/" + result.month + "/" + result.year;
-                    this.dateTextHolder = this.selectedDateStr;
-                    if (fn) fn();
-
-                } else {
-                }
-            })
-            .catch(error => {
-                console.log("Error: " + error);
-            });
-    }
-
-    pickDateTime() {
-        this.selectDate(this.selectTime.bind(this));
-    }
-
-
-    selectTime() {
-        picker
-            .pickTime({
-                title: this.PICK_HOUR,
-                theme: "dark"
-            })
-            .then((result: any) => {
-                if (result) {
-                    this.hourStr = result.hour + ":" + result.minute;
-                    this.selectedTimeStr = result.hour + ":" + result.minute;
-                    // this.dateTextHolder =this.selectedTimeStr;
-                    this.fulldateStr = moment(this.selectedDateStr + " " + this.selectedTimeStr, "mm/dd/yyyy hh:mm").format('LLLL');
-                    this.dateTextHolder = this.fulldateStr;
-                    // this.inputFieldEl.focus();
-
-
-                } else {
-                }
-            })
-            .catch(error => {
-                console.log("Error: " + error);
-            });
-    }
     closeAdd() {
 
         this.showAdd = false;

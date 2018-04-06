@@ -53,6 +53,7 @@ export class RegisterComponent implements OnInit {
   @ViewChild("emailText") emailTextRef: ElementRef;
   @ViewChild("sizeText") sizeTextRef: ElementRef;
   @ViewChild("weightText") weightTextRef: ElementRef;
+  @ViewChild("ageText") ageTextRef: ElementRef;
   @ViewChild("lastNameText") lastNameTextRef: ElementRef;
   @ViewChild("passwordText") passwordTextRef: ElementRef;
   @ViewChild("passwordConfirmText") passwordConfirmTextRef: ElementRef;
@@ -79,6 +80,9 @@ export class RegisterComponent implements OnInit {
   }
   private get weightText(): TextField {
     return this.weightTextRef.nativeElement;
+  }
+  private get ageText(): TextField {
+    return this.ageTextRef.nativeElement;
   }
   private get lastNameText(): TextField {
     return this.lastNameTextRef.nativeElement;
@@ -174,6 +178,10 @@ export class RegisterComponent implements OnInit {
         error: false
       },
       weight: {
+        value: "",
+        error: false
+      },
+      age: {
         value: "",
         error: false
       },
@@ -388,6 +396,11 @@ export class RegisterComponent implements OnInit {
       this.weightText.focus();
     }
   }
+  focusAge() {
+    if (this.validateWeight()) {
+      this.ageText.focus();
+    }
+  }
   pickOne() {
     this.enableOne = false;
     this.enableTwo = true;
@@ -482,7 +495,7 @@ export class RegisterComponent implements OnInit {
       }
     }
     else if (!this.showTypeStep) {
-      if (this.validateWeight()) {
+      if (this.validateAge()) {
 
         this.fadeOutProfilelayout().then(() => {
         });
@@ -544,6 +557,7 @@ export class RegisterComponent implements OnInit {
         name: this.input.firstname.value,
         lastname: this.input.lastname.value,
         weight: this.input.weight.value,
+        age: this.input.age.value,
         size: this.input.size.value,
         type: this.input.type.value,
         // userId: String(profile.id),
@@ -656,6 +670,17 @@ export class RegisterComponent implements OnInit {
       this.input.weight.error = false;
     } else {
       this.input.weight.error = true;
+      Valide = false;
+    }
+    return Valide;
+  }
+  validateAge() {
+    let Valide = true;
+    if (this.validateService.isAge(this.input.age.value)) {
+
+      this.input.age.error = false;
+    } else {
+      this.input.age.error = true;
       Valide = false;
     }
     return Valide;
