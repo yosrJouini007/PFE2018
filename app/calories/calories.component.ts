@@ -12,12 +12,13 @@ import { getString, setString } from "tns-core-modules/application-settings/appl
     styleUrls: ["./calories.component.css"]
 })
 export class CaloriesComponent implements OnInit {
-    caloriesBurnedData:any;
+    caloriesData:any;
+    goalData:any;
     stepsData:any;
     startDate:any;
     endDate:any;
-    calories: any;
-    rest:number;
+    caloriesBurned:number;
+    restToBurn:number;
     goal:number;
     duration:number;
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -33,12 +34,12 @@ export class CaloriesComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
       //  this.stepCounting();
-      this.caloriesBurnedData=JSON.parse(getString("caloriesBurnedData", "{}"));
-      this.calories=this.caloriesBurnedData.burned;
-      this.goal=1000;
+      this.caloriesData=JSON.parse(getString("caloriesBurnedData", "{}"));
+      this.goalData=JSON.parse(getString("goalsData", "{}"));
+      this.caloriesBurned=this.caloriesData.burned;
+      this.goal=1000; // this.goalData.goalToBurn
      // this.duration=this.stepsData.duration;
-      this.rest=this.caloriesBurnedData.rest;
-
+      this.restToBurn=this.caloriesData.restToBurn;
       this.caloriesCounting();
     }
 
@@ -59,8 +60,7 @@ export class CaloriesComponent implements OnInit {
   let calories;
   calories = {
     burned:Number(this.stepsData.number)/2,
-    goal: this.goal,
-    rest:this.goal-Number(this.stepsData.number)/2,
+    restToBurn:this.goal-Number(this.stepsData.number)/2,
   };
   setString("caloriesBurnedData", JSON.stringify(calories));
  }

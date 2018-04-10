@@ -35,7 +35,7 @@ import {
     remove,
     clear
 } from "application-settings";
-
+import Data from './data';
 @Component({
     selector: "alimentation",
     moduleId: module.id,
@@ -44,10 +44,6 @@ import {
 })
 export class AlimentationComponent implements OnInit {
     private _items: ObservableArray<TokenModel>;
-    private food = ["Lait", "Jus d'orange", "Pain", "Kaki", "Céreales", "Beurre", "Confiture", "Chocolat", "Pizza", "Spaghetti",
-        "Couscous", "Sandwitch", "Soufflet", "Croustina", "Chocotom", "Lait de Poule", "Banane",
-        "Fraise", "Escalope", "Poulet", "Viande", "Salade", "Yaourt", "Fromage",
-        "Crépe", "Cake", "Gateau", "Croissant", "Boeuf"];
     month: string;
     public currentdate: Date;
     enableLunch: boolean = true;
@@ -59,17 +55,11 @@ export class AlimentationComponent implements OnInit {
     searchInput = new Subject<string>();
     private searchInput$;
     public myItems;
-    connexionState: any;
-    address: string = "";
     showSuggession: boolean = false;
     public height: number;
     public width: number;
     public dateTextHolder: string = "";
     public foodToken: string = "";
-    //public breakFast=[];
-    // public lunch=[];
-    //public dinner=[];
-    //public snack=[];
     public dateTextHolderDefaultText: string = "Choose the date";
     showAdd: boolean = false;
     showBreak: boolean = true;
@@ -81,10 +71,17 @@ export class AlimentationComponent implements OnInit {
     public lunch: Array<any>;
     public dinner: Array<any>;
     public snack: Array<any>;
-    caloriesConsumedData: any;
-    consumed: number;
-    rest: number;
+    caloriesData: any;
+    goalData: any;
+    caloriesConsumed: number;
+    restToConsume: number;
     goal: number;
+    energie: any;
+    totalCalories: number;
+    glucide: any;
+    proteines: any;
+    lipides: any;
+    src: any;
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("addLayout") addLayoutRef: ElementRef;
     @ViewChild("autocmp") autocmp: RadAutoCompleteTextViewComponent;
@@ -114,6 +111,12 @@ export class AlimentationComponent implements OnInit {
         private store: Store<fromRoot.State>,
 
     ) {
+        this.input = {
+            portion: {
+                value: "1",
+                error: false
+            },
+        }
 
         this.currentdate = new Date();
         this.breakFast = [];
@@ -141,18 +144,19 @@ export class AlimentationComponent implements OnInit {
             dinner: JSON.parse(getString("dinner", "{}")),
             snack: JSON.parse(getString("snack", "{}"))
         }
-        
+
         this.initFoodItems(food.breakfast, this.breakFast);
         this.initFoodItems(food.lunch, this.lunch);
         this.initFoodItems(food.dinner, this.dinner);
         this.initFoodItems(food.snack, this.snack);
-        
-        this.caloriesConsumedData = JSON.parse(getString("caloriesConsumedData", "{}"));
-        this.consumed = 750;
-        this.goal = 1500;
+
+        this.caloriesData = JSON.parse(getString("caloriesConsumedData", "{}"));
+        this.goalData = JSON.parse(getString("goalsData", "{}"));
+        this.caloriesConsumed = this.caloriesData.consumed;
+        this.goal = 1500; // this.goalData.goalToConsume
         // this.duration=this.stepsData.duration;
-        this.rest = this.caloriesConsumedData.rest;
-        this.CaloriesCounting();
+        this.restToConsume = this.caloriesData.restToConsume;
+        //this.caloriesCounting();
 
 
 
@@ -172,8 +176,8 @@ export class AlimentationComponent implements OnInit {
     private initDataItems() {
         this._items = new ObservableArray<TokenModel>();
 
-        for (var i = 0; i < this.food.length; i++) {
-            this._items.push(new TokenModel(this.food[i], undefined));
+        for (var i = 0; i < Data.length; i++) {
+            this._items.push(new TokenModel(Data[i].name, undefined));
         }
     }
 
@@ -197,7 +201,15 @@ export class AlimentationComponent implements OnInit {
     public onDidAutoComplete(args) {
         this.foodToken = args.text;
         //  setString("food", JSON.stringify(args.text));
-
+        for (var i = 0; i < Data.length; i++) {
+            if (this.foodToken == Data[i].name) {
+                this.energie = Data[i].energie;
+                this.glucide = Data[i].glucide;
+                this.lipides = Data[i].lipides;
+                this.proteines = Data[i].proteines;
+                this.src = Data[i].src;
+            }
+        }
         this.addLayout
             .animate({
                 translate: { x: 0, y: 0 },
@@ -209,31 +221,16 @@ export class AlimentationComponent implements OnInit {
         this.hideKeyboard();
 
     }
-    onProgressBarLoaded(args) {
-        let myProgressBar = <Progress>args.object;
-
-        myProgressBar.value = this.consumed;
-        myProgressBar.maxValue = this.goal;
-
-        /*setInterval(function() {
-            myProgressBar.value += 2;
-        }, 300);*/
-    }
-    onValueChanged(args) {
-        let progressBar = <Progress>args.object;
-
-        console.log("Value changed for " + progressBar);
-        console.log("New value: " + progressBar.value);
-    }
     saveFood() {
 
         if (this.showBreak == true) {
             this.breakFast.push(this.foodToken);
+
             setString("breakFast", JSON.stringify(this.breakFast));
         }
         else
             if (this.showLunch == true) {
-                this.lunch.push(this.foodToken );
+                this.lunch.push(this.foodToken);
                 setString("lunch", JSON.stringify(this.lunch));
             }
             else
@@ -246,16 +243,22 @@ export class AlimentationComponent implements OnInit {
                         this.dinner.push(this.foodToken);
                         setString("dinner", JSON.stringify(this.dinner));
                     }
+        for (var i = 0; i < Data.length; i++) {
+            if (this.foodToken == Data[i].name) {
+                this.totalCalories = + Number(this.input.portion.value)*Number(Data[i].energie);
+            }
+        }
+        this.input.portion.value="1";
+        this.caloriesCounting();
         this.closeAdd();
 
     }
 
-    CaloriesCounting() {
+    caloriesCounting() {
         let calories;
         calories = {
-            consumed: this.consumed,
-            goal: this.goal,
-            rest: this.goal - this.consumed,
+            consumed:this.caloriesConsumed+ this.totalCalories,
+            restToConsume: this.goal - this.caloriesConsumed,
         };
         setString("caloriesConsumedData", JSON.stringify(calories));
     }
