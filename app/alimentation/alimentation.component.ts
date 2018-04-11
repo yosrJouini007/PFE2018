@@ -123,8 +123,7 @@ export class AlimentationComponent implements OnInit {
         this.lunch = [];
         this.dinner = [];
         this.snack = [];
-
-
+     
         /*   this.store.select(fromRoot.getFoods).subscribe((foods) => {
                  
                      this.initDataItems(foods);
@@ -153,7 +152,7 @@ export class AlimentationComponent implements OnInit {
         this.caloriesData = JSON.parse(getString("caloriesConsumedData", "{}"));
         this.goalData = JSON.parse(getString("goalsData", "{}"));
         this.caloriesConsumed = this.caloriesData.consumed;
-        this.goal = 1500; // this.goalData.goalToConsume
+        this.goal =Math.trunc(this.goalData.goalToConsume)
         // this.duration=this.stepsData.duration;
         this.restToConsume = this.caloriesData.restToConsume;
         //this.caloriesCounting();
@@ -172,6 +171,8 @@ export class AlimentationComponent implements OnInit {
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }
+    
+  
 
     private initDataItems() {
         this._items = new ObservableArray<TokenModel>();

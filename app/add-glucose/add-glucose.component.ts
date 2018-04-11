@@ -29,7 +29,7 @@ import { Store } from "@ngrx/store";
 import * as fromRoot from "./../shared/reducers";
 import * as appAction from "./../shared/actions/app.actions";
 import { setString, getString } from "tns-core-modules/application-settings/application-settings";
-
+import * as LocalNotifications from "nativescript-local-notifications";
 
 
 
@@ -53,6 +53,7 @@ export class AddGlucoseComponent implements OnInit {
     public height: number;
     public width: number;
     public dateTextHolder: string = "";
+    public description: string = "";
     public dateTextHolderDefaultText: string = "Choose the date";
     public currentDate: Date;
     public currentDateHolder: string = "";
@@ -341,6 +342,38 @@ export class AddGlucoseComponent implements OnInit {
 
 
     }
+    notification(args): void {
+        LocalNotifications.schedule([{
+            id: 1,
+            title:"Glycémie",
+            body:args,
+            badge: 1,
+            at: new Date(new Date().getTime() + (300 * 1000) ) // 5 minutes from now
+        }]);
+        
+
+        // adding a handler, so we can do something with the received notification.. in this case an alert
+        LocalNotifications.addOnMessageReceivedCallback(data => {
+            alert({
+                title: " Notification",
+                message: `Titre: ${data.title}, Description: ${data.body}`,
+                okButtonText: "Ok"
+            });
+        });}
+        showNotification()                                    //type 1 ne depasse pas 1.5 
+                                                             //type 2 ne depasse pas 2.5
+        {
+            if (Number(this.mesure)<0.7)
+            {
+                this.description=" Attention vous avez une hypoglycémie "
+            }
+            else
+            if (Number(this.mesure)>1.8)
+            {
+                this.description=" Attention vous avez une hyperglycémie "
+            }
+          this.notification(this.description);
+        }
 
     /*  private validateInput() {
            let Valide = true;

@@ -40,6 +40,9 @@ import { screen } from "platform";
 import { AuthService } from "../shared/auth.service";
 import { ValidateService } from "../shared/validate.service";
 import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
+import { ListPicker } from "ui/list-picker";
+let genreList = ["Homme", "Femme"];
+let activityList = ["Actif", "Moins actif", "Inactif", "Extra actif"];
 
 @Component({
   selector: "register-auth",
@@ -128,6 +131,11 @@ export class RegisterComponent implements OnInit {
   EXIST_PHONE_NUMBER = "Adresse mail existe";
   USE_AN_OTHER_EMAIL = "Utiliser une autre adresse mail";
   input: any;
+  public genre: Array<string>;
+  public sexe: string;
+  public activity: Array<string>;
+  public pickedActivity: string;
+  activityRate: number;
   config: any;
   showEmailStep: boolean = true;
   showFirstNameStep: boolean = false;
@@ -190,6 +198,16 @@ export class RegisterComponent implements OnInit {
       },
 
     };
+    this.genre = [];
+
+    for (let i = 0; i < genreList.length; i++) {
+      this.genre.push(genreList[i]);
+    }
+    this.activity = [];
+
+    for (let i = 0; i < activityList.length; i++) {
+      this.activity.push(activityList[i]);
+    }
 
   }
 
@@ -200,6 +218,18 @@ export class RegisterComponent implements OnInit {
     this.fadeInEmaillayout();
     //this.nextRegister();
 
+  }
+  public selectedIndexChangedSexe(args) {
+    let picker = <ListPicker>args.object;
+    console.log("picker selection: " + picker.selectedIndex);
+
+    this.sexe = this.genre[picker.selectedIndex];
+  }
+  public selectedIndexChangedActivity(args) {
+    let picker = <ListPicker>args.object;
+    console.log("picker selection: " + picker.selectedIndex);
+
+    this.pickedActivity = this.activity[picker.selectedIndex];
   }
 
   navigateTologin() {
@@ -495,7 +525,7 @@ export class RegisterComponent implements OnInit {
       }
     }
     else if (!this.showTypeStep) {
-      if (this.validateAge()) {
+      if (this.validateProfile()) {
 
         this.fadeOutProfilelayout().then(() => {
         });
@@ -503,6 +533,10 @@ export class RegisterComponent implements OnInit {
           this.showTypeStep = true;
         })
         //this.register();
+      }
+      else {
+        TNSFancyAlert.showError("Erreur", "Veuillez remplir tous les champs")
+
       }
     }
     else if (!this.showWelcome) {
@@ -560,13 +594,16 @@ export class RegisterComponent implements OnInit {
         age: this.input.age.value,
         size: this.input.size.value,
         type: this.input.type.value,
+        sexe: this.sexe,
+        activity: this.pickedActivity,
         // userId: String(profile.id),
         // email: this.input.email.value,
       };
       profile.email = this.input.email.value;
 
       this.store.dispatch(new appAction.SetUserAction(profile));
-      this.authService.createGuestProfile(profile)
+      this.authService.createGuestProfile(profile);
+      this.countGoals();
       // this.displayShowTextStep()
       this.store.dispatch(new appAction.FireAction("login"));
       TNSFancyAlert.showSuccess("Success", "Inscription effectué");
@@ -578,6 +615,27 @@ export class RegisterComponent implements OnInit {
       TNSFancyAlert.showError("Erreur", "Email existe")
     }
 
+  }
+  countGoals() {
+    let bmr;
+    switch (this.pickedActivity) {
+      case "Actif": this.activityRate = 1.55;
+      case "Inactif": this.activityRate = 1.2;
+      case "Moins actif": this.activityRate = 1.375;
+      case "Extra actif": this.activityRate = 1.725;
+    }
+    if (this.sexe == "Homme") { // 66.47+ (13.75 x W) + (5.0 x H) - (6.75 x A)
+      bmr = 66.47 + (13.75 * this.input.weight.value) + (5.0 * this.input.size.value) - (6.75 * this.input.age.value)
+    }
+    else {//665.09 + (9.56 x W) + (1.84 x H) - (4.67 x A)
+      bmr =665.09+(9.56*this.input.weight.value)+(1.84 * this.input.size.value)-(4.67 * this.input.age.value)
+    }
+    let goals;
+    goals={
+      goalToConsume:bmr*this.activityRate,
+      goalToBurn:1000,
+    }
+    setString("goalsData", JSON.stringify(goals));
   }
 
   /*  .subscribe(
@@ -654,7 +712,7 @@ export class RegisterComponent implements OnInit {
   }
   validateSize() {
     let Valide = true;
-    if (this.validateService.isNumber(this.input.size.value)) {
+    if (!this.validateService.isEmpty(this.input.size.value) && this.validateService.isNumber(this.input.size.value)) {
 
       this.input.size.error = false;
     } else {
@@ -665,7 +723,7 @@ export class RegisterComponent implements OnInit {
   }
   validateWeight() {
     let Valide = true;
-    if (this.validateService.isNumber(this.input.weight.value)) {
+    if (!this.validateService.isEmpty(this.input.weight.value) && this.validateService.isNumber(this.input.weight.value)) {
 
       this.input.weight.error = false;
     } else {
@@ -676,7 +734,7 @@ export class RegisterComponent implements OnInit {
   }
   validateAge() {
     let Valide = true;
-    if (this.validateService.isAge(this.input.age.value)) {
+    if (!this.validateService.isEmpty(this.input.age.value) && this.validateService.isAge(this.input.age.value)) {
 
       this.input.age.error = false;
     } else {
@@ -684,6 +742,14 @@ export class RegisterComponent implements OnInit {
       Valide = false;
     }
     return Valide;
+  }
+  validateProfile() {
+    let formIsValide = true;
+    if (!this.validateSize() && !this.validateAge() && !this.validateWeight()
+    ) {
+      formIsValide = false;
+    }
+    return formIsValide;
   }
 
 

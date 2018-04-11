@@ -100,31 +100,38 @@
 
                 <StackLayout #profileLayout class="parent-container" marginTop="10" verticalAlignement="top" visibility="{{showProfileStep ? 'visible' : 'collapse' }}">
                     <ScrollView>
-                        <GridLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40' rows="*,*,*,*,*,*">
-                            <Label row="0" marginTop="5" fontSize="25" padding="15" textAlign="center" textWrap="false" text="Finaliser Votre Profil (1/2)"
+                        <GridLayout class="form" padding="5" marginLeft="5" marginRight="5" marginTop='20' marginBottom='40' rows="*,*,*,*,*,*" columns="*,*">
+                            <Label row="0" colspan="2" marginTop="5" fontSize="25" padding="15" textAlign="center" textWrap="false" text="Finaliser Votre Profil (1/2)"
                                 class="headline center"></Label>
 
-                            <StackLayout row="1" class="input-field regLogin">
+                            <StackLayout row="1" colspan="2" class="input-field regLogin">
                                 <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Taille (cm):" class="headline center"></Label>
                                 <TextField (returnPress)="focus()" returnKeyType="done" #sizeText class="input" padding="18" [ngModel]='input.size.value'
                                     (ngModelChange)='input.size.value=$event' keyboardType="phone"></TextField>
                                 <StackLayout class="hr-light"></StackLayout>
                                 <Label marginTop="3" class="text-danger" visibility="{{  input.size.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
                             </StackLayout>
-                            <StackLayout row="2" class="input-field regLogin">
+                            <StackLayout row="2" colspan="2" class="input-field regLogin">
                                 <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Poids (Kg):" class="headline center"></Label>
                                 <TextField (returnPress)="focusAge()" keyboardType="phone" returnKeyType="done" #weightText class="input" padding="18" [ngModel]='input.weight.value'
                                     (ngModelChange)='input.weight.value=$event'></TextField>
                                 <StackLayout class="hr-light"></StackLayout>
                                 <Label marginTop="3" class="text-danger" visibility="{{  input.weight.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
                             </StackLayout>
-                            <StackLayout row="3" class="input-field regLogin">
+                            <StackLayout row="3" colspan="2" class="input-field regLogin">
                                 <Label marginTop="30" fontSize="18" padding="15" textAlign="center" textWrap="false" text="Age:" class="headline center"></Label>
-                                <TextField (returnPress)="nextRegister()" keyboardType="phone" returnKeyType="done" #ageText class="input" padding="18" [ngModel]='input.age.value'
+                                <TextField  keyboardType="phone" returnKeyType="done" #ageText class="input" padding="18" [ngModel]='input.age.value'
                                     (ngModelChange)='input.age.value=$event'></TextField>
                                 <StackLayout class="hr-light"></StackLayout>
                                 <Label marginTop="3" class="text-danger" visibility="{{  input.age.error ? 'visible' : 'collapse' }}" text="Champ invalide"></Label>
                             </StackLayout>
+                            <Label verticalAlignment="center" text="Sexe:" row="4" col="0"></Label>
+                            <ListPicker row="4" col="1" horizontalAlignment="center" width="60%" [items]="genre" selectedIndex="0" (selectedIndexChange)="selectedIndexChangedSexe($event)"
+                                class="p-15"></ListPicker>
+                            <Label verticalAlignment="center" text="Votre taux d'activité:" row="5" col="0"></Label>
+                            <ListPicker horizontalAlignment="center" row="5" col="1" width="60%" [items]="activity" selectedIndex="0" (selectedIndexChange)="selectedIndexChangedActivity($event)"
+                                class="p-15"></ListPicker>
+
                         </GridLayout>
                     </ScrollView>
                 </StackLayout>

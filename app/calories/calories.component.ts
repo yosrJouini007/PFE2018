@@ -37,7 +37,7 @@ export class CaloriesComponent implements OnInit {
       this.caloriesData=JSON.parse(getString("caloriesBurnedData", "{}"));
       this.goalData=JSON.parse(getString("goalsData", "{}"));
       this.caloriesBurned=this.caloriesData.burned;
-      this.goal=1000; // this.goalData.goalToBurn
+      this.goal=Math.trunc(this.goalData.goalToBurn);
      // this.duration=this.stepsData.duration;
       this.restToBurn=this.caloriesData.restToBurn;
       this.caloriesCounting();

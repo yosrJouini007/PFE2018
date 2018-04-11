@@ -89,10 +89,10 @@ export default [
       },
       {  id: 11,
         name: 'Fromage Président',
-        energie: '38',
-        glucide: '0',
-        proteines: '0',
-        lipides: '-',
+        energie: '320',
+        glucide: '0.18',
+        proteines: '9',
+        lipides: '31',
         src:"~/assets/images/food/fromage-president.jpg"
       },
       {  id: 12,
@@ -105,7 +105,7 @@ export default [
       },
       {  id: 13,
         name: 'Fromage Jockey',
-        energie: '18.4',
+        energie: '77.1',
         glucide: '3.9',
         proteines: '7.7',
         lipides: '3.4',
@@ -701,16 +701,10 @@ export default [
         lipides: '2.5',
         src:"~/assets/images/home1.jpg"
       },
-                    /**
-Tisane	0.2	1		0	0
-Nwasser	73	370		12	2
-Mloukhia	12.7	239		23	1.8
-Vermicelle	82	331		0.1	0.1
-Pates 	70	351		12	2.5
+                    
+
+/** */
 
 
-
-
-        */
 
 ]
