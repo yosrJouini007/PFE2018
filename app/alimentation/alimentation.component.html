@@ -115,7 +115,7 @@
                 </ScrollView>
             </StackLayout>
 
-            <GridLayout row="2" colspan="4" rows="*,*,*" columns="*,*,*">
+            <GridLayout row="2" colspan="4" rows="*,*,*,*" columns="*,*,*">
                     <Image col="0" row="0" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
                     src="~/assets/images/objectif.png">
                 </Image>
@@ -141,12 +141,13 @@
                     src="~/assets/images/rest.png">
                 </Image>
 
-                <Label col="1" row="2" verticalAlignment="center" horizontalAlignment="center">
+                <Label col="1" row="2" verticalAlignment="center" horizontalAlignment="center" *ngIf="showRest">
                     <FormattedString>
                         <Span text="Calories restantes " fontSize="15"></Span>
                         <Span [text]="restToConsume" fontSize="25"></Span>
                     </FormattedString>
                 </Label>
+                <label row="2" colspan="3" *ngIf="showGoal" text="Objectif Atteint" fontSize="25" horizontalAlignment="center" verticalAlignment="center"></label>
 
             </GridLayout>
         </GridLayout>

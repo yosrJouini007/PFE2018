@@ -3,7 +3,7 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-si
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "tns-core-modules/ui/page/page";
-import { getString } from "tns-core-modules/application-settings/application-settings";
+import { getString, getBoolean } from "tns-core-modules/application-settings/application-settings";
 
 @Component({
     selector: "Home",
@@ -28,13 +28,16 @@ export class HomeConnectedComponent implements OnInit {
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
+        if(!getBoolean("authenticated", false)) {
+          this.router.navigate(["auth/login"], { clearHistory: true });
+      }
         let stepsData=JSON.parse(getString("stepsData", "{}"));
         this.steps=stepsData.number;
         let caloriesBurnedData=JSON.parse(getString("caloriesBurnedData", "{}"));
         this.caloriesBurned=caloriesBurnedData.burned;
         let caloriesConsumedData=JSON.parse(getString("caloriesConsumedData", "{}"));
         this.caloriesConsumed=caloriesConsumedData.consumed;
-        this.mesure=JSON.parse(getString("mesure", "{}"));
+        this.mesure=JSON.parse(getString("mesure", "{}")).mesure;
 
     }
 

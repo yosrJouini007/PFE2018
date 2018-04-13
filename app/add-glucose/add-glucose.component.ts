@@ -42,7 +42,7 @@ import * as LocalNotifications from "nativescript-local-notifications";
 export class AddGlucoseComponent implements OnInit {
 
     month: string;
-   
+    userData: any;
     enableDay: boolean = false;
     enableWeek: boolean = true;
     enableMonth: boolean = true;
@@ -129,21 +129,22 @@ export class AddGlucoseComponent implements OnInit {
         ];
         this.chartMonth = [
         ];
-        this.currentDate =new Date();
-        this.currentDateHolder=moment(this.currentDate,"mm/dd/yyyy hh:mm").format('LLLL')
-        
+        this.currentDate = new Date();
+        this.currentDateHolder = moment(this.currentDate, "mm/dd/yyyy hh:mm").format('LLLL')
+
     }
 
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
+        this.userData = JSON.parse(getString("profile", "{}"));
         let charts;
-        charts= {
+        charts = {
             chart: JSON.parse(getString("chart", "{}")),
             chartWeek: JSON.parse(getString("chartWeek", "{}")),
             chartMonth: JSON.parse(getString("chartMonth", "{}")),
-            
+
         }
         this.initDataItems(charts.chart, this.chart);
         this.initDataItems(charts.chartWeek, this.chartWeek);
@@ -224,9 +225,9 @@ export class AddGlucoseComponent implements OnInit {
     selectDate(fn) {
         picker
             .pickDate({
-                title:this.currentDateHolder,
+                title: this.currentDateHolder,
                 theme: "dark",
-               // minDate: new Date(),
+                // minDate: new Date(),
                 startingDate: new Date()
             })
             .then((result: any) => {
@@ -257,7 +258,7 @@ export class AddGlucoseComponent implements OnInit {
     selectTime() {
         picker
             .pickTime({
-                title:this.currentDateHolder,
+                title: this.currentDateHolder,
                 theme: "dark"
             })
             .then((result: any) => {
@@ -317,16 +318,20 @@ export class AddGlucoseComponent implements OnInit {
 
             //this.mesure=parseFloat(this.input.glucose.value);
             this.date = this.selectedDateStr;
-            this.chart.push({Date:this.selectedTimeStr,Mesure: this.mesure});
+            this.chart.push({ Date: this.selectedTimeStr, Mesure: this.mesure });
             setString("chart", JSON.stringify(this.chart));
-            setString("mesure", JSON.stringify(this.mesure));//last Mesure
+            let lastMesure;
+            lastMesure={
+                mesure:this.mesure
+            }
+            setString("mesure", JSON.stringify(lastMesure));//last Mesure
             this._SourceDaily.push(this.chart);
             let week = this.chart.reduce((a, b) => a + b.Mesure, 0) / this.chart.length;
-            this.chartWeek.push({Date:this.date, Mesure:week});
+            this.chartWeek.push({ Date: this.date, Mesure: week });
             setString("chartWeek", JSON.stringify(this.chartWeek));
             this._SourceWeekly.push(this.chartWeek);
             let month = this.chartWeek.reduce((a, b) => a + b.Mesure, 0) / this.chartWeek.length;
-            this.chartMonth.push({Date:this.month,Mesure:month});
+            this.chartMonth.push({ Date: this.month, Mesure: month });
             setString("chartMonth", JSON.stringify(this.chartMonth));
             this._SourceMonthly.push(this.chartMonth);
             /* this.data.map(item => {
@@ -335,6 +340,10 @@ export class AddGlucoseComponent implements OnInit {
                       Mesure: item.Mesure
                   }
               }).forEach(item => this.source.push(item));*/
+              if (this.chart.length>2)
+              {
+                  this.showNotification();
+              }
             this.closeAdd();
         }
 
@@ -345,12 +354,12 @@ export class AddGlucoseComponent implements OnInit {
     notification(args): void {
         LocalNotifications.schedule([{
             id: 1,
-            title:"Glycémie",
-            body:args,
+            title: "Glycémie",
+            body: args,
             badge: 1,
-            at: new Date(new Date().getTime() + (300 * 1000) ) // 5 minutes from now
+            at: new Date(new Date().getTime() + (10 * 1000)) // 5 minutes from now
         }]);
-        
+
 
         // adding a handler, so we can do something with the received notification.. in this case an alert
         LocalNotifications.addOnMessageReceivedCallback(data => {
@@ -359,21 +368,43 @@ export class AddGlucoseComponent implements OnInit {
                 message: `Titre: ${data.title}, Description: ${data.body}`,
                 okButtonText: "Ok"
             });
-        });}
-        showNotification()                                    //type 1 ne depasse pas 1.5 
-                                                             //type 2 ne depasse pas 2.5
-        {
-            if (Number(this.mesure)<0.7)
-            {
-                this.description=" Attention vous avez une hypoglycémie "
+        });
+    }
+    showNotification()                                    //type 1 ne depasse pas 1.5 
+    //type 2 ne depasse pas 2.5
+    {
+        if (this.userData.type == "lada" || this.userData.type == "gestationnel") {
+            if (Number(this.mesure) < 0.7) {
+                this.description = " Attention vous avez une hypoglycémie "
             }
             else
-            if (Number(this.mesure)>1.8)
-            {
-                this.description=" Attention vous avez une hyperglycémie "
-            }
-          this.notification(this.description);
+                if (Number(this.mesure) > 1.8) {
+                    this.description = " Attention vous avez une hyperglycémie "
+                }
+            this.notification(this.description);
         }
+        else
+            if (this.userData.type == "type 1") {
+                if (Number(this.mesure) < 0.7) {
+                    this.description = " Attention vous avez une hypoglycémie "
+                }
+                else
+                    if (Number(this.mesure) > 1.5) {
+                        this.description = " Attention vous avez une hyperglycémie "
+                    }
+                this.notification(this.description);
+            }
+            else if (this.userData.type = "type 2") {
+                if (Number(this.mesure) < 0.7) {
+                    this.description = " Attention vous avez une hypoglycémie "
+                }
+                else
+                    if (Number(this.mesure) > 2.5) {
+                        this.description = " Attention vous avez une hyperglycémie "
+                    }
+                    this.notification(this.description);
+            }
+    }
 
     /*  private validateInput() {
            let Valide = true;

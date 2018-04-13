@@ -27,6 +27,7 @@ import { Store } from "@ngrx/store";
 import { Progress } from "ui/progress";
 import * as fromRoot from "./../shared/reducers";
 import * as foodAction from "./../shared/actions/food.actions";
+import * as LocalNotifications from "nativescript-local-notifications";
 import {
     getBoolean,
     setBoolean,
@@ -56,6 +57,8 @@ export class AlimentationComponent implements OnInit {
     private searchInput$;
     public myItems;
     showSuggession: boolean = false;
+    showGoal: boolean = false;
+    showRest: boolean = true;
     public height: number;
     public width: number;
     public dateTextHolder: string = "";
@@ -136,6 +139,7 @@ export class AlimentationComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
+       
         let food;
         food = {
             breakfast: JSON.parse(getString("breakFast", "{}")),
@@ -156,6 +160,7 @@ export class AlimentationComponent implements OnInit {
         // this.duration=this.stepsData.duration;
         this.restToConsume = this.caloriesData.restToConsume;
         //this.caloriesCounting();
+       this.showNotifications(this.caloriesConsumed,this.goal);
 
 
 
@@ -252,6 +257,7 @@ export class AlimentationComponent implements OnInit {
         this.input.portion.value="1";
         this.caloriesCounting();
         this.closeAdd();
+     //   this.showNotifications(this.caloriesConsumed,this.goal);
 
     }
 
@@ -262,6 +268,34 @@ export class AlimentationComponent implements OnInit {
             restToConsume: this.goal - this.caloriesConsumed,
         };
         setString("caloriesConsumedData", JSON.stringify(calories));
+    }
+    notification(): void {
+        LocalNotifications.schedule([{
+            id: 1,
+            title: "Alimentation",
+            body: "Bravo! Objectif atteint ",
+            badge: 1,
+            at: new Date(new Date().getTime() + (10 * 1000)) // 10 seconds from now
+        }]);
+
+
+        // adding a handler, so we can do something with the received notification.. in this case an alert
+        LocalNotifications.addOnMessageReceivedCallback(data => {
+            alert({
+                title: " Notification",
+                message: `Titre: ${data.title}, Description: ${data.body}`,
+                okButtonText: "Ok"
+            });
+        });
+    }
+    showNotifications(calories,goal)
+    {
+        if (calories>goal)
+        {
+            this.showGoal=true;
+            this.showRest=false;
+            this.notification();
+        }
     }
 
 

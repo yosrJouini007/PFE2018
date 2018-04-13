@@ -603,6 +603,7 @@ export class RegisterComponent implements OnInit {
 
       this.store.dispatch(new appAction.SetUserAction(profile));
       this.authService.createGuestProfile(profile);
+      setBoolean("authenticated", true);
       this.countGoals();
       // this.displayShowTextStep()
       this.store.dispatch(new appAction.FireAction("login"));

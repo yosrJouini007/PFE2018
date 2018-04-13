@@ -42,29 +42,29 @@ export class AuthService {
   }
 
   login(credentials) {
-    
-   // return this.userApi.login(credentials);
-   let userString =JSON.parse(getString("account", "{}"));
- try {
-     
-     return (userString);
 
-   } catch (e) {
-     return  {}
-   }
-    
-  
- }
-  
+    // return this.userApi.login(credentials);
+    let userString = JSON.parse(getString("account", "{}"));
+    try {
+      setBoolean("authenticated", true);
+      return (userString);
+
+    } catch (e) {
+      return {}
+    }
+
+
+  }
+
 
   logout() {
     return this.userApi.logout();
   }
 
   register(credentials) {
-   //return this.userApi.create(credentials);
-   setString("account", JSON.stringify(credentials));
-   
+    //return this.userApi.create(credentials);
+    setString("account", JSON.stringify(credentials));
+
   }
   changePassword(oldpassword, newpassword) {
     return this.userApi.changePassword(oldpassword, newpassword)
@@ -74,7 +74,7 @@ export class AuthService {
   createGuestProfile(data: any) {
     //return this.guestsApi.create(data);
     setString("profile", JSON.stringify(data));
-    setBoolean("authenticated", true);
+
 
   }
 
@@ -92,5 +92,5 @@ export class AuthService {
       }
     );
   }
-  
+
 }
