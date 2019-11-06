@@ -15,16 +15,16 @@ export default [
     glucide: '41',
     proteines: '8',
     lipides: '28',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/tabouna.jpg"
   },
   {
     id: 2,
-    name: 'Petit pain',
-    energie: '271',
-    glucide: '46.07',
-    proteines: '8.57',
-    lipides: '6.4',
-    src: "~/assets/images/home1.jpg"
+    name: 'Pain au chocolat',
+    energie: '414',
+    glucide: '47.4',
+    proteines: '6.9',
+    lipides: '21.1',
+    src: "~/assets/images/food/pain_chocolat.jpg"
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ export default [
     glucide: '43.34',
     proteines: '13.36',
     lipides: '4.23',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/pain_cereale.jpg"
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ export default [
     glucide: '44.5',
     proteines: '9.5',
     lipides: '1.2',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/pain_son.jpg"
   },
   {
     id: 6,
@@ -60,7 +60,7 @@ export default [
     glucide: '55.6',
     proteines: '8.9',
     lipides: '32.8',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/chocolat_tris.jpg"
   },
   {
     id: 7,
@@ -69,7 +69,7 @@ export default [
     glucide: '56.5',
     proteines: '7.5',
     lipides: '32',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/chocolat_lait.jpg"
   },
   {
     id: 8,
@@ -87,16 +87,16 @@ export default [
     glucide: '1',
     proteines: '7',
     lipides: '-',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/beurre.jpg"
   },
   {
     id: 10,
-    name: 'Margarine',
+    name: 'Margarine (Goldina)',
     energie: '753',
     glucide: '0.4',
     proteines: '0',
     lipides: '-',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/goldina.jpg"
   },
   {
     id: 11,
@@ -114,7 +114,7 @@ export default [
     glucide: '4',
     proteines: '6',
     lipides: '18',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/fraidoux.jpg"
   },
   {
     id: 13,
@@ -123,7 +123,7 @@ export default [
     glucide: '3.9',
     proteines: '7.7',
     lipides: '3.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/fraidoux.jpg"
   },
   {
     id: 14,
@@ -132,7 +132,7 @@ export default [
     glucide: '2',
     proteines: '18.5',
     lipides: '20.9',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/mozarella.jpg"
   },
   {
     id: 15,
@@ -141,7 +141,7 @@ export default [
     glucide: '3.68',
     proteines: '7.54',
     lipides: '3.22',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/fromage_blanc.jpg"
   },
   {
     id: 16,
@@ -150,16 +150,16 @@ export default [
     glucide: '0.1',
     proteines: '30',
     lipides: '32.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/gruyere.jpg"
   },
   {
     id: 17,
-    name: '',
-    energie: '100',
-    glucide: '100',
-    proteines: '100',
-    lipides: '28',
-    src: "~/assets/images/home1.jpg"
+    name: 'Pizza',
+    energie: '224.3',
+    glucide: '21.7',
+    proteines: '9.5',
+    lipides: '10.7',
+    src: "~/assets/images/food/pizza.jpg"
   },
   {
     id: 18,
@@ -168,7 +168,7 @@ export default [
     glucide: '0',
     proteines: '27',
     lipides: '29',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/gruyere_rape.jpg"
   },
   {
     id: 19,
@@ -177,7 +177,7 @@ export default [
     glucide: '2',
     proteines: '-',
     lipides: '-',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/jambon.jpeg"
   },
   {
     id: 20,
@@ -186,7 +186,7 @@ export default [
     glucide: '2',
     proteines: '22',
     lipides: '1.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/jambon.jpeg"
   },
   {
     id: 21,
@@ -195,7 +195,7 @@ export default [
     glucide: '0.45',
     proteines: '19',
     lipides: '2.59',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/jambon.jpeg"
   },
   {
     id: 22,
@@ -204,7 +204,7 @@ export default [
     glucide: '1.2',
     proteines: '18.1',
     lipides: '45',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/salami.jpg"
   },
   {
     id: 23,
@@ -213,7 +213,7 @@ export default [
     glucide: '1.5',
     proteines: '19.3',
     lipides: '9.21',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/salami.jpg"
   },
   {
     id: 24,
@@ -222,7 +222,7 @@ export default [
     glucide: '1.92',
     proteines: '12.68',
     lipides: '22.34',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/salami.jpg"
   },
 
   {
@@ -232,7 +232,7 @@ export default [
     glucide: '3',
     proteines: '11',
     lipides: '13',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/ricotta.jpg"
   },
   {
     id: 26,
@@ -241,7 +241,7 @@ export default [
     glucide: '0.3',
     proteines: '12.5',
     lipides: '10.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/oeuf.jpg"
   },
 
   {
@@ -251,7 +251,7 @@ export default [
     glucide: '16.8',
     proteines: '2.9',
     lipides: '-',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/mamzouj.jpg"
   },
 
   {
@@ -261,7 +261,7 @@ export default [
     glucide: '20.4',
     proteines: '3.3',
     lipides: '4.2',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/danette.jpg"
   },
   {
     id: 29,
@@ -270,7 +270,7 @@ export default [
     glucide: '2.63',
     proteines: '4.04',
     lipides: '3.9',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/yaourt_fruit.jpg"
   },
   {
     id: 30,
@@ -279,7 +279,7 @@ export default [
     glucide: '19.6',
     proteines: '3',
     lipides: '2.7',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/yaourt_fruit.jpg"
   },
 
   {
@@ -289,7 +289,7 @@ export default [
     glucide: '14',
     proteines: '3.2',
     lipides: '3.2',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/yaourt_fruit.jpg"
   },
   {
     id: 32,
@@ -298,14 +298,8 @@ export default [
     glucide: '13.3',
     proteines: '2.9',
     lipides: '1.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/yaourt_fruit.jpg"
   },
-
-
-
-
-
-
 
   {
     id: 33,
@@ -314,7 +308,7 @@ export default [
     glucide: '13.5',
     proteines: '2.7',
     lipides: '1.6',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/yaourt_fruit.jpg"
   },
   {
     id: 34,
@@ -323,7 +317,7 @@ export default [
     glucide: '49.5',
     proteines: '0',
     lipides: '10.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/baklawa.jpg"
   },
   {
     id: 35,
@@ -332,7 +326,7 @@ export default [
     glucide: '5.5',
     proteines: '2',
     lipides: '0.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/couscous_legume.jpg"
   },
 
   {
@@ -342,7 +336,7 @@ export default [
     glucide: '17.2',
     proteines: '6.7',
     lipides: '5.8',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/couscous_viande.jpg"
   },
   {
     id: 37,
@@ -351,7 +345,7 @@ export default [
     glucide: '17.4',
     proteines: '7.4',
     lipides: '6.22',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/couscous_poulet.jpeg"
   },
   {
     id: 38,
@@ -369,7 +363,7 @@ export default [
     glucide: '10.34',
     proteines: '15.9',
     lipides: '55.6',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/couscous_poisson.jpg"
   },
   {
     id: 40,
@@ -378,7 +372,7 @@ export default [
     glucide: '44.5',
     proteines: '4.3',
     lipides: '0.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/riz.jpg"
   },
   {
     id: 41,
@@ -387,7 +381,7 @@ export default [
     glucide: '19.94',
     proteines: '24.58',
     lipides: '67.35',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/kafteji.jpg"
   },
   {
     id: 42,
@@ -396,7 +390,7 @@ export default [
     glucide: '78.96',
     proteines: '32.16',
     lipides: '42.46',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/lablabi.jpg"
   },
   {
     id: 43,
@@ -405,7 +399,7 @@ export default [
     glucide: '22',
     proteines: '23',
     lipides: '43',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/cacahute.jpg"
   },
   {
     id: 44,
@@ -414,7 +408,7 @@ export default [
     glucide: '8.5',
     proteines: '1',
     lipides: '0',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/carottes.jpg"
   },
 
   {
@@ -424,7 +418,7 @@ export default [
     glucide: '7.5',
     proteines: '30',
     lipides: '20',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/caviar.jpg"
   },
   {
     id: 46,
@@ -433,7 +427,7 @@ export default [
     glucide: '4.5',
     proteines: '2',
     lipides: '0.3',
-    src: "~/assets/images/home1.jpg"
+    src:"~/assets/images/food/champignons.jpg"
   },
   {
     id: 47,
@@ -442,7 +436,7 @@ export default [
     glucide: '7.5',
     proteines: '0.7',
     lipides: '0.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/fraise.jpg"
   },
   {
     id: 48,
@@ -451,7 +445,7 @@ export default [
     glucide: '0.28',
     proteines: '22.6',
     lipides: '1.18',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/poisson_grille.jpg"
   },
   {
     id: 49,
@@ -460,7 +454,7 @@ export default [
     glucide: '4',
     proteines: '18.7',
     lipides: '7',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/poisson_cuit.jpg"
   },
   {
     id: 50,
@@ -469,7 +463,7 @@ export default [
     glucide: '15.3',
     proteines: '8.6',
     lipides: '11.3',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/poisson_frit.jpg"
   },
   {
     id: 51,
@@ -478,7 +472,7 @@ export default [
     glucide: '0',
     proteines: '27.07',
     lipides: '14.49',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/poulet_grille.jpg"
   },
   {
     id: 52,
@@ -487,7 +481,7 @@ export default [
     glucide: '0',
     proteines: '26.2',
     lipides: '1.72',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/poulet_cuit.jpg"
   },
   {
     id: 53,
@@ -496,7 +490,7 @@ export default [
     glucide: '0',
     proteines: '28.62',
     lipides: '15.35',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/poulet_frit.jpg"
   },
   {
     id: 54,
@@ -505,7 +499,7 @@ export default [
     glucide: '0',
     proteines: '28.62',
     lipides: '15.35',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/escalope_frit.jpg"
   },
   {
     id: 55,
@@ -514,7 +508,7 @@ export default [
     glucide: '0',
     proteines: '24.6',
     lipides: '9.7',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/viande_grille.jpg"
   },
   {
     id: 56,
@@ -523,7 +517,7 @@ export default [
     glucide: '0',
     proteines: '22',
     lipides: '11.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/viande_grillejpg"
   },
   {
     id: 57,
@@ -532,7 +526,7 @@ export default [
     glucide: '0',
     proteines: '16',
     lipides: '26.02',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/merguez.jpg"
   },
   {
     id: 58,
@@ -541,7 +535,7 @@ export default [
     glucide: '1.37',
     proteines: '1.3',
     lipides: '0.2',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/salade.jpg"
   },
   {
     id: 59,
@@ -550,7 +544,7 @@ export default [
     glucide: '2.31',
     proteines: '0.7',
     lipides: '0.1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/salade.jpg"
   },
   {
     id: 60,
@@ -559,7 +553,7 @@ export default [
     glucide: '2.31',
     proteines: '4.5',
     lipides: '4.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/salade_riz.jpg"
   },
   {
     id: 61,
@@ -568,7 +562,7 @@ export default [
     glucide: '25.9',
     proteines: '12',
     lipides: '9.1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/sandwich_thon.jpg"
   },
   {
     id: 62,
@@ -577,7 +571,7 @@ export default [
     glucide: '26.9',
     proteines: '6.7',
     lipides: '12.9',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/libanais.jpg"
   },
 
   {
@@ -587,7 +581,7 @@ export default [
     glucide: '0.3',
     proteines: '2',
     lipides: '83.6',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/mayonnaise.jpg"
   },
   {
     id: 64,
@@ -596,7 +590,7 @@ export default [
     glucide: '7.1',
     proteines: '2.7',
     lipides: '2.9',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/harissa.jpg"
   },
   {
     id: 65,
@@ -605,7 +599,7 @@ export default [
     glucide: '26.6',
     proteines: '2.25',
     lipides: '0.1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/ketchup.jpg"
   },
   {
     id: 66,
@@ -614,7 +608,7 @@ export default [
     glucide: '26.6',
     proteines: '1.3',
     lipides: '6.1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/ketchup.jpg"
   },
   {
     id: 67,
@@ -623,7 +617,7 @@ export default [
     glucide: '25.1',
     proteines: '0.5',
     lipides: '0.3',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/pomme.jpg"
   },
   {
     id: 68,
@@ -632,7 +626,7 @@ export default [
     glucide: '34.3',
     proteines: '1.6',
     lipides: '0.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/banane.jpg"
   },
   {
     id: 69,
@@ -641,7 +635,7 @@ export default [
     glucide: '0',
     proteines: '0',
     lipides: '112.5',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/huile_olives.jpg"
   },
   {
     id: 70,
@@ -650,7 +644,7 @@ export default [
     glucide: '20.15',
     proteines: '1.85',
     lipides: '0.2',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/pomme_terre.jpg"
   },
   {
     id: 71,
@@ -668,7 +662,7 @@ export default [
     glucide: '16.94',
     proteines: '1.96',
     lipides: '4.2',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/pure.jpg"
   },
   {
     id: 73,
@@ -677,7 +671,7 @@ export default [
     glucide: '82.66',
     proteines: '0',
     lipides: '0',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/miel.jpg"
   },
   {
     id: 74,
@@ -686,7 +680,7 @@ export default [
     glucide: '0',
     proteines: '0.1',
     lipides: '0.1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/cafe.jpg"
   },
   {
     id: 75,
@@ -695,7 +689,7 @@ export default [
     glucide: '1.5',
     proteines: '0.9',
     lipides: '1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/cafe.jpg"
   },
   {
     id: 76,
@@ -704,7 +698,7 @@ export default [
     glucide: '1',
     proteines: '1',
     lipides: '1',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/cafe_noir.jpg"
   },
   {
     id: 77,
@@ -713,7 +707,7 @@ export default [
     glucide: '10.3',
     proteines: '3.2',
     lipides: '3.4',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/lait_choco.jpg"
   },
   {
     id: 78,
@@ -722,7 +716,7 @@ export default [
     glucide: '0.2',
     proteines: '0.5',
     lipides: '0',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/the_vert.jpeg"
   },
   {
     id: 79,
@@ -731,7 +725,7 @@ export default [
     glucide: '0.5',
     proteines: '0.5',
     lipides: '0',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/the_noir.jpg"
   },
   {
     id: 80,
@@ -740,7 +734,7 @@ export default [
     glucide: '0',
     proteines: '0.07',
     lipides: '0',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/the_infusion.jpg"
   },
   {
     id: 81,
@@ -749,7 +743,7 @@ export default [
     glucide: '0.2',
     proteines: '0',
     lipides: '0',
-    src: "~/assets/images/home1.jpg"
+    src: "~/assets/images/food/tisane.jpg"
   },
   {
     id: 82,

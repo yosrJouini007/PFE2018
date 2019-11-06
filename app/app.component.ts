@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.isFirstTime = getBoolean("isFirstTime", true);
+  /*  this.isFirstTime = getBoolean("isFirstTime", true);
     setBoolean("isFirstTime", false);
 
     //First load after the Install
@@ -115,6 +115,27 @@ export class AppComponent implements OnInit {
       });
     } else {
       // Load Gym page from the the second load
+      this.router.navigate(["/home"], {
+        transition: {
+          clearHistory: true,
+          name: "fade",
+          duration: 200,
+          curve: "linear"
+        }
+      });
+    }*/
+    this.isFirstTime = getBoolean("authenticated",true);
+    if (this.isFirstTime) {
+      this.router.navigate(["/home-connected"], {
+        clearHistory: true,
+        transition: {
+          name: "fade",
+          duration: 200,
+          curve: "linear"
+        }
+      });
+    } else {
+   
       this.router.navigate(["/home"], {
         transition: {
           clearHistory: true,

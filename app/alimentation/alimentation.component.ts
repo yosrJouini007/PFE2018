@@ -5,26 +5,19 @@ import { RadAutoCompleteTextViewComponent } from "nativescript-ui-autocomplete/a
 import { TokenModel } from "nativescript-ui-autocomplete";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "tns-core-modules/ui/page/page";
-import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
+import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/absolute-layout";
 import { Subject } from "rxjs";
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import { screen } from "platform";
 import { ObservableArray, ChangedData, ChangeType } from "tns-core-modules/data/observable-array/observable-array";
-const ModalPicker = require("nativescript-modal-datetimepicker").ModalDatetimepicker;
-const picker = new ModalPicker();
+import * as moment from "moment";
 import { isAndroid, isIOS } from "tns-core-modules/platform";
 declare var android;
 var application = require("application");
-import { ValidateService } from "./validate.service";
-import * as moment from "moment";
-import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/absolute-layout";
 import { Observable } from "tns-core-modules/data/observable";
-import { FormsModule } from '@angular/forms';
-import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
-import alimentation from "./data";
 import { Store } from "@ngrx/store";
-import { Progress } from "ui/progress";
+import { TNSFancyAlert, TNSFancyAlertButton } from "nativescript-fancyalert";
 import * as fromRoot from "./../shared/reducers";
 import * as foodAction from "./../shared/actions/food.actions";
 import * as LocalNotifications from "nativescript-local-notifications";
@@ -37,6 +30,7 @@ import {
     clear
 } from "application-settings";
 import Data from './data';
+import { ValidateService } from "./validate.service";
 @Component({
     selector: "alimentation",
     moduleId: module.id,
@@ -65,6 +59,7 @@ export class AlimentationComponent implements OnInit {
     public foodToken: string = "";
     public dateTextHolderDefaultText: string = "Choose the date";
     showAdd: boolean = false;
+    showNewFood: boolean = false;
     showBreak: boolean = true;
     showSnack: boolean = false;
     showLunch: boolean = false;
@@ -74,6 +69,7 @@ export class AlimentationComponent implements OnInit {
     public lunch: Array<any>;
     public dinner: Array<any>;
     public snack: Array<any>;
+    public newFoods: Array<any>;
     caloriesData: any;
     goalData: any;
     caloriesConsumed: number;
@@ -87,6 +83,7 @@ export class AlimentationComponent implements OnInit {
     src: any;
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("addLayout") addLayoutRef: ElementRef;
+    @ViewChild("newFoodLayout") newFoodLayoutRef: ElementRef;
     @ViewChild("autocmp") autocmp: RadAutoCompleteTextViewComponent;
 
     get dataItems(): ObservableArray<TokenModel> {
@@ -96,6 +93,9 @@ export class AlimentationComponent implements OnInit {
     private _sideDrawerTransition: DrawerTransitionBase;
     private get addLayout(): AbsoluteLayout {
         return this.addLayoutRef.nativeElement;
+    }
+    private get newFoodLayout(): AbsoluteLayout {
+        return this.newFoodLayoutRef.nativeElement;
     }
 
     private get screenHeight(): number {
@@ -110,8 +110,8 @@ export class AlimentationComponent implements OnInit {
 
         private _page: Page,
         private router: RouterExtensions,
-        private validateService: ValidateService,
         private store: Store<fromRoot.State>,
+        private validateService: ValidateService,
 
     ) {
         this.input = {
@@ -119,6 +119,23 @@ export class AlimentationComponent implements OnInit {
                 value: "1",
                 error: false
             },
+            name: {
+                value: "",
+                error: false
+            },
+            energie: {
+                value: "",
+                error: false
+            },
+            glucide: {
+                value: "-",
+            },
+            lipide: {
+                value: "-",
+            },
+            proteine: {
+                value: "-",
+            }
         }
 
         this.currentdate = new Date();
@@ -126,11 +143,15 @@ export class AlimentationComponent implements OnInit {
         this.lunch = [];
         this.dinner = [];
         this.snack = [];
-     
+        // this.newFoods=[{id:333,name:"",energie:"",glucide:"",proteines:"",lipides:""}];
+
         /*   this.store.select(fromRoot.getFoods).subscribe((foods) => {
                  
                      this.initDataItems(foods);
                 })*/
+        /* let newFoods = JSON.parse(getString("newFoodData", "{}"));
+         this.initFoodItems(newFoods, this.newFoods);
+         Data.push(this.newFoods);*/
         this.initDataItems();
 
     }
@@ -139,7 +160,7 @@ export class AlimentationComponent implements OnInit {
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.addLayout.translateY = this.screenHeight;
-       
+
         let food;
         food = {
             breakfast: JSON.parse(getString("breakFast", "{}")),
@@ -156,11 +177,11 @@ export class AlimentationComponent implements OnInit {
         this.caloriesData = JSON.parse(getString("caloriesConsumedData", "{}"));
         this.goalData = JSON.parse(getString("goalsData", "{}"));
         this.caloriesConsumed = this.caloriesData.consumed;
-        this.goal =Math.trunc(this.goalData.goalToConsume)
+        this.goal = Math.trunc(this.goalData.goalToConsume)
         // this.duration=this.stepsData.duration;
         this.restToConsume = this.caloriesData.restToConsume;
         //this.caloriesCounting();
-       this.showNotifications(this.caloriesConsumed,this.goal);
+        this.showNotifications(this.caloriesConsumed, this.goal);
 
 
 
@@ -176,8 +197,8 @@ export class AlimentationComponent implements OnInit {
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }
-    
-  
+
+
 
     private initDataItems() {
         this._items = new ObservableArray<TokenModel>();
@@ -203,7 +224,53 @@ export class AlimentationComponent implements OnInit {
              this._items.push(new TokenModel(data[i], undefined));
          }
      }*/
+    goToAddFood() {
+        this.newFoodLayout
+            .animate({
+                translate: { x: 0, y: 0 },
+                duration: 200,
+                opacity: 1
+            })
+        this.showNewFood = true;
+        this.showSearch = false;
 
+    }
+    closeNewFood() {
+        this.showNewFood = false;
+        this.showSearch = true;
+        this.input.name.error = false;
+        this.input.energie.error = false;
+        this.input.name.value = "";
+        this.input.energie.value = "";
+        this.newFoodLayout
+            .animate({
+                translate: { x: 0, y: this.screenHeight },
+                duration: 250,
+                opacity: 0
+            })
+    }
+    addNewFood() {
+        if (this.validateName() &&
+            this.validateEnergie()
+        ) {
+            // let newFoods = [];
+            let newFood;
+            newFood = {
+                id: 146,
+                name: this.input.name.value,
+                energie: this.input.energie.value,
+                glucide: this.input.glucide.value,     //218.5 23.5 7.5 10
+                proteines: this.input.proteine.value,
+                lipides: this.input.lipide.value,
+            };
+            // newFoods.push(newFood)
+            // setString("newFoodData", JSON.stringify(newFoods));
+
+            Data.push(newFood);
+            TNSFancyAlert.showSuccess("Succés", "Ajout effectué");
+            this.closeNewFood();
+        }
+    }
     public onDidAutoComplete(args) {
         this.foodToken = args.text;
         //  setString("food", JSON.stringify(args.text));
@@ -251,20 +318,20 @@ export class AlimentationComponent implements OnInit {
                     }
         for (var i = 0; i < Data.length; i++) {
             if (this.foodToken == Data[i].name) {
-                this.totalCalories = + Number(this.input.portion.value)*Number(Data[i].energie);
+                this.totalCalories = + Number(this.input.portion.value) * Number(Data[i].energie);
             }
         }
-        this.input.portion.value="1";
+        this.input.portion.value = "1";
         this.caloriesCounting();
         this.closeAdd();
-     //   this.showNotifications(this.caloriesConsumed,this.goal);
+        //   this.showNotifications(this.caloriesConsumed,this.goal);
 
     }
 
     caloriesCounting() {
         let calories;
         calories = {
-            consumed:this.caloriesConsumed+ this.totalCalories,
+            consumed: this.caloriesConsumed + this.totalCalories,
             restToConsume: this.goal - this.caloriesConsumed,
         };
         setString("caloriesConsumedData", JSON.stringify(calories));
@@ -273,7 +340,7 @@ export class AlimentationComponent implements OnInit {
         LocalNotifications.schedule([{
             id: 1,
             title: "Alimentation",
-            body: "Bravo! Objectif atteint ",
+            body: "Félicitation! Vous avez atteint votre objectif du jour",
             badge: 1,
             at: new Date(new Date().getTime() + (10 * 1000)) // 10 seconds from now
         }]);
@@ -288,12 +355,10 @@ export class AlimentationComponent implements OnInit {
             });
         });
     }
-    showNotifications(calories,goal)
-    {
-        if (calories>goal)
-        {
-            this.showGoal=true;
-            this.showRest=false;
+    showNotifications(calories, goal) {
+        if (calories > goal) {
+            this.showGoal = true;
+            this.showRest = false;
             this.notification();
         }
     }
@@ -372,5 +437,28 @@ export class AlimentationComponent implements OnInit {
             }
         }
     }
+    validateName() {
+        let Valide = true;
+        if (!this.validateService.isEmpty(this.input.name.value)) {
+
+            this.input.name.error = false;
+        } else {
+            this.input.name.error = true;
+            Valide = false;
+        }
+        return Valide;
+    }
+    validateEnergie() {
+        let Valide = true;
+        if (!this.validateService.isEmpty(this.input.energie.value)) {
+
+            this.input.energie.error = false;
+        } else {
+            this.input.energie.error = true;
+            Valide = false;
+        }
+        return Valide;
+    }
+
 
 }

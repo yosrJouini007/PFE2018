@@ -2,15 +2,19 @@
     <!-- 
     Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()" *ngIf="!showAdd"></NavigationButton>
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()" *ngIf="!showAdd &&!showNewFood"></NavigationButton>
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left" *ngIf="!showAdd &&!showNewFood">
     </ActionItem>
     <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" android.position="right" icon="res://ic_close_white_24dp">
     </ActionItem>
     <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeAdd()" *ngIf="showAdd" ios.position="right" icon="res://navigation/ic_close_white">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeNewFood()" *ngIf="showNewFood" android.position="right" icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeNewFood()" *ngIf="showNewFood" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Alimentation"></Label>
 </ActionBar>
@@ -25,7 +29,7 @@
 
     <GridLayout class="page page-content" tkMainContent>
 
-        <GridLayout verticalAlignment="top" marginTop="30" rows="*,auto,auto" columns="*, *, *,*" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
+        <GridLayout verticalAlignment="top" marginTop="30" rows="*,auto,auto,auto" columns="*, *, *,*" visibility="{{ showSearch ? 'visible' : 'collapse' }}">
             <Button text="Petit Déjeuner" (tap)="showBreakLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60"
                 width="25%" col="0" borderWidth="2" isEnabled="{{ enableBreak ? 'true' : 'false' }}"></Button>
             <Button text="Déjeuner" (tap)="showLunchLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
@@ -35,14 +39,14 @@
             <Button text="Grignotage" (tap)="showSnackLayout()" verticalAlignment="top" class="btn btn-primary" row="0" height="60" width="25%"
                 col="3" borderWidth="2" isEnabled="{{ enableSnack ? 'true' : 'false' }}"></Button>
 
-            <StackLayout row="1" colspan="4" visibility="{{ showBreak ? 'visible' : 'collapse' }}" >
+            <StackLayout row="1" colspan="4" visibility="{{ showBreak ? 'visible' : 'collapse' }}">
                 <Label text="Ajouts récents" horizontalAlignment="center" verticalAlignment="top" textWrap="true" padding="12" fontWeight="bold">
                 </Label>
                 <ScrollView height="200">
                     <ListView [items]="breakFast" class="list-group">
                         <ng-template let-item="item">
                             <GridLayout class="list-group-item" columns="auto auto">
-                                <image col="0" [src]="src"  height="20" width="28">
+                                <image col="0" [src]="src" height="20" width="28">
                                 </image>
                                 <Label col="1" [text]="item" fontSize="20"></Label>
                             </GridLayout>
@@ -116,13 +120,13 @@
             </StackLayout>
 
             <GridLayout row="2" colspan="4" rows="*,*,*,*" columns="*,*,*">
-                    <Image col="0" row="0" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                <Image col="0" row="0" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
                     src="~/assets/images/objectif.png">
                 </Image>
 
                 <Label col="1" row="0" verticalAlignment="center" horizontalAlignment="center">
                     <FormattedString>
-                      <Span text="Votre Objectif " fontSize="15"></Span>
+                        <Span text="Votre Objectif " fontSize="15"></Span>
                         <Span [text]="goal" fontSize="25" textWrap="false"></Span>
                     </FormattedString>
                 </Label>
@@ -136,7 +140,7 @@
                         <Span [text]="caloriesConsumed" fontSize="25"></Span>
                     </FormattedString>
                 </Label>
-              
+
                 <Image col="0" row="2" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
                     src="~/assets/images/rest.png">
                 </Image>
@@ -147,9 +151,11 @@
                         <Span [text]="restToConsume" fontSize="25"></Span>
                     </FormattedString>
                 </Label>
-                <label row="2" colspan="3" *ngIf="showGoal" text="Objectif Atteint" fontSize="25" horizontalAlignment="center" verticalAlignment="center"></label>
+                <label row="2" colspan="3" *ngIf="showGoal" text="Bravo ! Objectif Atteint" fontSize="25" horizontalAlignment="center" verticalAlignment="center"></label>
 
             </GridLayout>
+            <Button text="Ajouter un nouvel aliment" class="btn btn-primary" row="3" colspan="4" width="50%" horizontalAlignment="center"
+                (tap)=goToAddFood()></Button>
         </GridLayout>
 
 
@@ -191,6 +197,36 @@
                 </GridLayout>
                 <Button class="btn btn-primary" padding="20" borderRadius="5" width="80%" text="Ajouter" (tap)="saveFood()">
                 </Button>
+            </StackLayout>
+        </AbsoluteLayout>
+        <AbsoluteLayout #newFoodLayout visibility="{{ showNewFood ? 'visible' : 'collapse' }}">
+            <StackLayout width="100%">
+                <GridLayout columns="auto,auto,auto,*" rows="auto,auto,auto,auto,auto,auto,auto" width="100%">
+                    <label text="Nom aliment" row="0" colspan="4" horizontalAlignment="center" marginBottom="20" fontSize="20"></label>
+                    <TextField row="1" hint="Aliment" padding="20" width="50%" colspan="4" [ngModel]='input.name.value' (ngModelChange)='input.name.value=$event' marginBottom="20">
+                    </TextField>
+                    <Label marginTop="3"  row="2" class="text-danger" visibility="{{  input.name.error ? 'visible' : 'collapse' }}" text="Nom invalid ">
+                    </Label>
+                    <label text="Composition nutritionelle" row="3" colspan="4" horizontalAlignment="center" marginLeft="15" fontSize="20" marginBottom="20"></label>
+                    <label text="Energie (Kcal)" row="4" col="0" horizontalAlignment="center" marginLeft="15"></label>
+                    <TextField row="4" col="1" hint="100" padding="20" width="100"  verticalAlignment="center"  keyboardType="phone" [ngModel]='input.energie.value' (ngModelChange)='input.energie.value=$event'>
+                    </TextField>
+                    <Label marginTop="3" row="5" col="1" class="text-danger" visibility="{{  input.energie.error ? 'visible' : 'collapse' }}" text="Champ obligatoire">
+                    </Label>
+                    <label text="Glucides" row="4" col="2" horizontalAlignment="center" marginLeft="20"></label>
+                    <TextField row="4" col="3" hint="1" verticalAlignment="center" padding="20" width="100" keyboardType="number" [ngModel]='input.glucide.value' (ngModelChange)='input.glucide.value=$event'>
+                    </TextField>
+                    <label text="Proteines (g)" row="5" col="0" horizontalAlignment="center" marginLeft="15"></label>
+                    <TextField row="5" hint="1" padding="20"  verticalAlignment="center"  width="100" col="1" keyboardType="number" [ngModel]='input.proteine.value' (ngModelChange)='input.proteine.value=$event'>
+                    </TextField>
+                    <label text="Lipides (g)" row="5" col="2" horizontalAlignment="center" marginLeft="20"></label>
+                    <TextField row="5" hint="1" padding="20"  verticalAlignment="center"  width="100" col="3" keyboardType="number" [ngModel]='input.lipide.value' (ngModelChange)='input.lipide.value=$event'>
+                    </TextField>
+                </GridLayout>
+                <StackLayout class="hr-light" marginTop="20"></StackLayout>
+                <Button class="btn btn-primary" padding="20" borderRadius="5" width="80%" text="Ajouter" (tap)="addNewFood()">
+                </Button>
+                <Label text="NB: vous pouvez réutiliser cet aliment!"></Label>
             </StackLayout>
         </AbsoluteLayout>
 

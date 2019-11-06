@@ -21,7 +21,7 @@ const picker = new ModalPicker();
 import * as moment from "moment";
 moment.locale("fr");
 class reminder {
-    constructor(public name: string, public date:string) { }
+    constructor(public name: string, public date: string) { }
 }
 @Component({
     selector: "profil",
@@ -49,8 +49,8 @@ export class ProfilComponent implements OnInit {
         name: 'test mip 2'
     }];
 
-   public reminders: Array<reminder>;
-   public firstSwitchState = "Activer";
+    public reminders: Array<reminder>;
+    public firstSwitchState = "Activer";
 
 
     // Date variables
@@ -63,7 +63,7 @@ export class ProfilComponent implements OnInit {
     private dateStr;
     private hourStr;
     public fulldateStr: string = "";
-    public ID: number ;
+    public ID: number;
     PLEASE_SELECT_DATE = "Vous devez sélectionner la date";
     PLEASE_SELECT_HOUR = "Vous devez sélectionner l'heure";
 
@@ -121,8 +121,8 @@ export class ProfilComponent implements OnInit {
                 error: false
             },
         };
-        this.reminders=[];
-       
+        this.reminders = [];
+
         bluetooth.setCharacteristicLogging(false);
         this.currentDate = new Date();
         this.currentDateHolder = moment(this.currentDate, "mm/dd/yyyy hh:mm").format('LLLL')
@@ -181,7 +181,7 @@ export class ProfilComponent implements OnInit {
                     this.hourStr = result.hour + ":" + result.minute;
                     this.selectedTimeStr = result.hour + ":" + result.minute;
                     // this.dateTextHolder =this.selectedTimeStr;
-                    this.fulldateStr = moment(this.selectedDateStr + " " + this.selectedTimeStr, "mm/dd/yyyy hh:mm").format('LLLL');
+                    this.fulldateStr = this.selectedDateStr + " " + this.selectedTimeStr;
                     this.dateTextHolder = this.fulldateStr;
 
 
@@ -201,33 +201,16 @@ export class ProfilComponent implements OnInit {
         }
     }
 
-    /*  showWithSound(): void {
-          LocalNotifications.schedule([{
-              id: 1,
-              title: 'Rappel',
-              body: 'yaaay it works',
-              badge: 1,
-              at: new Date(new Date().getTime() + (5 * 1000)) // 5 seconds from now
-          }]);
-  
-          // adding a handler, so we can do something with the received notification.. in this case an alert
-          LocalNotifications.addOnMessageReceivedCallback(data => {
-              alert({
-                  title: "Local Notification received",
-                  message: `id: '${data.id}', title: '${data.title}'.`,
-                  okButtonText: "ok"
-              });
-          });
-      }*/
-    showWithSound(title,description): void {
+
+    showWithSound(title, description): void {
         LocalNotifications.schedule([{
             id: 1,
             title: title,
             body: description,
             badge: 1,
-            at: new Date(new Date(this.fulldateStr).getTime() ) // 5 seconds from now
+            at: new Date(new Date(this.fulldateStr).getTime()) // 5 seconds from now
         }]);
-        
+
 
         // adding a handler, so we can do something with the received notification.. in this case an alert
         LocalNotifications.addOnMessageReceivedCallback(data => {
@@ -237,9 +220,9 @@ export class ProfilComponent implements OnInit {
                 okButtonText: "Ok"
             });
         });
-       
-        this.reminders.push(new reminder(title,this.selectedTimeStr));
-        this.listReminders=true;
+
+        this.reminders.push(new reminder(title, this.selectedTimeStr));
+        this.listReminders = true;
         this.closeReminderLayout();
     }
 
@@ -248,20 +231,18 @@ export class ProfilComponent implements OnInit {
     cancelAll(): void {
         LocalNotifications.cancelAll();
     }
-    onItemTap()
-    {
-        LocalNotifications.getScheduledIds().then (id=> 
+    onItemTap() {
+        LocalNotifications.getScheduledIds().then(id => {
+            alert({
+                title: " Votre Rappel",
+                message: `Supprimer`,
+                okButtonText: "Ok"
+            });
+            LocalNotifications.cancel(id);
+        }
 
-            {
-                alert({
-                    title: " Votre Rappel",
-                    message: `Supprimer`,
-                    okButtonText: "Ok"
-                });
-                LocalNotifications.cancel(id);
-            }
-
-        ) }
+        )
+    }
 
 
     focusTitle() {

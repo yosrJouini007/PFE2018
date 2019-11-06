@@ -75,7 +75,7 @@
                     <Label fontSize="28" class="h3  m-55 text-left" padding="5" text="Glycémie (g/l)" color="#333333" textWrap="true">
                     </Label>
                     <StackLayout class="hr-light"></StackLayout>
-                    <TextField (returnPress)="returnPress($event)"  returnKeyType="done" #inputField class="input" padding="25"
+                    <TextField (returnPress)="saveAdd()"  returnKeyType="done" #inputField class="input" padding="25"
                         [ngModel]='input.glucose.value' (ngModelChange)='input.glucose.value=$event' keyboardType="phone" marginTop="20"
                         marginRight="5%" marginLeft="5%" borderRadius="6" hint="1.16" fontSize="30" placeholderColor="#f2f2f2"
                         maxLength="4" ngDefaultControl>

@@ -1,6 +1,6 @@
 <ActionBar class="action-bar" title="S'identifier">
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    <NavigationButton ios:visibility="collapsed"icon="res://ic_arrow_back_white_24dp"(tap)="backToHome()"></NavigationButton>
+    <ActionItem icon="res://navigation/ic_arrow_back_white" android:visibility="collapsed" (tap)="backToHome()" ios.position="left">
     </ActionItem>
     <!-- Android Menu -->
     <ActionItem ios:visibility="collapsed" icon="res://ic_arrow_forward_white_24dp" (tap)="login()" android.position="right"></ActionItem>
@@ -9,26 +9,20 @@
     </ActionItem>
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-
-    <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Login'"></MyDrawer>
-    </StackLayout>
-
     <StackLayout class="page page-content" tkMainContent>
 
         <ScrollView>
             <StackLayout margin="2" verticalAlignment="center" padding="30">
 
-                <GridLayout #emailLayout class="parent-container" marginTop="10" verticalAlignement="center" rows="*,*">
-                    <StackLayout row="0" class="input-field regLogin">
+                <GridLayout #emailLayout class="parent-container" marginTop="10" verticalAlignement="center" rows="auto,auto">
+                    <StackLayout row="0" class="input-field regLogin"  verticalAlignment="center">
                         <Label marginTop="30" fontSize="22" padding="15" textAlign="center" textWrap="true" text="Votre adresse mail:" class="headline center"></Label>
                         <TextField (returnPress)="focus()" returnKeyType="done" #emailText class="input" padding="18" [ngModel]='input.email.value'
                             (ngModelChange)='input.email.value=$event'></TextField>
                         <StackLayout class="hr-light"></StackLayout>
                         <Label marginTop="3" class="text-danger" visibility="{{  input.email.error ? 'visible' : 'collapse' }}" text="Adresse mail invalide"></Label>
                     </StackLayout>
-                    <StackLayout row="1" class="input-field regLogin">
+                    <StackLayout row="1" class="input-field regLogin"  verticalAlignment="center">
                         <Label marginTop="30" fontSize="22" padding="15" textAlign="center" textWrap="false" text="Votre mot de passe:" class="headline center"></Label>
                         <TextField (returnPress)="login()" secure="true" returnKeyType="done" #passwordText class="input" padding="18" [ngModel]='input.password.value'
                             (ngModelChange)='input.password.value=$event'></TextField>
@@ -39,7 +33,7 @@
             </StackLayout>
         </ScrollView>
     </StackLayout>
-</RadSideDrawer>
+
 
 
 <!--     <StackLayout #passwordLayout class="parent-container" marginTop="10" verticalAlignement="center" visibility="{{showPasswordStep ? 'visible' : 'collapse' }}">

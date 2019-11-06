@@ -9,9 +9,6 @@ import * as dialogs from "ui/dialogs";
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import { StackLayout } from "ui/layouts/stack-layout";
 import { TNSFancyAlert, TNSFancyAlertButton } from "nativescript-fancyalert";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
-
 //Redux & RxJS
 import { Store } from "@ngrx/store";
 import * as fromRoot from "./../../shared/reducers";
@@ -35,14 +32,10 @@ import { getString, setString, setBoolean } from "tns-core-modules/application-s
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
-  @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
   @ViewChild("emailLayout") emailLayoutRef: ElementRef;
   @ViewChild("passwordLayout") passwordLayoutRef: ElementRef;
   @ViewChild("emailText") emailTextRef: ElementRef;
   @ViewChild("passwordText") passwordTextRef: ElementRef;
-
-
-  private _sideDrawerTransition: DrawerTransitionBase;
 
   private get emailLayout(): StackLayout {
     return this.emailLayoutRef.nativeElement;
@@ -102,16 +95,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+  
 
   }
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+ 
 
-  onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
-  }
 
 
 
@@ -228,6 +216,7 @@ export class LoginComponent implements OnInit {
         this.store.dispatch(new appAction.HideLoadingAction());
       }
       else {
+        setBoolean("authenticated", false);
         this.store.dispatch(new appAction.HideLoadingAction());
         TNSFancyAlert.showError(
           "Erreur!",
@@ -263,4 +252,9 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+  public backToHome() {
+    this.routerExtensions.navigate(["/home"], {
+        clearHistory: true,
+    });
+}
 }

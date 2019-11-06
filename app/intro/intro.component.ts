@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "tns-core-modules/ui/page/page";
 
@@ -28,9 +26,9 @@ export class IntroComponent implements OnInit {
             "Une montre connectée à votre application synchronisera vos données et vous offrira une expérience exclusive.Un coach éléctronique attaché au poignet vous facilitera la vie tout en gérant votre santé et satisfaisant vos besoins quotidiens"
         }
       ];
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+   
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+  
 
   
     constructor(private _page: Page, private router: RouterExtensions) {
@@ -38,13 +36,9 @@ export class IntroComponent implements OnInit {
     }
 
     ngOnInit(): void {
-       // this._sideDrawerTransition = new SlideInOnTopTransition();
         this._page.actionBarHidden = true;
     }
 
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
-    }
 
     public goToHome() {
         this.router.navigate(["/home-connected"], {

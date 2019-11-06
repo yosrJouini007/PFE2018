@@ -40,6 +40,8 @@ import { RouterExtensions } from "nativescript-angular/router";
 })
 export class ProfileComponent implements OnInit {
 
+  creds: any;
+  profileData: any;
   @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
   private _sideDrawerTransition: DrawerTransitionBase;
   input: any;
@@ -82,13 +84,15 @@ export class ProfileComponent implements OnInit {
   ) {
 
    // this._phone = getString("phoneNumber", null);
+   this.profileData=JSON.parse(getString("profile", "{}"));
+   this.creds=JSON.parse(getString("account", "{}"));
     this.input = {
       email: {
-        value: "",
+        value:this.creds.email,
         error: false
       },
       password: {
-        value: "",
+        value: this.creds.password,
         error: false
       },
       newpassword: {
@@ -100,19 +104,19 @@ export class ProfileComponent implements OnInit {
         error: false
       },
       firstname: {
-        value: "",
+        value: this.profileData.name,
         error: false
       },
       lastname: {
-        value: "",
+        value: this.profileData.lastname,
         error: false
       },
       size: {
-        value: "",
+        value: this.profileData.size,
         error: false
       },
       weight: {
-        value: "",
+        value: this.profileData.weight,
         error: false
       },
   
@@ -188,6 +192,7 @@ export class ProfileComponent implements OnInit {
       
 
       this.store.dispatch(new appAction.ShowLoadingAction());
+      setString("account", JSON.stringify(creds));
       let guestProfile: any;
       guestProfile = {
         name: this.input.firstname.value,

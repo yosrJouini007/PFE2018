@@ -61,10 +61,8 @@ export class AddGlucoseComponent implements OnInit {
     showWeeklyChart: boolean = false;
     showMonthlyChart: boolean = false;
     showDailyChart: boolean = true;
-    PICK_DATE = "Choose Date";
     public selectedDateStr: string = "";
     public selectedTimeStr: string = "";
-    PICK_HOUR = "Choose Hour";
     private dateStr;
     private hourStr;
     public fulldateStr: string = "";
@@ -74,8 +72,6 @@ export class AddGlucoseComponent implements OnInit {
     chartMonth: any[] = [];
     PLEASE_SELECT_DATE = "Vous devez sélectionner la date";
     PLEASE_SELECT_HOUR = "Vous devez sélectionner l'heure";
-    //textInput = new Subject<string>();
-    public sliderValue1 = 116;
 
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -117,15 +113,9 @@ export class AddGlucoseComponent implements OnInit {
             },
         };
         this.chart = [
-           /* {
-                Date: "12:30",
-                Mesure:2,
-            }*/];
+          ];
         this.chartWeek = [
-            //{
-            // Date: "7/03/2018",
-            // Mesure: 6,
-            //}
+         
         ];
         this.chartMonth = [
         ];
@@ -152,10 +142,6 @@ export class AddGlucoseComponent implements OnInit {
         this._SourceDaily = new ObservableArray(this.chart);
         this._SourceWeekly = new ObservableArray(this.chartWeek);
         this._SourceMonthly = new ObservableArray(this.chartMonth);
-        //this.saveAdd();
-        //let textField = <TextField>this.inputFieldElement.nativeElement.object;
-
-
     }
 
 
@@ -227,7 +213,8 @@ export class AddGlucoseComponent implements OnInit {
             .pickDate({
                 title: this.currentDateHolder,
                 theme: "dark",
-                // minDate: new Date(),
+                //minDate: new Date(),
+                maxDate:new Date(),
                 startingDate: new Date()
             })
             .then((result: any) => {
@@ -258,17 +245,16 @@ export class AddGlucoseComponent implements OnInit {
     selectTime() {
         picker
             .pickTime({
-                title: this.currentDateHolder,
+               // title: this.currentDateHolder,
                 theme: "dark"
             })
             .then((result: any) => {
                 if (result) {
                     this.hourStr = result.hour + ":" + result.minute;
                     this.selectedTimeStr = result.hour + ":" + result.minute;
-                    // this.dateTextHolder =this.selectedTimeStr;
-                    this.fulldateStr = moment(this.selectedDateStr + " " + this.selectedTimeStr, "mm/dd/yyyy hh:mm").format('LLLL');
+                    this.fulldateStr =this.selectedDateStr + " " + this.selectedTimeStr;
+                   // this.fulldateStr = moment(this.selectedDateStr + " " + this.selectedTimeStr, "mm/dd/yyyy hh:mm").format('LLLL');
                     this.dateTextHolder = this.fulldateStr;
-                    // this.inputFieldEl.focus();
                     this.addFocus();
 
                 } else {
@@ -288,21 +274,8 @@ export class AddGlucoseComponent implements OnInit {
                 duration: 250,
                 opacity: 0
             })
-        // this.input.glucose.value = "";
+        this.input.glucose.value ="";
     }
-    returnPress(args) {
-
-        // if (this.validateInput()) {
-        let textField = <TextField>args.object;
-
-        console.log("onReturn");
-        // this.input.glucose.value = Number(textField.text);
-        this.mesure = Number(textField.text);
-        this.saveAdd();
-
-    }
-
-
 
     saveAdd() {
 
@@ -316,13 +289,14 @@ export class AddGlucoseComponent implements OnInit {
             );
         } else {
 
-            //this.mesure=parseFloat(this.input.glucose.value);
+            this.mesure = Number(this.input.glucose.value);
             this.date = this.selectedDateStr;
             this.chart.push({ Date: this.selectedTimeStr, Mesure: this.mesure });
+            this.chart.sort((a, b) => a.Date.localeCompare(b.Date));
             setString("chart", JSON.stringify(this.chart));
             let lastMesure;
-            lastMesure={
-                mesure:this.mesure
+            lastMesure = {
+                mesure: this.mesure
             }
             setString("mesure", JSON.stringify(lastMesure));//last Mesure
             this._SourceDaily.push(this.chart);
@@ -334,16 +308,9 @@ export class AddGlucoseComponent implements OnInit {
             this.chartMonth.push({ Date: this.month, Mesure: month });
             setString("chartMonth", JSON.stringify(this.chartMonth));
             this._SourceMonthly.push(this.chartMonth);
-            /* this.data.map(item => {
-                  return {
-                      Date: item.Date,
-                      Mesure: item.Mesure
-                  }
-              }).forEach(item => this.source.push(item));*/
-              if (this.chart.length>2)
-              {
-                  this.showNotification();
-              }
+            if (this.chart.length > 2) {
+                this.showNotification();
+            }
             this.closeAdd();
         }
 
@@ -402,11 +369,11 @@ export class AddGlucoseComponent implements OnInit {
                     if (Number(this.mesure) > 2.5) {
                         this.description = " Attention vous avez une hyperglycémie "
                     }
-                    this.notification(this.description);
+                this.notification(this.description);
             }
     }
 
-    /*  private validateInput() {
+     private validateInput() {
            let Valide = true;
            if (
                this.validateService.isNumber(this.input.glucose.value)
@@ -417,7 +384,7 @@ export class AddGlucoseComponent implements OnInit {
                Valide = false;
            }
            return Valide;
-       }*/
+       }
 
     hideKeyboard() {
         if (isAndroid) {

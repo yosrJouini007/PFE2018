@@ -7,7 +7,7 @@
 
     <ScrollView row="1">
         <StackLayout class="sidedrawer-content">
-            <MyDrawerItem *ngIf="userlogged" title="Accueil" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Accueil')">
+            <MyDrawerItem  *ngIf="!userlogged"title="Accueil" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Accueil')">
             </MyDrawerItem>
             <MyDrawerItem  *ngIf="!userlogged" title="Login" route="/auth/login" icon="&#xf007;" [isSelected]="isPageSelected('Login')">
             </MyDrawerItem>
@@ -17,19 +17,19 @@
             <!--  <MyDrawerItem title="Charts Circle" route="/charts-pie"  icon="&#xf015;" [isSelected]="isPageSelected('Charts Circle')">
             </MyDrawerItem>-->
 
-            <MyDrawerItem  title="Diabéte" route="/add-glucose" icon="&#xf21e;" [isSelected]="isPageSelected('Diabéte')">
+            <MyDrawerItem  *ngIf="userlogged" title="Diabéte" route="/add-glucose" icon="&#xf21e;" [isSelected]="isPageSelected('Diabéte')">
             </MyDrawerItem>
-            <MyDrawerItem  title="Intro" route="/intro" icon="&#xf005;" [isSelected]="isPageSelected('intro')">
+            <MyDrawerItem *ngIf="!userlogged"  title="Intro" route="/intro" icon="&#xf005;" [isSelected]="isPageSelected('intro')">
             </MyDrawerItem>
-            <MyDrawerItem  title="Alimentation" route="/alimentation" icon="&#xf0f5;" [isSelected]="isPageSelected('Alimentation')">
+            <MyDrawerItem  *ngIf="userlogged" title="Alimentation" route="/alimentation" icon="&#xf0f5;" [isSelected]="isPageSelected('Alimentation')">
             </MyDrawerItem>
-            <MyDrawerItem   title="Activité" route="/steps" icon="&#xf206;" [isSelected]="isPageSelected('Activité')">
+            <MyDrawerItem  *ngIf="userlogged"   title="Activité" route="/steps" icon="&#xf206;" [isSelected]="isPageSelected('Activité')">
             </MyDrawerItem>
-            <MyDrawerItem title="Calories Brulées" route="/calories" icon="&#xf06d;" [isSelected]="isPageSelected('Calories')">
+            <MyDrawerItem  *ngIf="userlogged" title="Calories Brulées" route="/calories" icon="&#xf06d;" [isSelected]="isPageSelected('Calories')">
             </MyDrawerItem>
         <!--    <MyDrawerItem title=" Editer Profil" route="/auth/profil" icon="&#xf005;" [isSelected]="isPageSelected('Profil')">
             </MyDrawerItem>-->
-            <MyDrawerItem title="Mon Profil" route="/profil" icon="&#xf007;" [isSelected]="isPageSelected('Mon Profil')">
+            <MyDrawerItem   *ngIf="userlogged"title="Mon Profil" route="/profil" icon="&#xf007;" [isSelected]="isPageSelected('Mon Profil')">
             </MyDrawerItem>
 
 
@@ -49,7 +49,7 @@
 
             <!-- <MyDrawerItem title="Settings" route="/settings" icon="&#xf013;" [isSelected]="isPageSelected('Settings')">
             </MyDrawerItem>-->
-            <GridLayout  marginLeft="17" marginTop="10" columns="auto, *" class="sidedrawer-list-item" (tap)="logOut()">
+            <GridLayout  *ngIf="userlogged"  marginLeft="17" marginTop="10" columns="auto, *" class="sidedrawer-list-item" (tap)="logOut()">
                 <Label col="0" [text]="'&#xf060;'" class="fa"></Label>
                 <Label col="1" marginLeft="15" [text]="'Logout'" class="p-r-10"></Label>
             </GridLayout>

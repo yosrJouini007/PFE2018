@@ -1,12 +1,10 @@
 <ActionBar class="action-bar" title="Journal">
-    <!-- 
-    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
-    -->
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <!-- 
-    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
-    -->
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()" *ngIf="!showHistory"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left" *ngIf="!showHistory">
+    </ActionItem>
+    <ActionItem padding="5" ios:visibility="collapsed" (tap)=" closeHistory()" *ngIf="showHistory" android.position="right" icon="res://ic_close_white_24dp">
+    </ActionItem>
+    <ActionItem padding="5" android:visibility="collapsed" (tap)=" closeHistory()" *ngIf="showHistory" ios.position="right" icon="res://navigation/ic_close_white">
     </ActionItem>
     <Label class="action-bar-title" text="Journal"></Label>
 </ActionBar>
@@ -18,48 +16,94 @@
     </StackLayout>
 
     <GridLayout class="page page-content" tkMainContent>
-        <StackLayout>
+        <StackLayout visibility="{{ showHome ? 'visible' : 'collapse' }}">
 
             <GridLayout columns="*,*" rows="auto,*,*" verticalAlignment="top">
-                <Label row="0" colspan="2" text="Aujourd'hui" fontSize="25" padding="30" color="#4abd73" horizontalAlignment="center" marginBottom="40"></Label>
-                <CardView (tap)="goToSugar()"  class="cardStyle" col="0" row="1" elevation="20" radius="1" width="47%" marginRight="10" marginBottom="20"
+                <Label row="0" col="0" text="Aujourd'hui" fontSize="25" padding="30" color="#4abd73" horizontalAlignment="right" marginBottom="40"></Label>
+                <Label col="1" text="&#xf105;" class="icon" (tap)="goToHistory()" verticalAlignment="center" horizontalAlignment="left" marginBottom="40"></Label>
+                <CardView (tap)="goToSugar()" class="cardStyle" col="0" row="1" elevation="20" radius="1" width="47%" marginRight="10" marginBottom="20"
                     height="33%">
-                    <GridLayout  colums="*,*" rows="*,*">
-                        <Image  colspan="2"row="0"stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/dropIcon.png">
+                    <GridLayout colums="*,*" rows="*,*">
+                        <Image colspan="2" row="0" stretch="Fill" verticalAlignment="center" horizontalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                            src="~/assets/images/dropIcon.png">
                         </Image>
                         <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" [text]="mesure" fontSize="20" padding="15" color="#777777"></Label>
                         <Label row="1" col="0" verticalAlignment="bottom" text="Suivi Glycémie" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
                     </GridLayout>
                 </CardView>
-                <CardView height="33%" (tap)="goToFood()"  class="cardStyle" col="1" row="1" elevation="20" radius="1" backgroundColor="white" width="47%"
-                    marginRight="10" marginBottom="20">
-                    <GridLayout  colums="*,*" rows="*,*">
-                        <Image colspan="2" row="0"  stretch="Fill"  horizontalAlignment="center" verticalAlignment="center"placeholder="localPlaceholderImgorResUrl" src="~/assets/images/foodIcon.PNG">
-                        </Image>
-                        <Label row="1" col="1" verticalAlignment="top" [text]="caloriesConsumed"  horizontalAlignment="center" fontSize="18" padding="15" color="#777777"></Label>
-                        <Label   verticalAlignment="bottom"row="1" col="0"text="Calories Consommées" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
-                    </GridLayout>
-                </CardView>
-                <CardView height="33%" (tap)="goToSteps()" class="cardStyle" col="0" row="2" elevation="20" radius="1" backgroundColor="white" width="47%" marginRight="10"
-                    marginBottom="10">
+                <CardView height="33%" (tap)="goToFood()" class="cardStyle" col="1" row="1" elevation="20" radius="1" backgroundColor="white"
+                    width="47%" marginRight="10" marginBottom="20">
                     <GridLayout colums="*,*" rows="*,*">
-                        <Image   colspan="2" row="0"  stretch="Fill" horizontalAlignment="center" verticalAlignment="center"placeholder="localPlaceholderImgorResUrl" src="~/assets/images/stepsIcon.png">
+                        <Image colspan="2" row="0" stretch="Fill" horizontalAlignment="center" verticalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                            src="~/assets/images/foodIcon.PNG">
                         </Image>
-                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" [text]="steps" fontSize="20" padding="15" color="#777777" textWrap="false"></Label>
-                      <!--  <Label row="1" col="2" verticalAlignment="top" horizontalAlignment="center" text="pas" fontSize="15" padding="15" color="#777777" marginLeft="10%"></Label>-->
-                        <Label  row="1" col="0" text=" Nombre de Pas" fontSize="18" padding="15" color="#777777"  textWrap="false"verticalAlignment="bottom"></Label>
+                        <Label row="1" col="1" verticalAlignment="top" [text]="caloriesConsumed" horizontalAlignment="center" fontSize="18" padding="15"
+                            color="#777777"></Label>
+                        <Label verticalAlignment="bottom" row="1" col="0" text="Calories Consommées" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
                     </GridLayout>
                 </CardView>
-                <CardView height="33%"  (tap)="goToCalories()"class="cardStyle" col="1" row="2" elevation="20" radius="1" backgroundColor="white" width="47%" marginRight="10"
-                    marginBottom="10">
-                    <GridLayout   colums="*,*"  rows="*,*">
-                        <Image colspan="2" row="0"  stretch="Fill"  horizontalAlignment="center" verticalAlignment="center" placeholder="localPlaceholderImgorResUrl" src="~/assets/images/fireIcon3.png">
+                <CardView height="33%" (tap)="goToSteps()" class="cardStyle" col="0" row="2" elevation="20" radius="1" backgroundColor="white"
+                    width="47%" marginRight="10" marginBottom="10">
+                    <GridLayout colums="*,*" rows="*,*">
+                        <Image colspan="2" row="0" stretch="Fill" horizontalAlignment="center" verticalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                            src="~/assets/images/stepsIcon.png">
                         </Image>
-                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center"  [text]="caloriesBurned" fontSize="18" padding="15" color="#777777" textWrap="false"></Label>
-                        <Label row="1"  col="0" text="Calories Brulées" fontSize="18" padding="15" verticalAlignment="bottom" color="#777777" textWrap="false" ></Label>
+                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" [text]="steps" fontSize="20" padding="15" color="#777777"
+                            textWrap="false"></Label>
+                        <!--  <Label row="1" col="2" verticalAlignment="top" horizontalAlignment="center" text="pas" fontSize="15" padding="15" color="#777777" marginLeft="10%"></Label>-->
+                        <Label row="1" col="0" text=" Nombre de Pas" fontSize="18" padding="15" color="#777777" textWrap="false" verticalAlignment="bottom"></Label>
+                    </GridLayout>
+                </CardView>
+                <CardView height="33%" (tap)="goToCalories()" class="cardStyle" col="1" row="2" elevation="20" radius="1" backgroundColor="white"
+                    width="47%" marginRight="10" marginBottom="10">
+                    <GridLayout colums="*,*" rows="*,*">
+                        <Image colspan="2" row="0" stretch="Fill" horizontalAlignment="center" verticalAlignment="center" placeholder="localPlaceholderImgorResUrl"
+                            src="~/assets/images/fireIcon3.png">
+                        </Image>
+                        <Label row="1" col="1" verticalAlignment="top" horizontalAlignment="center" [text]="caloriesBurned" fontSize="18" padding="15"
+                            color="#777777" textWrap="false"></Label>
+                        <Label row="1" col="0" text="Calories Brulées" fontSize="18" padding="15" verticalAlignment="bottom" color="#777777" textWrap="false"></Label>
                     </GridLayout>
                 </CardView>
             </GridLayout>
         </StackLayout>
+        <AbsoluteLayout #historyLayout visibility="{{ showHistory ? 'visible' : 'collapse' }}">
+            <StackLayout width="100%" height="100%">
+                <Label text="Mon Historique" color="#4abd73" fontAttributes="Bold" fontSize="28" horizontalAlignment="center" marginBottom="40"></Label>
+                <ScrollView height="80%">
+                <ListView [items]="history" horizontalAlignment="center" width="98%">
+                    <ng-template let-item="item">
+                        <GridLayout  rows="auto,*,*" columns="*,*">
+                            <Label [text]="item.day" colspan="2" row="0" fontSize="20" marginBottom="20" horizontalAlignment="center"></Label>
+                            <Label row="1" col="0" marginLeft="20">
+                                <FormattedString>
+                                    <Span text="Glycémie:  " color="#4abd73" fontAttributes="Bold" fontSize="18"></Span>
+                                    <Span [text]="item.mesure"></Span>
+                                </FormattedString>
+                            </Label>
+                            <Label row="1" col="1" marginLeft="20">
+                                <FormattedString>
+                                    <Span text="Calories Consommées:  " color="#4abd73" fontAttributes="Bold" fontSize="18"></Span>
+                                    <Span [text]="item.caloriesConsumed"></Span>
+                                </FormattedString>
+                            </Label>
+                            <Label row="2" col="0" marginLeft="20">
+                                <FormattedString>
+                                    <Span text="Calories Brulées:  " color="#4abd73" fontAttributes="Bold" fontSize="18"></Span>
+                                    <Span [text]="item.caloriesBurned"></Span>
+                                </FormattedString>
+                            </Label>
+                            <Label row="2" col="1" marginLeft="20">
+                                <FormattedString>
+                                    <Span text="Nombre de pas:  " color="#4abd73" fontAttributes="Bold" fontSize="18"></Span>
+                                    <Span [text]="item.steps"></Span>
+                                </FormattedString>
+                            </Label>
+                        </GridLayout>
+                    </ng-template>
+                </ListView>
+            </ScrollView>
+            </StackLayout>
+        </AbsoluteLayout>
     </GridLayout>
 </RadSideDrawer>

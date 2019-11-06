@@ -6,7 +6,7 @@ import { AddGlucoseRoutingModule } from "./add-glucose-routing.module";
 import { AddGlucoseComponent } from "./add-glucose.component";
 import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import { ValidateService } from './validate.service';
-import { FormsModule } from "@angular/forms";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
 @NgModule({
     imports: [
@@ -14,7 +14,7 @@ import { FormsModule } from "@angular/forms";
         AddGlucoseRoutingModule,
         SharedModule,
         NativeScriptUIChartModule,
-        FormsModule
+        NativeScriptFormsModule,
     ],
    
     declarations: [

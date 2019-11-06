@@ -7,16 +7,6 @@
     <Label class="action-bar-title" text="Accueil"></Label>
 </ActionBar>
 
-
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-    
-    <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Accueil'"></MyDrawer>
-
-
-    </StackLayout>
-
-    
     <GridLayout class="page page-content" tkMainContent class="background-image">
         <StackLayout verticalAlignment="center">
             <Label horizontalAlignment="center" padding="12" class="seConnecter" text="Vous avez déjà un compte ? "></Label>
@@ -28,4 +18,3 @@
 
         </StackLayout>
     </GridLayout>
-</RadSideDrawer>

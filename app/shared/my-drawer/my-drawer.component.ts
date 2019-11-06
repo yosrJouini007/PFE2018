@@ -37,7 +37,7 @@ import * as ApplicationSettings from "application-settings";
 export class MyDrawerComponent implements OnInit, AfterViewInit {
   user;
   user$;
-  userlogged: boolean
+  userlogged: boolean=false;
   constructor(
     private routerExtensions: RouterExtensions,
     private authService: AuthService,
@@ -74,8 +74,9 @@ export class MyDrawerComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
   logOut() {
-    remove("authenticated");
+   // setBoolean("authenticated", false);
     this.routerExtensions.navigate(["/home"], { clearHistory: true });
+    remove("authenticated");
   }
 
   /* logOut() {

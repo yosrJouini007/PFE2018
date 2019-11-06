@@ -13,9 +13,6 @@ import { AbsoluteLayout } from "tns-core-modules/ui/layouts/absolute-layout/abso
 let frameModule = require("tns-core-modules/ui/frame");
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import * as dialogs from "ui/dialogs";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
-
 
 //Redux & RxJs
 import { Store } from "@ngrx/store";
@@ -51,7 +48,6 @@ let activityList = ["Actif", "Moins actif", "Inactif", "Extra actif"];
   styleUrls: ["./register.component.css"]
 })
 export class RegisterComponent implements OnInit {
-  @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
   @ViewChild("firstNameText") firstNameTextRef: ElementRef;
   @ViewChild("emailText") emailTextRef: ElementRef;
   @ViewChild("sizeText") sizeTextRef: ElementRef;
@@ -124,8 +120,6 @@ export class RegisterComponent implements OnInit {
   private get screenHeight(): number {
     return screen.mainScreen.heightDIPs;
   }
-
-  private _sideDrawerTransition: DrawerTransitionBase;
 
 
   EXIST_PHONE_NUMBER = "Adresse mail existe";
@@ -214,7 +208,7 @@ export class RegisterComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    
     this.fadeInEmaillayout();
     //this.nextRegister();
 
@@ -242,13 +236,6 @@ export class RegisterComponent implements OnInit {
 
   public begin() {
     this.routerExtensions.navigate(["home-connected"]);
-  }
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
-
-  onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
   }
 
   fadeInEmaillayout() {
@@ -832,6 +819,11 @@ export class RegisterComponent implements OnInit {
     }
     return formIsValide;
   }
+  public backToHome() {
+    this.routerExtensions.navigate(["/home"], {
+        clearHistory: true,
+    });
+}
 
 
 }
